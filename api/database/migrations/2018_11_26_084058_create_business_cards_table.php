@@ -23,6 +23,7 @@ class CreateBusinessCardsTable extends Migration
             $table->string('mobile')->nullable();
             $table->string('email')->nullable();
             $table->string('website')->nullable();
+            $table->boolean('private')->default(false);
             $table->unsignedInteger('created_by');
             $table->unsignedInteger('deleted_by')->nullable();
             $table->timestamps();
