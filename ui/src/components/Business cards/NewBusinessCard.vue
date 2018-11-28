@@ -8,54 +8,70 @@
                 Please wait for a second...
             </h2>
         </div>
-        <div class="business-card-form" v-else>
-            <div class="row">
-                <label for="name" class="col-3 offset-2">Name</label>
-                <input type="text" id="name" v-model="form.name" class="col-4 new-bcard-info">
+        <div class="business-card-form row" v-else>
+            <div class="col">
+                <div class="row">
+                    <label for="name" class="col-3 offset-2">Name</label>
+                    <input type="text" id="name" v-model="form.name" class="col new-bcard-info">
+                </div>
+                <div class="row">
+                    <label for="surname" class="col-3 offset-2">Surname</label>
+                    <input type="text" id="surname" v-model="form.surname" class="col new-bcard-info">
+                </div>
+                <div class="row">
+                    <label for="company_name" class="col-3 offset-2">Company</label>
+                    <input type="text" id="company_name" v-model="form.company_name" class="col new-bcard-info">
+                </div>
+                <div class="row">
+                    <label for="position" class="col-3 offset-2">Your position</label>
+                    <input type="text" id="position" v-model="form.position" class="col new-bcard-info">
+                </div>
+                <div class="row">
+                    <label for="address" class="col-3 offset-2">Address</label>
+                    <input type="text" id="address" v-model="form.address" class="col new-bcard-info">
+                </div>
+                <div class="row">
+                    <label for="mobile" class="col-3 offset-2">Mobile phone</label>
+                    <input type="text" id="mobile" v-model="form.mobile" class="col new-bcard-info">
+                </div>
+                <div class="row">
+                    <label for="email" class="col-3 offset-2">Email</label>
+                    <input type="email" id="email" v-model="form.email" class="col new-bcard-info">
+                </div>
+                <div class="row">
+                    <label for="website" class="col-3 offset-2">Website</label>
+                    <input type="text" id="website" v-model="form.website" class="col new-bcard-info">
+                </div>
+                <div>
+                    <select name="" id="" v-model="form.private">
+                        <option :value="false">Public</option>
+                        <option :value="true">Private</option>
+                    </select>
+                </div>
+                <div>
+                    <button class="business-card-submit" @click="send">Submit</button>
+                </div>
             </div>
-            <div class="row">
-                <label for="surname" class="col-3 offset-2">Surname</label>
-                <input type="text" id="surname" v-model="form.surname" class="col-4 new-bcard-info">
+            <div class="col-6">
+                <button @click="streaming ? stopWebcam() : startWebcam()"> {{ streaming ? 'Stop' : 'Webcam' }}</button>
+                <button @click="selectWebcam" v-if="streaming">Take picture</button>
+                <input type="file" accept="image/*" @change="uploadFile">
+                <webcam ref="webcam" v-model="streaming" :width="360" :height="360"></webcam>
+                <video ref="webcam_video" v-bind:style="{display: streaming ? 'inline' : 'none'}">
+
+                </video>
+                <img :src="imageUrl" v-if="imageUrl" class="new-bcard-image">
+                {{ this.form.photo }}
             </div>
-            <div class="row">
-                <label for="company_name" class="col-3 offset-2">Company</label>
-                <input type="text" id="company_name" v-model="form.company_name" class="col-4 new-bcard-info">
-            </div>
-            <div class="row">
-                <label for="position" class="col-3 offset-2">Your position</label>
-                <input type="text" id="position" v-model="form.position" class="col-4 new-bcard-info">
-            </div>
-            <div class="row">
-                <label for="address" class="col-3 offset-2">Address</label>
-                <input type="text" id="address" v-model="form.address" class="col-4 new-bcard-info">
-            </div>
-            <div class="row">
-                <label for="mobile" class="col-3 offset-2">Mobile phone</label>
-                <input type="text" id="mobile" v-model="form.mobile" class="col-4 new-bcard-info">
-            </div>
-            <div class="row">
-                <label for="email" class="col-3 offset-2">Email</label>
-                <input type="email" id="email" v-model="form.email" class="col-4 new-bcard-info">
-            </div>
-            <div class="row">
-                <label for="website" class="col-3 offset-2">Website</label>
-                <input type="text" id="website" v-model="form.website" class="col-4 new-bcard-info">
-            </div>
-            <div>
-                <select name="" id="" v-model="form.private">
-                    <option :value="false">Public</option>
-                    <option :value="true">Private</option>
-                </select>
-            </div>
-            <div>
-                <button class="business-card-submit" @click="send">Submit</button>
-            </div>
-            {{ form }}
         </div>
     </div>
 </template>
 <script>
+import Webcam from '@/components/Webcam/Webcam.vue'
 export default{
+  components: {
+    Webcam
+  },
   data () {
     return {
       form: {
@@ -68,12 +84,36 @@ export default{
         webste: '',
         address: '',
         created_by: this.$store.getters.userId,
+        photo: null,
         private: true
       },
-      isAdding: false
+      imageUrl: 'https://4.bp.blogspot.com/-wl3MOVZHfuA/UbwRHK8I4AI/AAAAAAAAAy0/WgEzBxxwJ5c/s1600/business+card+design+4.png',
+      isAdding: false,
+      streaming: false
     }
   },
   methods: {
+    selectWebcam () {
+      this.imageUrl = this.$refs.webcam.takePicture()
+      this.photo = new Image
+      this.photo.src = this.imageUrl
+      this.form.photo = this.$refs.webcam.capture()
+    },
+    startWebcam () {
+      this.$refs.webcam.startVideo(stream => {
+        this.$refs.webcam_video.srcObject = stream
+        this.$refs.webcam_video.play()
+      })
+    },
+    stopWebcam () {
+      this.$refs.webcam.stopVideo()
+    },
+    uploadFile (event) {
+      this.form.photo = event.target.files[0]
+      var fileReader = new FileReader();
+      fileReader.onloadend = () => this.imageUrl = fileReader.result
+      fileReader.readAsDataURL(this.form.photo)
+    },
     send () {
       if (this.isAdding) return
       this.isAdding = true
@@ -95,5 +135,8 @@ export default{
 .new-bcard-info{
     border-radius: 4rem;
     outline: 0;
+}
+.new-bcard-image{
+    max-width: 100%;
 }
 </style>
