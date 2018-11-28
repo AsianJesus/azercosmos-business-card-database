@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: fruit
- * Date: 11/27/2018
- * Time: 12:09 AM
- */
 
 namespace App;
 
@@ -19,13 +13,18 @@ class PermissionUser extends Model
 
     protected $table = 'permission_user';
 
-    public function businessCard() {
+    public function businessCard()
+    {
         return $this->belongsTo(BusinessCard::class, 'business_card_id');
     }
-    public function user() {
+
+    public function user()
+    {
         return $this->belongsTo(User::class, 'user_id');
     }
-    public function permission() {
+
+    public function permission()
+    {
         return $this->belongsTo(Permission::class, 'permission_id');
     }
 }
