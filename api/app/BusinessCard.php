@@ -4,12 +4,14 @@ namespace App;
 
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class BusinessCard extends Model
 {
+    use SoftDeletes;
     protected $fillable = [
         'name', 'surname', 'company_name', 'position', 'address',
-        'mobile', 'email', 'website', 'created_by', 'deleted_by'
+        'mobile', 'email', 'website', 'image_path', 'created_by', 'deleted_by'
     ];
 
     protected $table = 'business_cards';

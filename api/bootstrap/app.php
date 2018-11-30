@@ -64,9 +64,10 @@ $app->singleton(
 //    App\Http\Middleware\ExampleMiddleware::class
 ]);
 
-// $app->routeMiddleware([
-//     'auth' => App\Http\Middleware\Authenticate::class,
-// ]);
+ $app->routeMiddleware([
+     'business_cards_filter' => App\Http\Middleware\BusinessCardFilterMiddleware::class,
+     'check_permission' => App\Http\Middleware\CheckPermissionMiddleware::class,
+ ]);
 
 /*
 |--------------------------------------------------------------------------

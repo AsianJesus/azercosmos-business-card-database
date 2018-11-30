@@ -52,25 +52,31 @@
                     <button class="business-card-submit" @click="send">Submit</button>
                 </div>
             </div>
-            <div class="col-6">
+            <div class="col-2">
                 <button @click="streaming ? stopWebcam() : startWebcam()"> {{ streaming ? 'Stop' : 'Webcam' }}</button>
                 <button @click="selectWebcam" v-if="streaming">Take picture</button>
-                <input type="file" accept="image/*" @change="uploadFile">
-                <webcam ref="webcam" v-model="streaming" :width="360" :height="360"></webcam>
-                <video ref="webcam_video" v-bind:style="{display: streaming ? 'inline' : 'none'}">
+            </div>
+            <div class="col-6">
+                <webcam ref="webcam" v-model="streaming" :width="1024" :height="720"></webcam>
+                <video ref="webcam_video" v-bind:style="{display: streaming ? 'inline' : 'none'}" class="new-bcard-webcam-video">
 
                 </video>
-                <img :src="imageUrl" v-if="imageUrl" class="new-bcard-image">
-                {{ this.form.photo }}
+                <img :src="imageUrl ? imageUrl : null" alt="Card image" class="new-bcard-image" @click="showCrop = true">
+                <vue-image-crop v-model="showCrop" noCircle imgFormat="jpg" url="" :width="640" :height="640" langType="en"
+                                @crop-success="uploadFile">
+
+                </vue-image-crop>
             </div>
         </div>
     </div>
 </template>
 <script>
 import Webcam from '@/components/Webcam/Webcam.vue'
+import VueImageCrop from 'vue-image-crop-upload'
 export default{
   components: {
-    Webcam
+    Webcam,
+    VueImageCrop
   },
   data () {
     return {
@@ -87,17 +93,18 @@ export default{
         photo: null,
         private: true
       },
-      imageUrl: 'https://4.bp.blogspot.com/-wl3MOVZHfuA/UbwRHK8I4AI/AAAAAAAAAy0/WgEzBxxwJ5c/s1600/business+card+design+4.png',
+      imageUrl: '',
       isAdding: false,
-      streaming: false
+      streaming: false,
+      showCrop: false
     }
   },
   methods: {
     selectWebcam () {
       this.imageUrl = this.$refs.webcam.takePicture()
-      this.photo = new Image
-      this.photo.src = this.imageUrl
-      this.form.photo = this.$refs.webcam.capture()
+      fetch(this.imageUrl).then(photo => photo.blob()).then(file => {
+        this.form.photo = file
+      })
     },
     startWebcam () {
       this.$refs.webcam.startVideo(stream => {
@@ -108,19 +115,24 @@ export default{
     stopWebcam () {
       this.$refs.webcam.stopVideo()
     },
-    uploadFile (event) {
-      this.form.photo = event.target.files[0]
-      var fileReader = new FileReader();
-      fileReader.onloadend = () => this.imageUrl = fileReader.result
-      fileReader.readAsDataURL(this.form.photo)
+    uploadFile (url) {
+      this.imageUrl = url
+      fetch(this.imageUrl).then(photo => photo.blob()).then(file => {
+        this.form.photo = file
+      })
     },
     send () {
       if (this.isAdding) return
       this.isAdding = true
-      this.axios.post(this.$store.state.serverUrl + '/b-cards/', this.form).then(response => {
+      var form = new FormData()
+      for (let key in this.form) {
+        form.set(key, this.form[key])
+      }
+      form.append('photo', this.form.photo)
+      this.axios.post(this.$store.state.serverUrl + '/b-cards/', form).then(response => {
         console.log(response.data)
         this.isAdding = false
-        this.$router.push({name: 'BusinessCards'})
+        //this.$router.push({name: 'BusinessCards'})
       }).catch(err => {
         console.log(err)
         this.isAdding = false
@@ -136,7 +148,12 @@ export default{
     border-radius: 4rem;
     outline: 0;
 }
+.new-bcard-webcam-video{
+    width: 100%;
+    height: auto;
+}
 .new-bcard-image{
-    max-width: 100%;
+    width: 100%;
+    height: auto;
 }
 </style>

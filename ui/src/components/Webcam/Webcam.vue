@@ -33,6 +33,9 @@ export default{
       startbutton: null
     }
   },
+  destroyed () {
+    this.stopVideo()
+  },
   methods: {
     startVideo (callback) {
       if (this.streaming) return
@@ -50,6 +53,7 @@ export default{
     },
     stopVideo () {
       console.log(this.stream)
+      if (!this.stream) return
       var tracks = this.stream.getTracks()
       for (let i  = 0; i < tracks.length; i++) {
         tracks[i].stop()
@@ -65,7 +69,7 @@ export default{
       this.$refs.canvas.width = this.width
       this.$refs.canvas.height = this.height
       context.drawImage(this.$refs.video, 0, 0, this.width, this.height)
-      this.imageUrl = this.$refs.canvas.toDataURL('image/png')
+      this.imageUrl = this.$refs.canvas.toDataURL('image/jpeg')
       return this.imageUrl
     }
   }

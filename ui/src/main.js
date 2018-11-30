@@ -16,14 +16,22 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
-    serverUrl: 'http://localhost:8000/'
+    serverUrl: 'http://localhost:8000/',
+    user: null
   },
   getters: {
     userId: state => {
       return 1
+    },
+    userName: state => {
+      return state.user ? state.user.name : null
     }
   },
-
+  mutations: {
+    updateUserInfo (state, userInfo) {
+      state.user = userInfo
+    }
+  }
 })
 
 Vue.config.productionTip = false
