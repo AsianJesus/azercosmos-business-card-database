@@ -17,6 +17,7 @@
     "bootstrap-vue": "^2.0.0-rc.11",
     "vue": "^2.5.2",
     "vue-axios": "^2.1.4",
+    "vue-cookie": "^1.1.4",
     "vue-image-crop-upload": "^2.5.0",
     "vue-router": "^3.0.1",
     "vue-webcam": "^2.0.4",

@@ -6,13 +6,15 @@ import router from './router'
 import VueAxios from 'vue-axios'
 import axios from 'axios'
 import VueBootstrap from 'bootstrap-vue'
+import VueCookie from 'vue-cookie'
 import Vuex from 'vuex'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 Vue.use(VueAxios, axios)
-Vue.use(VueBootstrap)
 Vue.use(Vuex)
+Vue.use(VueCookie)
+Vue.use(VueBootstrap)
 
 const store = new Vuex.Store({
   state: {
