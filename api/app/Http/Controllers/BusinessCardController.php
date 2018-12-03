@@ -18,7 +18,7 @@ class BusinessCardController extends Controller
     }
 
     public function getByUser(Request $request, $user_id) {
-        return $this->business_card::with('permissions.permission')->orderBy('created_at', 'desc')->get();
+        return $this->business_card::with(['permissions.permission','permissions.user'])->orderBy('created_at', 'desc')->get();
     }
     public function add(Request $request)
     {

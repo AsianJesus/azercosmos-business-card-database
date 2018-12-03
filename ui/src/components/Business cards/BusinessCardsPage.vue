@@ -91,6 +91,32 @@
                         <div class="col-6 offset-1" >
                             <input type="text" v-model="cardToEdit.website">
                         </div>
+                        <div class="col-12">
+                          <table class="table">
+                            <tr>
+                              <th>User</th>
+                              <th>Read</th>
+                              <th>Edit</th>
+                              <th>Delete</th>
+                            </tr>
+                            <tr v-for="(per, index) in groupPermissions(cardToEdit.permissions)" v-bind:key="index">
+                              <th>{{ per.user.name }}</th>
+                              <th>
+                                <input type="checkbox" :checked="per[1]" v-if="!isUpdatingPermissions"
+                                  @click="per[1] ? deletePermission(cardToEdit.id, per[1]) : addPermission(cardToEdit.id, per.user.id, 1)">
+                              </th>
+                              <th>
+                                <input type="checkbox" :checked="per[2]" v-if="!isUpdatingPermissions"
+                                       @change="per[2] ? deletePermission(cardToEdit.id, per[2]) : addPermission(cardToEdit.id, per.user.id, 2)">
+                              </th>
+                              <th>
+                                <input type="checkbox" :checked="per[3]" v-if="!isUpdatingPermissions"
+                                       @change="per[3] ? deletePermission(cardToEdit.id, per[3]) : addPermission(cardToEdit.id, per.user.id, 3)">
+                              </th>
+                            </tr>
+                          </table>
+                          <user-selector @select="addUserPermission($event)"></user-selector>
+                        </div>
                         <div class="col-3">
                             <button @click="saveChanges">Save</button>
                         </div>
@@ -123,7 +149,7 @@
                 <button @click="showFilter ^= true">Filter</button>
                 <button @click="showColumns ^= true">Columns</button>
                 <button @click="createNewCard = true">&#65291;</button>
-                <button @click="showMore">Show more</button>
+                <button @click="showMore" v-if="showCardsCount < businessCards.length">Show more</button>
             </div>
             <div class="bcards-filer" v-if="showFilter">
                 <input type="text" v-model="filters.name" placeholder="Name">
@@ -192,11 +218,13 @@
 <script>
 import ColumnsList from '@/components/Tools/ColumnsList.vue'
 import NewBusinessCard from '@/components/Business cards/NewBusinessCard.vue'
+import UserSelector from '@/components/Tools/UserSelector.vue'
 const cardsOnPage = 3
 export default{
   components: {
     ColumnsList,
-    NewBusinessCard
+    NewBusinessCard,
+    UserSelector
   },
   data () {
     return {
@@ -222,6 +250,7 @@ export default{
       },
       showCardsCount: cardsOnPage,
       isLoading: false,
+      isUpdatingPermissions: false,
       cardToEdit: null,
       cardToShow: null,
       showFilter: false,
@@ -252,11 +281,11 @@ export default{
     },
     editable (index) {
       return this.businessCards[index].created_by.toString() === this.$store.getters.userId.toString() ||
-          this.businessCards[index].permissions.filter(x => x.permission.name.toLowerCase().includes('edit')).length > 0
+          this.businessCards[index].permissions.filter(x => x.permission_id === 2).length > 0
     },
     deletable (index) {
-      return this.businessCards[index].created_by.toString() === this.$store.getters.userId.toString() ||
-                this.businessCards[index].permissions.filter(x => x.permission.name.toLowerCase().includes('delete')).length > 0
+        return this.businessCards[index].created_by.toString() === this.$store.getters.userId.toString() ||
+            this.businessCards[index].permissions.filter(x => x.permission_id === 3).length > 0
     },
     editCard (index) {
       this.cardToEdit = JSON.parse(JSON.stringify(this.businessCards[index]))
@@ -277,6 +306,61 @@ export default{
       }).catch(err => {
         console.log(err)
         alert('Couldn\'t delete due to server trouble')
+      })
+    },
+    groupPermissions (permissions) {
+      let result = {}
+      for (let i = 0; i < permissions.length; i++) {
+        if (!result[permissions[i].user_id]) {
+          result[permissions[i].user_id] = {user: permissions[i].user }
+        }
+        result[permissions[i].user_id][permissions[i].permission_id] = permissions[i].id
+      }
+      return result
+    },
+    addUserPermission (user) {
+      this.cardToEdit.permissions.push({
+        user: user,
+        permission_id: 0,
+        business_card_id: this.cardToEdit.id,
+        user_id: user.id
+      })
+    },
+    addPermission (cardId, userId, permissionId) {
+      this.isUpdatingPermissions = true
+      this.axios.post(this.$store.state.serverUrl + '/per-users/', {
+        business_card_id: cardId,
+        user_id: userId,
+        permission_id: permissionId
+      }).then(response => {
+        this.isUpdatingPermissions = false
+        if(this.cardToEdit && this.cardToEdit.id === cardId) {
+          this.cardToEdit.permissions.push(response.data)
+        }
+        for (let i = 0; i < this.businessCardsAll.length; i++) {
+          if (this.businessCardsAll[i].id === cardId) {
+              this.businessCardsAll[i].permissions.push(response.data)
+          }
+        }
+      }).catch(err => {
+        this.isUpdatingPermissions = false
+      })
+    },
+    deletePermission (cardId, permissionId) {
+      this.isUpdatingPermissions = true
+      this.axios.delete(this.$store.state.serverUrl + '/per-users/' + permissionId).then(response => {
+        for (let i = 0; i < this.businessCardsAll.length; i++) {
+          if (this.businessCardsAll[i].id === cardId) {
+            this.businessCardsAll[i].permissions = this.businessCardsAll[i].permissions.filter(x => x.id === permissionId)
+          }
+        }
+        if (this.cardToEdit && this.cardToEdit.id === cardId) {
+            this.cardToEdit.permissions = this.cardToEdit.permissions.filter(x => x.id !== permissionId)
+        }
+        this.isUpdatingPermissions = false
+      }).catch(err => {
+        console.log(err)
+        this.isUpdatingPermissions = false
       })
     },
     cancelEditing (id) {

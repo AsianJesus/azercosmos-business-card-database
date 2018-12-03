@@ -25,6 +25,7 @@ $router->delete('/b-cards/{id}', ['uses'=>'BusinessCardController@delete', 'midd
 
 //Users
 $router->get('/users/', 'UserController@getAll');
+$router->get('/users/by-name/{name}', 'UserController@getByName');
 $router->get('/users/{id}', 'UserController@getById');
 
 //Permissions

@@ -10,6 +10,7 @@ namespace App\Http\Controllers;
 
 
 use App\User;
+use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
@@ -19,5 +20,9 @@ class UserController extends Controller
     {
         parent::__construct($user, []);
         $this->user = $user;
+    }
+
+    public function getByName(Request $request, $name) {
+        return $this->user::where('name', 'like', '%'.$name.'%')->get();
     }
 }
