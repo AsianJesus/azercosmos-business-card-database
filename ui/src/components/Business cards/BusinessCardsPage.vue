@@ -100,7 +100,7 @@
                               <th>Delete</th>
                             </tr>
                             <tr v-for="(per, index) in groupPermissions(cardToEdit.permissions)" v-bind:key="index">
-                              <th>{{ per.user.name }}</th>
+                              <th>{{ per.user ? per.user.name : per.user_id }}</th>
                               <th>
                                 <input type="checkbox" :checked="per[1]" v-if="!isUpdatingPermissions"
                                   @click="per[1] ? deletePermission(cardToEdit.id, per[1]) : addPermission(cardToEdit.id, per.user.id, 1)">
@@ -141,7 +141,7 @@
             <transition name="bcard-source-image">
                 <div class="bcard-show-holder" v-if="imageToShow" @click="imageToShow = null">
                   <div class="bcard-source-image-holder">
-                    <img :src="$store.state.serverUrl + '/' + imageToShow" class="bcard-source-image" @click="$event.stopPropagation()">
+                    <img :src="$store.state.serverURL + '/' + imageToShow" class="bcard-source-image" @click="$event.stopPropagation()">
                   </div>
                 </div>
             </transition>
@@ -266,11 +266,7 @@ export default{
   methods: {
     load () {
       this.isLoading = true
-      this.axios.get(this.$store.state.serverUrl + 'b-cards/user/' + this.$store.getters.userId, {
-        params: {
-          user_id: this.$store.getters.userId
-        }
-      }).then(response => {
+      this.axios.get('business-cards/user/' + this.$store.getters.userId).then(response => {
         this.businessCards = response.data
         this.businessCardsAll = response.data
         this.isLoading = false
@@ -292,7 +288,7 @@ export default{
     },
     deleteCard (id) {
       if(!confirm('Are you sure?') || confirm('Do you lie?')) return
-      this.axios.delete(this.$store.state.serverUrl + '/b-cards/' + id, {
+      this.axios.delete('/business-cards/' + id, {
         params: {
           user_id: this.$store.getters.userId
         }
@@ -328,7 +324,7 @@ export default{
     },
     addPermission (cardId, userId, permissionId) {
       this.isUpdatingPermissions = true
-      this.axios.post(this.$store.state.serverUrl + '/per-users/', {
+      this.axios.post('/user-permissions/', {
         business_card_id: cardId,
         user_id: userId,
         permission_id: permissionId
@@ -348,7 +344,7 @@ export default{
     },
     deletePermission (cardId, permissionId) {
       this.isUpdatingPermissions = true
-      this.axios.delete(this.$store.state.serverUrl + '/per-users/' + permissionId).then(response => {
+      this.axios.delete('/user-permissions/' + permissionId).then(response => {
         for (let i = 0; i < this.businessCardsAll.length; i++) {
           if (this.businessCardsAll[i].id === cardId) {
             this.businessCardsAll[i].permissions = this.businessCardsAll[i].permissions.filter(x => x.id === permissionId)
@@ -367,7 +363,7 @@ export default{
       this.cardToEdit = null
     },
     saveChanges () {
-      this.axios.put(this.$store.state.serverUrl + '/b-cards/' + this.cardToEdit.id, this.cardToEdit).then(response => {
+      this.axios.put('/business-cards/' + this.cardToEdit.id, this.cardToEdit).then(response => {
         for (let i = 0; i < this.businessCards.length; i++) {
           if (this.businessCards[i].id === response.data.id) {
             for (let key in response.data){

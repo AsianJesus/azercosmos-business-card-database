@@ -11,14 +11,18 @@ import Vuex from 'vuex'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
+const serverURL = 'http://localhost:8000/'
+axios.defaults.baseURL = serverURL
+
 Vue.use(VueAxios, axios)
 Vue.use(Vuex)
 Vue.use(VueCookie)
 Vue.use(VueBootstrap)
 
+
 const store = new Vuex.Store({
   state: {
-    serverUrl: 'http://localhost:8000/',
+    serverURL: serverURL,
     user: null
   },
   getters: {

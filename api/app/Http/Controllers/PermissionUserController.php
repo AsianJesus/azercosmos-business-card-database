@@ -9,6 +9,7 @@
 namespace App\Http\Controllers;
 
 use App\PermissionUser;
+use Illuminate\Http\Request;
 
 class PermissionUserController extends Controller
 {
@@ -18,5 +19,9 @@ class PermissionUserController extends Controller
     {
         parent::__construct($pu, []);
         $this->permission = $pu;
+    }
+
+    public function add(Request $request) {
+    	return parent::add($request)->load('user');
     }
 }

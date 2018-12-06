@@ -34,7 +34,7 @@ export default{
   },
   methods: {
     sendRequest (template) {
-      this.axios.get(this.$store.state.serverUrl + '/users/by-name/' + template).then(response => {
+      this.axios.get('/users/by-name/' + template).then(response => {
         this.suggestions = response.data
       })
     },

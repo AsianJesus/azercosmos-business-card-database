@@ -16,12 +16,12 @@ $router->get('/', function () use ($router) {
 });
 
 //Business cards
-$router->get('/b-cards', 'BusinessCardController@getAll');
-$router->get('/b-cards/user/{user_id}', ['middleware'=> 'business_cards_filter', 'uses' => 'BusinessCardController@getByUser']  );
-$router->get('/b-cards/{id}', 'BusinessCardController@getById');
-$router->post('/b-cards/', 'BusinessCardController@add');
-$router->put('/b-cards/{id}', ['uses'=>'BusinessCardController@update', 'middleware' => 'check_permission']);
-$router->delete('/b-cards/{id}', ['uses'=>'BusinessCardController@delete', 'middleware' => 'check_permission']);
+$router->get('/business-cards', 'BusinessCardController@getAll');
+$router->get('/business-cards/user/{user_id}', ['middleware'=> 'business_cards_filter', 'uses' => 'BusinessCardController@getByUser']  );
+$router->get('/business-cards/{id}', 'BusinessCardController@getById');
+$router->post('/business-cards/', 'BusinessCardController@add');
+$router->put('/business-cards/{id}', ['uses'=>'BusinessCardController@update', 'middleware' => 'check_permission']);
+$router->delete('/business-cards/{id}', ['uses'=>'BusinessCardController@delete', 'middleware' => 'check_permission']);
 
 //Users
 $router->get('/users/', 'UserController@getAll');
@@ -32,8 +32,8 @@ $router->get('/users/{id}', 'UserController@getById');
 $router->get('/permissions', 'PermissionController@getAll');
 
 //PermissionUsers
-$router->get('/per-users', 'PermissionUserController@getAll');
-$router->get('/per-users/{id}', 'PermissionUserController@getById');
-$router->post('/per-users', 'PermissionUserController@add');
-$router->put('/per-users/{id}', 'PermissionUserController@update');
-$router->delete('/per-users/{id}', 'PermissionUserController@delete');
+$router->get('/user-permissions', 'PermissionUserController@getAll');
+$router->get('/user-permissions/{id}', 'PermissionUserController@getById');
+$router->post('/user-permissions', 'PermissionUserController@add');
+$router->put('/user-permissions/{id}', 'PermissionUserController@update');
+$router->delete('/user-permissions/{id}', 'PermissionUserController@delete');

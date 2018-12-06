@@ -25,7 +25,7 @@ export default{
     load () {
       if (this.isLoading) return
       this.isLoading = true
-      this.axios.get(this.$store.state.serverUrl + '/users/' + this.$store.getters.userId).then(response => {
+      this.axios.get('/users/' + this.$store.getters.userId).then(response => {
         this.isLoading = false
         this.$store.commit('updateUserInfo', response.data)
       }).catch(err => {

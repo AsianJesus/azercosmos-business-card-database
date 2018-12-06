@@ -131,7 +131,7 @@ export default{
         form.set(key, this.form[key])
       }
       form.append('photo', this.form.photo)
-      this.axios.post(this.$store.state.serverUrl + '/b-cards/', form).then(response => {
+      this.axios.post('/business-cards/', form).then(response => {
         console.log(response.data)
         this.isAdding = false
         this.$emit('newCard', response.data)
