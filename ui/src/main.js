@@ -10,6 +10,8 @@ import VueCookie from 'vue-cookie'
 import Vuex from 'vuex'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+import 'vue-awesome/icons'
+import Icon from 'vue-awesome/components/Icon'
 
 const serverURL = 'http://localhost:8000/'
 axios.defaults.baseURL = serverURL
@@ -18,7 +20,7 @@ Vue.use(VueAxios, axios)
 Vue.use(Vuex)
 Vue.use(VueCookie)
 Vue.use(VueBootstrap)
-
+Vue.component('v-icon', Icon)
 
 const store = new Vuex.Store({
   state: {

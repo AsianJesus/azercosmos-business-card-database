@@ -14,9 +14,14 @@ export default new Router({
       component: BusinessCardsPage
     },
     {
-      path: '/new-business-card',
+      path: '/new-business-card/',
       name: 'NewBusinessCard',
       component: NewBusinessCard
-    }
+    },
+    {
+        path: '/:option',
+        name: 'BusinessCardsWithOption',
+        component: BusinessCardsPage
+    },
   ]
 })

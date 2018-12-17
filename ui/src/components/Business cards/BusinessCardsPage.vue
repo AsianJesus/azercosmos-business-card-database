@@ -1,9 +1,6 @@
 <script src="../../../../../azercosmos-intranet/frontend/src/main.js"></script>
 <template>
     <div class="business-cards-page">
-        <div class="bcards-header">
-
-        </div>
         <div v-if="isLoading">
             <h2>
                 Content is loading..
@@ -16,7 +13,7 @@
                     <div class="bcard-show-form" @click="$event.stopPropagation()">
                         <div class="row bcard-show-name-holder">
                             <span class="col-12 bcard-show-name">
-                                {{ cardToShow.name }} {{ cardToShow.surname }}
+                                {{ cardToShow.name }}
                             </span>
                         </div>
                         <div class="row bcard-show-company-holder">
@@ -31,13 +28,13 @@
                         </div>
                         <div class="row bcard-show-icons-holder">
                             <div class="col-4 bcard-show-icon-holder">
-                                Address
+                                <img src='@/assets/icons/location.png' width="42px">
                             </div>
                             <div class="col-4 bcard-show-icon-holder">
-                                Phone
+                                <img src='@/assets/icons/phone.png' width="42px">
                             </div>
                             <div class="col-4 bcard-show-icon-holder">
-                                Website
+                                <img src='@/assets/icons/web.png' width="42px">
                             </div>
                         </div>
                         <div class="row bcard-show-additional-info-holder">
@@ -50,10 +47,8 @@
                             <div class="col-4 bcard-show-website">
                                 {{ cardToShow.website }}
                             </div>
-                        </div>
-                        <div class="row bcard-show-bottom-line">
-
-                        </div>
+                        </div>                          
+                        <img src="@/assets/icons/bottom line.png" class="row bcard-show-bottom-line">
                     </div>
                 </div>
             </transition>
@@ -63,68 +58,58 @@
                         <div class="col-12">
                             <h2>Edit card #{{cardToEdit.id}}</h2>
                         </div>
-                        <div class="col-3">Name</div>
-                        <div class="col-6 offset-1">
-                            <input type="text" v-model="cardToEdit.name">
-                        </div>
-                        <div class="col-3">Surname</div>
-                        <div class="col-6 offset-1" >
-                            <input type="text" v-model="cardToEdit.surname">
-                        </div>
-                        <div class="col-3">Company</div>
-                        <div class="col-6 offset-1" >
-                            <input type="text" v-model="cardToEdit.company_name">
-                        </div>
-                        <div class="col-3">Position</div>
-                        <div class="col-6 offset-1">
-                            <input type="text" v-model="cardToEdit.position">
-                        </div>
-                        <div class="col-3">Email</div>
-                        <div class="col-6 offset-1" >
-                            <input type="email" v-model="cardToEdit.email">
-                        </div>
-                        <div class="col-3">Phone</div>
-                        <div class="col-6 offset-1">
-                            <input type="tel" v-model="cardToEdit.mobile">
-                        </div>
-                        <div class="col-3">Website</div>
-                        <div class="col-6 offset-1" >
-                            <input type="text" v-model="cardToEdit.website">
-                        </div>
-                        <div class="col-12">
-                          <table class="table">
-                            <tr>
-                              <th>User</th>
-                              <th>Read</th>
-                              <th>Edit</th>
-                              <th>Delete</th>
-                            </tr>
-                            <tr v-for="(per, index) in groupPermissions(cardToEdit.permissions)" v-bind:key="index">
-                              <th>{{ per.user ? per.user.name : per.user_id }}</th>
-                              <th>
-                                <input type="checkbox" :checked="per[1]" v-if="!isUpdatingPermissions"
-                                  @click="per[1] ? deletePermission(cardToEdit.id, per[1]) : addPermission(cardToEdit.id, per.user.id, 1)">
-                              </th>
-                              <th>
-                                <input type="checkbox" :checked="per[2]" v-if="!isUpdatingPermissions"
-                                       @change="per[2] ? deletePermission(cardToEdit.id, per[2]) : addPermission(cardToEdit.id, per.user.id, 2)">
-                              </th>
-                              <th>
-                                <input type="checkbox" :checked="per[3]" v-if="!isUpdatingPermissions"
-                                       @change="per[3] ? deletePermission(cardToEdit.id, per[3]) : addPermission(cardToEdit.id, per.user.id, 3)">
-                              </th>
-                            </tr>
-                          </table>
-                          <user-selector @select="addUserPermission($event)"></user-selector>
-                        </div>
-                        <div class="col-3">
-                            <button @click="saveChanges">Save</button>
-                        </div>
-                        <div class="col-3">
+                        <div class="col-6">
+                            <b-form-input type="text" class="bcard-edit-card-input" v-model="cardToEdit.name" placeholder="Name"></b-form-input>
+                            <b-form-input type="text" class="bcard-edit-card-input" v-model="cardToEdit.company_name" placeholder="Company"></b-form-input>
+                            <b-form-input type="text" class="bcard-edit-card-input" v-model="cardToEdit.position" placeholder="Position"></b-form-input>
+                            <b-form-input type="text" class="bcard-edit-card-input" v-model="cardToEdit.address" placeholder="Address"></b-form-input>
+                            <b-form-input type="tel" class="bcard-edit-card-input" v-model="cardToEdit.mobile" placeholder="Phone"></b-form-input>
+                            <b-form-input type="email" class="bcard-edit-card-input" v-model="cardToEdit.email" placeholder="Email"></b-form-input>
+                            <b-form-input type="text" class="bcard-edit-card-input" v-model="cardToEdit.website" placeholder="Website"></b-form-input>
+                            <b-form-select v-model="cardToEdit.private" :options="privacyOptions">
 
+                            </b-form-select>
                         </div>
-                        <div class="col-3">
-                            <button @click="cancelEditing">Cancel</button>
+                        <div class="col-6">
+                            <user-selector placeholder="User" class="bcard-edit-search"
+                                           @select="addUserPermission($event)">
+
+                            </user-selector>
+                            <table class="table" v-if="cardToEdit.permissions && cardToEdit.permissions.length">
+                                <tr>
+                                    <th>User</th>
+                                    <th>Read</th>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
+                                </tr>
+                                <tr v-for="(per, index) in groupPermissions(cardToEdit.permissions)" v-bind:key="index">
+                                    <th>{{ per.user ? per.user.name : per.user_id }}</th>
+                                    <th>
+                                        <input type="checkbox" :checked="per[1]" v-if="!isUpdatingPermissions"
+                                               @click="per[1] ? deletePermission(cardToEdit.id, per[1]) : addPermission(cardToEdit.id, per.user.id, 1)">
+                                    </th>
+                                    <th>
+                                        <input type="checkbox" :checked="per[2]" v-if="!isUpdatingPermissions"
+                                               @change="per[2] ? deletePermission(cardToEdit.id, per[2]) : addPermission(cardToEdit.id, per.user.id, 2)">
+                                    </th>
+                                    <th>
+                                        <input type="checkbox" :checked="per[3]" v-if="!isUpdatingPermissions"
+                                               @change="per[3] ? deletePermission(cardToEdit.id, per[3]) : addPermission(cardToEdit.id, per.user.id, 3)">
+                                    </th>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="bcards-edit-buttons col-12">
+                            <b-btn @click="saveChanges" variant="success">
+                                <v-icon name="save">
+
+                                </v-icon>
+                            </b-btn>
+                            <b-btn @click="cancelEditing" variant="danger">
+                                <v-icon name="ban">
+
+                                </v-icon>
+                            </b-btn>
                         </div>
                     </div>
                 </div>
@@ -145,44 +130,87 @@
                   </div>
                 </div>
             </transition>
-            <div>
-                <button @click="showFilter ^= true">Filter</button>
-                <button @click="showColumns ^= true">Columns</button>
-                <button @click="createNewCard = true">&#65291;</button>
-                <button @click="showMore" v-if="showCardsCount < businessCards.length">Show more</button>
-            </div>
-            <div class="bcards-filer" v-if="showFilter">
-                <input type="text" v-model="filters.name" placeholder="Name">
-                <input type="text" v-model="filters.surname" placeholder="Surname">
-                <input type="text" v-model="filters.company_name" placeholder="Company">
-                <input type="text" v-model="filters.position" placeholder="Position">
-                <input type="text" v-model="filters.email" placeholder="Email">
-                <input type="text" v-model="filters.mobile" placeholder="Phone">
-                <input type="text" v-model="filters.address" placeholder="Address">
-                <input type="text" v-model="filters.website" placeholder="Website">
-                <button @click="filterCards">Apply</button>
-            </div>
-            <columns-list v-model="columnsToShow" @input="saveConfig" v-if="showColumns">
+            <div class="bcards-filter row no-gutters">
+                <div class="bcards-filter-input col-6">
+                    <b-btn :size="'sm'" :variant="'secondary'">
+                        <img @click="filterCards" src="@/assets/icons/search.png" width="16px" class="bcards-filter-search">
+                    </b-btn>
+                    <input type="text" v-model="filters.name" @input="delayedFilter" v-if="selectedFilter === 1">
+                    <input type="text" v-model="filters.company_name" @input="delayedFilter" v-if="selectedFilter === 2">
+                    <input type="text" v-model="filters.position" @input="delayedFilter" v-if="selectedFilter === 3">
+                    <input type="text" v-model="filters.email" @input="delayedFilter" v-if="selectedFilter === 4">
+                    <input type="text" v-model="filters.mobile" @input="delayedFilter" v-if="selectedFilter === 5">
+                    <input type="text" v-model="filters.address" @input="delayedFilter" v-if="selectedFilter === 6">
+                    <input type="text" v-model="filters.website" @input="delayedFilter" v-if="selectedFilter === 7">
+                    <select v-model="selectedFilter" style="height: 100%;">
+                        <option :value="1">
+                            Name
+                        </option>
+                        <option :value="2">
+                            Company
+                        </option>
+                        <option :value="3">
+                            Position
+                        </option>
+                        <option :value="4">
+                            Email
+                        </option>
+                        <option :value="5">
+                            Phone
+                        </option>
+                        <option :value="6">
+                            Address
+                        </option>
+                        <option :value="7">
+                            Website
+                        </option>
+                    </select>
+                </div>
+                <div class="col" style="text-align: right;">
+                    <b-btn @click="showColumns ^= true" variant="primary">
+                        <v-icon name="filter">
 
-            </columns-list>
+                        </v-icon>
+                    </b-btn>
+                    <transition name="columns">
+                        <div class="columns-holder" v-if="showColumns">
+                            <columns-list v-model="columnsToShow" @input="saveConfig">
+
+                            </columns-list>
+                        </div>
+                    </transition>
+                    <b-btn @click="createNewCard = true" variant="success">
+                        <v-icon name="plus-square">
+
+                        </v-icon>
+                    </b-btn>
+                </div>
+                <div class="col-12">
+                  <div v-for="(value, key) in filters" v-bind:key="key" v-if="value"
+                       class="bcard-filter-selected-item" @click="$set(filters, key, null); delayedFilter()" >
+                    {{ key }} - {{ value }}
+                    <img src="@/assets/icons/delete_filter.png" width="10px" >
+                  </div>
+                </div>
+            </div>
             <div class="bcards-table-holder">
                 <table class="table bcards-table">
-                    <tr class="thead-dark">
-                        <th @click="sortBy('id')" v-if="columnsToShow.id">ID</th>
-                        <th scope="col" @click="sortBy('name')" v-if="columnsToShow.name">Name</th>
-                        <th @click="sortBy('surname')" v-if="columnsToShow.surname">Surname</th>
-                        <th @click="sortBy('company_name')" v-if="columnsToShow.company_name">Company</th>
-                        <th @click="sortBy('position')" v-if="columnsToShow.position">Position</th>
-                        <th @click="sortBy('email')" v-if="columnsToShow.email">Email</th>
-                        <th @click="sortBy('mobile')" v-if="columnsToShow.mobile">Phone</th>
-                        <th @click="sortBy('address')" v-if="columnsToShow.address">Address</th>
-                        <th @click="sortBy('website')" v-if="columnsToShow.website">Website</th>
+                    <tr class="bcards-table-header">
+                        <th @click="sortBy('id')" class="bcards-info-header" v-if="columnsToShow.id">
+                            ID
+                        </th>
+                        <th scope="col" class="bcards-info-header" @click="sortBy('name')" v-if="columnsToShow.name">Name</th>
+                        <th @click="sortBy('company_name')" class="bcards-info-header" v-if="columnsToShow.company_name">Company</th>
+                        <th @click="sortBy('position')" class="bcards-info-header" v-if="columnsToShow.position">Position</th>
+                        <th @click="sortBy('email')" class="bcards-info-header" v-if="columnsToShow.email">Email</th>
+                        <th @click="sortBy('mobile')" class="bcards-info-header" v-if="columnsToShow.mobile">Phone</th>
+                        <th @click="sortBy('address')" class="bcards-info-header" v-if="columnsToShow.address">Address</th>
+                        <th @click="sortBy('website')" class="bcards-info-header" v-if="columnsToShow.website">Website</th>
                         <th colspan="4">Controls</th>
                     </tr>
-                    <tr  v-for="(bcard, index) in businessCards.slice(0, showCardsCount)" v-bind:key="index">
+                    <tr  v-for="(bcard, index) in businessCardsToShow" v-bind:key="index">
                         <td v-if="columnsToShow.id"> {{ bcard.id }}</td>
                         <td v-if="columnsToShow.name">{{ bcard.name }}</td>
-                        <td v-if="columnsToShow.surname">{{ bcard.surname}}</td>
                         <td v-if="columnsToShow.company_name">{{ bcard.company_name }}</td>
                         <td v-if="columnsToShow.position">{{ bcard.position }}</td>
                         <td v-if="columnsToShow.email">{{ bcard.email }}</td>
@@ -190,28 +218,57 @@
                         <td v-if="columnsToShow.address">{{ bcard.address }}</td>
                         <td v-if="columnsToShow.website">{{ bcard.website }}</td>
                         <td>
-                            <button @click="showCard(index)">
-                                View
-                            </button>
+                            <b-btn @click="showCard(index)" class="bcards-table-button" variant="primary">
+                                <v-icon name="info">
+
+                                </v-icon>
+                                <i class="tooltiptext">
+                                    Show card
+                                </i>
+                            </b-btn>
                         </td>
                         <td>
-                          <button @click="showSourceImage(index)" v-if="bcard.image_path">
-                              Source
-                          </button>
+                          <b-btn @click="showSourceImage(index)" class="bcards-table-button"
+                                 variant="warning" v-if="bcard.image_path">
+                              <v-icon name="address-card">
+
+                              </v-icon>
+                              <i class="tooltiptext">
+                                  Show original
+                              </i>
+                          </b-btn>
                         </td>
                         <td>
-                            <button @click="editCard(index)" v-if="editable(index)">
-                                Edit
-                            </button>
+                            <b-btn @click="editCard(index)" class="bcards-table-button" v-if="editable(index)">
+                                <v-icon name="pen">
+
+                                </v-icon>
+                                <i class="tooltiptext">
+                                    Edit
+                                </i>
+                            </b-btn>
                         </td>
                         <td>
-                            <button @click="deleteCard(bcard.id)" v-if="deletable(index)">
-                                Del
-                            </button>
+                            <b-btn @click="deleteCard(bcard.id)" class="bcards-table-button"
+                                   v-if="deletable(index)" variant="danger">
+                                <v-icon name="trash">
+
+                                </v-icon>
+                                <i class="tooltiptext">
+                                    Delete
+                                </i>
+                            </b-btn>
                         </td>
                     </tr>
                 </table>
             </div>
+            <b-btn @click="showMore" v-if="showCardsCount < businessCards.length"
+                   class="bcards-show-more-button" variant="success">
+                Show more
+                <v-icon name="arrow-down">
+
+                </v-icon>
+            </b-btn>
         </div>
     </div>
 </template>
@@ -219,7 +276,19 @@
 import ColumnsList from '@/components/Tools/ColumnsList.vue'
 import NewBusinessCard from '@/components/Business cards/NewBusinessCard.vue'
 import UserSelector from '@/components/Tools/UserSelector.vue'
-const cardsOnPage = 3
+import lodash from 'lodash'
+const cardsOnPage = 5
+const availableLoadOptions = {
+    'mycards': {
+        'created_by': 'my_id'
+    },
+    'public': {
+        'private': false
+    },
+    'private': {
+        'private': true
+    }
+}
 export default{
   components: {
     ColumnsList,
@@ -237,10 +306,10 @@ export default{
       filters: {
 
       },
+      selectedFilter: 1,
       columnsToShow: {
         id: true,
         name: true,
-        surname: true,
         company_name: true,
         position: true,
         mobile: true,
@@ -248,15 +317,56 @@ export default{
         email: true,
         website: false
       },
+      privacyOptions: [
+        {
+          text: 'Public',
+          value: false
+        },
+        {
+          text: 'Private',
+          value: true
+        },
+      ],
       showCardsCount: cardsOnPage,
       isLoading: false,
       isUpdatingPermissions: false,
       cardToEdit: null,
       cardToShow: null,
-      showFilter: false,
       showColumns: false,
       imageToShow: false,
       createNewCard: false
+    }
+  },
+  watch: {
+    columnsToShow () {
+      this.saveConfig()
+    },
+    option () {
+      this.load()
+    }
+  },
+  computed: {
+    userID () {
+      return this.$store.getters.userId
+    },
+    loadOptions () {
+      let options = availableLoadOptions[this.option] || null
+      if (options && options['created_by'] && options['created_by'] === 'my_id') {
+        options['created_by'] = this.userID
+      }
+      return options
+    },
+    option () {
+      return this.$route.params.option
+    },
+    businessCardsToShow () {
+      return this.businessCardsFiltered.slice(0, this.showCardsCount)
+    },
+    businessCardsFiltered () {
+      return this.filterCards().sort((a,b) =>
+      (this.sorting.asc ? 1 : -1) * (a[this.sorting.by] ? ((typeof a[this.sorting.by] === 'string') ?
+          a[this.sorting.by].localeCompare(b[this.sorting.by]) : a[this.sorting.by] - b[this.sorting.by])
+          : 0 ));
     }
   },
   mounted () {
@@ -266,7 +376,12 @@ export default{
   methods: {
     load () {
       this.isLoading = true
-      this.axios.get('business-cards/user/' + this.$store.getters.userId).then(response => {
+      this.axios.get('business-cards/',{
+        params: {
+          user_id: this.userID,
+          filters: this.loadOptions
+        }
+      }).then(response => {
         this.businessCards = response.data
         this.businessCardsAll = response.data
         this.isLoading = false
@@ -290,7 +405,7 @@ export default{
       if(!confirm('Are you sure?') || confirm('Do you lie?')) return
       this.axios.delete('/business-cards/' + id, {
         params: {
-          user_id: this.$store.getters.userId
+          user_id: this.userID
         }
       }).then(response => {
         if(response.data) {
@@ -398,13 +513,9 @@ export default{
           this.sorting.asc = true
         }
       }
-      this.businessCards.sort((a,b) =>
-          (this.sorting.asc ? 1 : -1) * (a[this.sorting.by] ? ((typeof a[this.sorting.by] === 'string') ?
-                  a[this.sorting.by].localeCompare(b[this.sorting.by]) : a[this.sorting.by] - b[this.sorting.by])
-                    : 0 ));
     },
     filterCards () {
-      this.businessCards = this.businessCardsAll.filter(card => {
+      return this.businessCardsAll.filter(card => {
         for (let param in this.filters) {
           if (this.filters.hasOwnProperty(param) && this.filters[param]) {
             if(!card[param].toString().toLowerCase().includes(this.filters[param].toString().toLowerCase())) {
@@ -414,8 +525,8 @@ export default{
         }
         return true
       })
-      this.sortBy()
     },
+    delayedFilter: lodash.debounce(function () { this.filterCards() }, 500, 1500),
     addCard (card) {
       console.log(card)
       card.permissions = []
@@ -443,11 +554,8 @@ export default{
 }
 </script>
 <style>
-
-.bcards-header{
-    background-color: lime;
-    width: 100%;
-    height: 1.5rem;
+.arrow-buttons{
+    cursor: pointer;
 }
 .bcard-edit{
     width: 100%;
@@ -460,25 +568,38 @@ export default{
     width: 100%;
     height: 100%;
 }
+.bcard-edit-card-input{
+    margin: .4rem auto;
+}
 .bcard-edit-holder{
     background-color: #FFFFFF;
     max-height: 80%;
     margin: 5rem 5rem;
     border-radius: 2rem;
     border: 3px double rgb(200,200,200);
+    box-shadow: 0 0 3px 4px #15151540   ;
     padding: 1rem;
     font-style: italic;
+    overflow-y: auto;
 }
 .bcard-edit-holder input{
     width: 100%;
     text-align: center;
     border-radius: 10px;
 }
+.bcards-edit-buttons{
+    margin: .4rem auto;
+}
+.bcards-info-header{
+    cursor: pointer;
+}
 .bcard-new-card-holder{
-    background-color: rgb(220,220,220);
+    background-color: white;
     max-height: calc(100% - 5rem);
     margin: 2rem 1rem;
     overflow-y: auto;
+    border-radius: 1rem;
+    box-shadow: 0 0 4px 8px #43434343;
 }
 .bcard-source-image-holder {
   margin: 3rem 2rem;
@@ -492,10 +613,9 @@ export default{
 }
 .bcard-show-form{
    background-color: rgb(240,240,240);
-    margin-top: 10%;
-    margin-left: 20%;
-    margin-right: 20%;
-    box-shadow: 0 0 10px 10px rgb(150,150,150);
+    margin: 10% auto;
+    width: 45%;
+    box-shadow: 0 0 30px 10px #212529B3;
 }
 .bcard-show-name{
     font-weight: bold;
@@ -511,37 +631,94 @@ export default{
     margin-bottom: 1.5rem;
 }
 .bcard-show-icons-holder{
-    background-color: #2c3e50;
-    padding: 0;
-    min-height: 48px;
-    margin: 0;
+    background-color: #212121;
+    padding: .3rem 0;
+    margin:0;
     width: 100%;
     color: white;
 }
 .bcard-show-additional-info-holder {
     margin-top: 1rem;
     margin-bottom: 1rem;
+    height: 72px;
 }
 .bcard-show-bottom-line{
     background-color: lightblue;
-    height: 10px;
+    height: 14px;
     margin: 0;
+    padding: 0;
     width: 100%;
 }
-.bcards-filter div{
+.bcards-filter {
+    margin: 1rem 0;
+}
+.bcards-filter-search{
+    transition: .2s linear;
+}
+.bcards-filter-search:hover{
+    transform: scale(1.2);
+}
+.bcards-filter-input{
+    margin: .5rem;
+    margin-top: 0;
+}
+.bcards-filter-input input{
+}
+.bcard-filter-selected-item {
     display: inline;
+    background-color: #f1f1f1;
+    padding: .4rem .6rem;
+    margin: 0 .3rem;
+    border-radius: 5px;
+  text-transform: capitalize;
 }
 .bcards-table-holder{
     overflow-x: auto;
 }
+.bcards-table-header{
+    color: #626262;
+    font-weight: bold;
+    border-bottom: 4px solid #9e9e9e
+}
 .bcards-table{
     max-width: 100%;
+    font-family: Segoe UI,Frutiger,Frutiger Linotype,Dejavu Sans,Helvetica Neue,Arial,sans-serif;
     margin: 0;
+    border-top: 0 !important;
 }
 .bcards-table tr:nth-child(even){
-    background-color: rgb(205,205,205);
+    background-color: #f2f2f2;
 }
-
+.bcards-table-button{
+    position: relative;
+}
+.bcards-table-button .tooltiptext{
+    visibility: hidden;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 5px 6px;
+    border-radius: 6px;
+    bottom: 75%;
+    right: 0;
+    /* Position the tooltip text - see examples below! */
+    position: absolute;
+    z-index: 1;
+}
+.bcards-table-button:hover .tooltiptext{
+    visibility: visible;
+}
+.bcards-show-more-button{
+    margin: 1rem auto;
+}
+.columns-holder{
+    position: absolute;
+    background-color: white;
+    right: 0;
+    border: 1px solid #30303030;
+    box-shadow: 0 3px 5px 5px #40404040;
+    z-index:2;
+}
 @keyframes popup {
     0% {
         transform: scale(0);
@@ -574,7 +751,15 @@ export default{
         opacity: 1;
     }
 }
+@keyframes growup{
+    0% {
+        transform: translateY(-50%) scaleY(0);
+    }
+    100% {
+        transform: translateY(0) scaleY(1);
 
+    }
+}
 .bcard-edit-enter-active{
     animation: popup .5s ease;
 }
@@ -598,5 +783,11 @@ export default{
 }
 .bcard-source-image-leave-active{
     animation: showing-popup .4s ease reverse;
+}
+.columns-enter-active{
+    animation: growup .2s ease;
+}
+.columns-leave-active{
+    animation: growup .2s ease reverse;
 }
 </style>

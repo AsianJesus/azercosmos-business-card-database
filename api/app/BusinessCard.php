@@ -10,7 +10,7 @@ class BusinessCard extends Model
 {
     use SoftDeletes;
     protected $fillable = [
-        'name', 'surname', 'company_name', 'position', 'address',
+        'name', 'company_name', 'position', 'address',
         'mobile', 'email', 'website', 'image_path', 'created_by', 'deleted_by'
     ];
 

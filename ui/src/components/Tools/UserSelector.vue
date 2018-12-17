@@ -1,21 +1,28 @@
 <template>
     <div class="user-selector-component">
         <div class="user-selector-holder">
-            <input type="text" v-model="name" @input="delayedSearch(name)" class="user-selector-input">
+            <input type="text" v-model="name" :placeholder="placeholder"
+                   @input="delayedSearch(name)" class="user-selector-input">
         </div>
-        <div class="user-selector-suggestions" v-if="suggestions">
-            <ul class="user-suggestions-list">
-                <li v-for="(user, index) in suggestionsToShow" v-bind:key="index"
+        <div class="user-selector-suggestions" v-if="suggestions && name">
+            <div class="user-suggestions-list">
+                <div v-for="(user, index) in suggestionsToShow" v-bind:key="index"
                     @click="selectUser(index)" class="user-suggestion-item">
                     {{ user.name }}
-                </li>
-            </ul>
+                </div>
+            </div>
         </div>
     </div>
 </template>
 <script>
 import _ from 'lodash'
 export default{
+  props: {
+    placeholder: {
+      type: String,
+      default: ''
+    }
+  },
   data () {
     return {
       name: '',
@@ -44,12 +51,15 @@ export default{
     delayedSearch (template) {
       if (!template) return
       if (!(this.lastTemplate && template.includes(this.lastTemplate))){
-        this.search(template)
-        this.lastTemplate = template
+        if(template.length >= 3){
+          this.search(template)
+          this.lastTemplate = template
+        }
       }
     },
     selectUser (index) {
       this.$emit('select', this.suggestionsToShow[index])
+      this.name = ''
     }
   }
 }
@@ -62,9 +72,12 @@ export default{
 }
 .user-selector-suggestions{
     position: absolute;
-    background-color: #abdde5;
-    width: 90%;
-    left: 5%;
+    background-color: #ffffff;
+    width: 70%;
+    left: 15%;
     z-index: 1001;
+}
+.user-suggestion-item{
+    cursor: pointer;
 }
 </style>

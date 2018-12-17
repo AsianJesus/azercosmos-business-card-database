@@ -16,7 +16,6 @@ class CreateBusinessCardsTable extends Migration
         Schema::create('business_cards', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->string('surname');
             $table->string('company_name')->nullable();
             $table->string('position')->nullable();
             $table->string('address')->nullable();
@@ -24,7 +23,7 @@ class CreateBusinessCardsTable extends Migration
             $table->string('email')->nullable();
             $table->string('website')->nullable();
             $table->string('image_path')->nullable();
-            $table->boolean('private')->default(false);
+            $table->boolean('private')->default(true);
             $table->unsignedInteger('created_by');
             $table->unsignedInteger('deleted_by')->nullable();
             $table->softDeletes();

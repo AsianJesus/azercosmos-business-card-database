@@ -37,7 +37,7 @@ class Controller extends BaseController
         return $deleted;
     }
 
-    public function getAll()
+    public function getAll(Request $request)
     {
         return $this->model::all();
     }

@@ -1,8 +1,8 @@
 <template>
     <div class="new-business-card-page row">
-        <h1 class="col-12">
+        <div class="col-12 new-business-card-header">
             New Business Card
-        </h1>
+        </div>
         <div v-if="isAdding" class="col-12">
             <h2>
                 Please wait for a second...
@@ -10,64 +10,88 @@
         </div>
         <div class="business-card-form col-12" v-else>
             <div class="row">
-                <div class="col">
-                    <div class="row">
-                        <label for="name" class="col-3 offset-2">Name</label>
-                        <input type="text" id="name" v-model="form.name" class="col new-bcard-info">
-                    </div>
-                    <div class="row">
-                        <label for="surname" class="col-3 offset-2">Surname</label>
-                        <input type="text" id="surname" v-model="form.surname" class="col new-bcard-info">
-                    </div>
-                    <div class="row">
-                        <label for="company_name" class="col-3 offset-2">Company</label>
-                        <input type="text" id="company_name" v-model="form.company_name" class="col new-bcard-info">
-                    </div>
-                    <div class="row">
-                        <label for="position" class="col-3 offset-2">Your position</label>
-                        <input type="text" id="position" v-model="form.position" class="col new-bcard-info">
-                    </div>
-                    <div class="row">
-                        <label for="address" class="col-3 offset-2">Address</label>
-                        <input type="text" id="address" v-model="form.address" class="col new-bcard-info">
-                    </div>
-                    <div class="row">
-                        <label for="mobile" class="col-3 offset-2">Mobile phone</label>
-                        <input type="text" id="mobile" v-model="form.mobile" class="col new-bcard-info">
-                    </div>
-                    <div class="row">
-                        <label for="email" class="col-3 offset-2">Email</label>
-                        <input type="email" id="email" v-model="form.email" class="col new-bcard-info">
-                    </div>
-                    <div class="row">
-                        <label for="website" class="col-3 offset-2">Website</label>
-                        <input type="text" id="website" v-model="form.website" class="col new-bcard-info">
+                <div class="col" @keydown="takePhotoAtSpacebar">
+                    <div class="new-bcard-webcam-buttons">
+                        <b-btn @click="streaming ? stopWebcam() : startWebcam()" :variant="streaming ? 'danger' : 'warning'">
+                            <v-icon name="camera">
+                            </v-icon>
+                        </b-btn>
+                        <b-btn variant="primary" @click="showCrop = true">
+                            <v-icon name="file-image">
+
+                            </v-icon>
+                        </b-btn>
+                        <b-btn @click="selectWebcam" v-if="streaming" variant="">
+                            <v-icon name="image">
+
+                            </v-icon>
+                        </b-btn>
                     </div>
                     <div>
-                        <select name="" id="" v-model="form.private">
-                            <option :value="false">Public</option>
-                            <option :value="true">Private</option>
-                        </select>
+                        <b-form-input class="new-bcard-info-cell" v-model="form.name" id="name" placeholder="Name" type="text">
+
+                        </b-form-input>
+                        <b-form-input class="new-bcard-info-cell" type="text" placeholder="Company" v-model="form.company_name">
+
+                        </b-form-input>
+                        <b-form-input class="new-bcard-info-cell" type="text" placeholder="Position" v-model="form.position">
+
+                        </b-form-input>
+                        <b-form-input class="new-bcard-info-cell" type="text" placeholder="Address" v-model="form.address">
+
+                        </b-form-input>
+                        <b-form-input class="new-bcard-info-cell" type="tel" placeholder="Phone" v-model="form.mobile">
+
+                        </b-form-input>
+                        <b-form-input class="new-bcard-info-cell" type="email" placeholder="Email" v-model="form.email">
+
+                        </b-form-input>
+                        <b-form-input class="new-bcard-info-cell" type="text" placeholder="Website" v-model="form.website">
+
+                        </b-form-input>
+                        <b-form-select class="new-bcard-info-cell" v-model="form.private" :options="privacyOptions">
+
+                        </b-form-select>
                     </div>
-                <div>
-                    <button class="business-card-submit" @click="send">Submit</button>
+                    <div class="new-bcard-submit">
+                        <b-btn class="business-card-submit" variant="success" @click="send">
+                            Create
+                            <v-icon name="plus">
+
+                            </v-icon>
+                        </b-btn>
+                    </div>
                 </div>
-            </div>
-            <div class="col-2">
-                <button @click="streaming ? stopWebcam() : startWebcam()"> {{ streaming ? 'Stop' : 'Webcam' }}</button>
-                <button @click="selectWebcam" v-if="streaming">Take picture</button>
-            </div>
-            <div class="col-6">
-                <webcam ref="webcam" v-model="streaming" :width="1024" :height="720"></webcam>
-                <video ref="webcam_video" v-bind:style="{display: streaming ? 'inline' : 'none'}" class="new-bcard-webcam-video">
+                <div class="col-6">
+                    <webcam ref="webcam" v-model="streaming" :width="675" :height="400"></webcam>
+                    <video ref="webcam_video" v-bind:style="{display: streaming ? 'inline' : 'none'}"
+                           class="new-bcard-webcam-video">
 
-                </video>
-                <img :src="imageUrl ? imageUrl : null" alt="Card image" class="new-bcard-image" @click="showCrop = true">
-                <vue-image-crop v-model="showCrop" noCircle imgFormat="jpg" url="" :width="640" :height="640" langType="en"
-                                @crop-success="uploadFile">
+                    </video>
+                    <div v-if="recognizing.progress" class="recognizing-progress">
+                        <h5>
+                          {{ recognizing.progress.status }}
+                        </h5>
+                        <b-progress :value="recognizing.progress.progress" :max="1" label="Recognizing" show-progress>
+                        </b-progress>
+                        <div v-if="recognizing.recognizedText">
+                          {{ recognizing.recognizedText.text }}
+                        </div>
+                    </div>
+                    <div @click="showCrop = true">
+                        <img :src="imageUrl"
+                             alt="Card image"
+                             class="new-bcard-image" v-if="imageUrl">
 
-                </vue-image-crop>
-            </div>
+                    </div>
+                    <vue-image-crop v-model="showCrop" noCircle imgFormat="jpg" url="" :width="675" :height="400" langType="en"
+                                    @crop-success="uploadFile">
+
+                    </vue-image-crop>
+                    <b-form-select :options="langOptions" v-model="selectedLang" @change="rerunRecognizing">
+
+                    </b-form-select>
+                </div>
             </div>
         </div>
     </div>
@@ -75,6 +99,7 @@
 <script>
 import Webcam from '@/components/Webcam/Webcam.vue'
 import VueImageCrop from 'vue-image-crop-upload'
+import Tesseract from 'tesseract.js'
 export default{
   components: {
     Webcam,
@@ -84,7 +109,6 @@ export default{
     return {
       form: {
         name: '',
-        surname: '',
         company_name: '',
         position: '',
         mobile: '',
@@ -95,18 +119,60 @@ export default{
         photo: null,
         private: true
       },
+      $Tesseract: null,
+      privacyOptions: [
+        {
+          text: 'Please, select privacy level',
+          value: true
+        },
+        {
+          text: 'Private',
+          value: true
+        },
+        {
+          text: 'Public',
+          value: false
+        }
+      ],
       imageUrl: '',
       isAdding: false,
       streaming: false,
-      showCrop: false
+      showCrop: false,
+      recognizing: {
+        progress: null,
+        recognizedText: null
+      },
+      langOptions: [
+        {
+          text: 'Please, select language',
+          value: null
+        },
+        {
+          text: 'English',
+          value: 'eng'
+        },
+        {
+          text: 'Русский',
+          value: 'rus'
+        },
+        {
+          text: 'Azərbaycan',
+          value: 'aze'
+        }
+      ],
+      selectedLang: null
     }
+  },
+  mounted () {
+    this.$Tesseract = Tesseract.create({
+      workerPath: this.$store.state.serverURL + '/tesseract/worker.js',
+      langPath:   this.$store.state.serverURL + '/tesseract/langs/',
+      corePath:   this.$store.state.serverURL + '/tesseract/index.js'
+    })
   },
   methods: {
     selectWebcam () {
-      this.imageUrl = this.$refs.webcam.takePicture()
-      fetch(this.imageUrl).then(photo => photo.blob()).then(file => {
-        this.form.photo = file
-      })
+      this.uploadFile(this.$refs.webcam.takePicture())
     },
     startWebcam () {
       this.$refs.webcam.startVideo(stream => {
@@ -117,11 +183,22 @@ export default{
     stopWebcam () {
       this.$refs.webcam.stopVideo()
     },
+    takePhotoAtSpacebar (event) {
+      if(this.streaming && event.keyCode === 32) {
+        this.selectWebcam()
+      }
+    },
     uploadFile (url) {
-      this.imageUrl = url
+      this.imageUrl = url  
       fetch(this.imageUrl).then(photo => photo.blob()).then(file => {
         this.form.photo = file
+        this.recognizeImage(file)
       })
+    },
+    rerunRecognizing () {
+      if (this.form.photo) {
+        this.recognizeImage(this.form.photo)
+      }
     },
     send () {
       if (this.isAdding) return
@@ -141,21 +218,57 @@ export default{
         alert('Error!')
       })
       console.log(this.form)
+    },
+    recognizeImage (image) {
+      this.$Tesseract.recognize(image, {
+        lang: this.selectedLang
+      }).progress(p => {
+        this.recognizing.progress = p
+      }).then(result => {
+        this.recognizing.recognizedText = result
+        this.parseText(result.text)
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+    parseText (text) {
+
     }
   }
 }
 </script>
 <style>
-.new-bcard-info{
-    border-radius: 4rem;
-    outline: 0;
+.new-business-card-page{
+    width: 100%;
+    padding: 1rem;
+}
+.new-business-card-header{
+    font-size: 1.9rem;
+    font-family: Segoe UI,Frutiger,Frutiger Linotype,Dejavu Sans,Helvetica Neue,Arial,sans-serif;
+    font-weight: bolder;
 }
 .new-bcard-webcam-video{
     width: 100%;
+    border-radius: 1rem;
     height: auto;
 }
 .new-bcard-image{
-    width: 100%;
+    max-width: 100%;
+    width: 480px;
     height: auto;
+    border-radius: 10px;
+}
+.new-bcard-submit{
+    margin: 1rem auto;
+}
+.new-bcard-webcam-buttons{
+    margin: .5rem auto;
+}
+.new-bcard-info-cell{
+    margin: .3rem auto;
+}
+.recognizing-progress{
+  text-transform: capitalize;
+  font-family: serif;
 }
 </style>
