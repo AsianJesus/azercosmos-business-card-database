@@ -14,8 +14,6 @@ class BusinessCardFilterMiddleware
 {
     public function handle($request, Closure $next) {
         $response = $next($request);
-        return $response;
-
         $data = json_decode($response->content());
         if (!$data) return $response;
         // This should be replaced

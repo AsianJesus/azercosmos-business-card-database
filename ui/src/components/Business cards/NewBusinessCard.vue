@@ -74,9 +74,6 @@
                         </h5>
                         <b-progress :value="recognizing.progress.progress" :max="1" label="Recognizing" show-progress>
                         </b-progress>
-                        <div v-if="recognizing.recognizedText">
-                          {{ recognizing.recognizedText.text }}
-                        </div>
                     </div>
                     <div @click="showCrop = true">
                         <img :src="imageUrl"
@@ -100,6 +97,7 @@
 import Webcam from '@/components/Webcam/Webcam.vue'
 import VueImageCrop from 'vue-image-crop-upload'
 import Tesseract from 'tesseract.js'
+import { recognizeName, recognizePhone, recognizeEmail, recognizeWebsite } from '@/assets/js/parsingFunctions.js'
 export default{
   components: {
     Webcam,
@@ -140,7 +138,7 @@ export default{
       showCrop: false,
       recognizing: {
         progress: null,
-        recognizedText: null
+        recognizedText:  null
       },
       langOptions: [
         {
@@ -225,14 +223,17 @@ export default{
       }).progress(p => {
         this.recognizing.progress = p
       }).then(result => {
-        this.recognizing.recognizedText = result
-        this.parseText(result.text)
+        this.recognizing.recognizedText = result.text
+        this.autoFillFields()
       }).catch(err => {
         console.log(err)
       })
     },
-    parseText (text) {
-
+    autoFillFields () {
+      this.form.name = recognizeName(this.recognizing.recognizedText)
+      this.form.mobile = recognizePhone(this.recognizing.recognizedText)
+      this.form.email = recognizeEmail(this.recognizing.recognizedText)
+      this.form.website = recognizeWebsite(this.recognizing.recognizedText)
     }
   }
 }
