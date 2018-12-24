@@ -68,6 +68,9 @@
                            class="new-bcard-webcam-video">
 
                     </video>
+                    <b-form-select :options="langOptions" v-model="selectedLang" @change="rerunRecognizing">
+
+                    </b-form-select>
                     <div v-if="recognizing.progress" class="recognizing-progress">
                         <h5>
                           {{ recognizing.progress.status }}
@@ -85,9 +88,6 @@
                                     @crop-success="uploadFile">
 
                     </vue-image-crop>
-                    <b-form-select :options="langOptions" v-model="selectedLang" @change="rerunRecognizing">
-
-                    </b-form-select>
                 </div>
             </div>
         </div>
@@ -206,7 +206,7 @@ export default{
         form.set(key, this.form[key])
       }
       form.append('photo', this.form.photo)
-      this.axios.post('/business-cards/', form).then(response => {
+      this.axios.post('/business-cards', form).then(response => {
         console.log(response.data)
         this.isAdding = false
         this.$emit('newCard', response.data)
@@ -230,10 +230,10 @@ export default{
       })
     },
     autoFillFields () {
-      this.form.name = recognizeName(this.recognizing.recognizedText)
-      this.form.mobile = recognizePhone(this.recognizing.recognizedText)
-      this.form.email = recognizeEmail(this.recognizing.recognizedText)
-      this.form.website = recognizeWebsite(this.recognizing.recognizedText)
+      this.form.name = recognizeName(this.recognizing.recognizedText, this.selectedLang)
+      this.form.mobile = recognizePhone(this.recognizing.recognizedText, this.selectedLang)
+      this.form.email = recognizeEmail(this.recognizing.recognizedText, this.selectedLang)
+      this.form.website = recognizeWebsite(this.recognizing.recognizedText, this.selectedLang)
     }
   }
 }

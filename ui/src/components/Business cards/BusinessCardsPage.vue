@@ -1,4 +1,3 @@
-<script src="../../../../../azercosmos-intranet/frontend/src/main.js"></script>
 <template>
     <div class="business-cards-page">
         <div v-if="isLoading">
@@ -221,6 +220,7 @@
                             <b-btn @click="showCard(index)" class="bcards-table-button" variant="primary">
                                 <v-icon name="info">
 
+
                                 </v-icon>
                                 <i class="tooltiptext">
                                     Show card
@@ -262,7 +262,7 @@
                     </tr>
                 </table>
             </div>
-            <b-btn @click="showMore" v-if="showCardsCount < businessCards.length"
+            <b-btn @click="showMore" v-if="showCardsCount < businessCardsFiltered.length"
                    class="bcards-show-more-button" variant="success">
                 Show more
                 <v-icon name="arrow-down">
@@ -297,7 +297,6 @@ export default{
   },
   data () {
     return {
-      businessCards: [],
       businessCardsAll: [],
       sorting: {
         by: 'id',
@@ -376,13 +375,12 @@ export default{
   methods: {
     load () {
       this.isLoading = true
-      this.axios.get('business-cards/',{
+      this.axios.get('business-cards',{
         params: {
           user_id: this.userID,
           filters: this.loadOptions
         }
       }).then(response => {
-        this.businessCards = response.data
         this.businessCardsAll = response.data
         this.isLoading = false
       }).catch(err => {
@@ -391,15 +389,15 @@ export default{
       })
     },
     editable (index) {
-      return this.businessCards[index].created_by.toString() === this.$store.getters.userId.toString() ||
-          this.businessCards[index].permissions.filter(x => x.permission_id === 2).length > 0
+      return this.businessCardsToShow[index].created_by.toString() === this.$store.getters.userId.toString() ||
+          this.businessCardsToShow[index].permissions.filter(x => x.permission_id === 2).length > 0
     },
     deletable (index) {
-        return this.businessCards[index].created_by.toString() === this.$store.getters.userId.toString() ||
-            this.businessCards[index].permissions.filter(x => x.permission_id === 3).length > 0
+        return this.businessCardsToShow[index].created_by.toString() === this.$store.getters.userId.toString() ||
+            this.businessCardsToShow[index].permissions.filter(x => x.permission_id === 3).length > 0
     },
     editCard (index) {
-      this.cardToEdit = JSON.parse(JSON.stringify(this.businessCards[index]))
+      this.cardToEdit = JSON.parse(JSON.stringify(this.businessCardsToShow[index]))
     },
     deleteCard (id) {
       if(!confirm('Are you sure?') || confirm('Do you lie?')) return
@@ -409,7 +407,6 @@ export default{
         }
       }).then(response => {
         if(response.data) {
-          this.businessCards = this.businessCards.filter(x => x.id !== id)
           this.businessCardsAll = this.businessCardsAll.filter(x => x.id !== id)
         }  else {
           alert('Failed to delete')
@@ -439,7 +436,7 @@ export default{
     },
     addPermission (cardId, userId, permissionId) {
       this.isUpdatingPermissions = true
-      this.axios.post('/user-permissions/', {
+      this.axios.post('/user-permissions', {
         business_card_id: cardId,
         user_id: userId,
         permission_id: permissionId
@@ -479,13 +476,6 @@ export default{
     },
     saveChanges () {
       this.axios.put('/business-cards/' + this.cardToEdit.id, this.cardToEdit).then(response => {
-        for (let i = 0; i < this.businessCards.length; i++) {
-          if (this.businessCards[i].id === response.data.id) {
-            for (let key in response.data){
-                this.$set(this.businessCards[i], key, response.data[key])
-            }
-          }
-        }
         for (let i = 0; i < this.businessCardsAll.length; i++) {
           if (this.businessCardsAll[i].id === response.data.id) {
             for (let key in response.data){
@@ -499,7 +489,7 @@ export default{
       this.cardToEdit = null
     },
     showCard (index) {
-      this.cardToShow = this.businessCards[index]
+      this.cardToShow = this.businessCardsToShow[index]
     },
     hideCard () {
       this.cardToShow = null
@@ -545,7 +535,7 @@ export default{
       }
     },
     showSourceImage (index) {
-      this.imageToShow = this.businessCards[index].image_path
+      this.imageToShow = this.businessCardsToShow[index].image_path
     },
     showMore () {
       this.showCardsCount += cardsOnPage
@@ -554,6 +544,9 @@ export default{
 }
 </script>
 <style>
+.business-cards-page{
+    margin-bottom: 3rem;
+}
 .arrow-buttons{
     cursor: pointer;
 }
