@@ -84,7 +84,7 @@
                              class="new-bcard-image" v-if="imageUrl">
 
                     </div>
-                    <vue-image-crop v-model="showCrop" noCircle imgFormat="jpg" url="" :width="675" :height="400" langType="en"
+                    <vue-image-crop v-model="showCrop" noCircle :width="675" :height="400" langType="en"
                                     @crop-success="uploadFile">
 
                     </vue-image-crop>
@@ -97,7 +97,7 @@
 import Webcam from '@/components/Webcam/Webcam.vue'
 import VueImageCrop from 'vue-image-crop-upload'
 import Tesseract from 'tesseract.js'
-import { recognizeName, recognizePhone, recognizeEmail, recognizeWebsite } from '@/assets/js/parsingFunctions.js'
+import { recognize } from '@/assets/js/parsingFunctions.js'
 export default{
   components: {
     Webcam,
@@ -230,10 +230,10 @@ export default{
       })
     },
     autoFillFields () {
-      this.form.name = recognizeName(this.recognizing.recognizedText, this.selectedLang)
-      this.form.mobile = recognizePhone(this.recognizing.recognizedText, this.selectedLang)
-      this.form.email = recognizeEmail(this.recognizing.recognizedText, this.selectedLang)
-      this.form.website = recognizeWebsite(this.recognizing.recognizedText, this.selectedLang)
+      this.form.name = recognize(this.recognizing.recognizedText, 'name', this.selectedLang)
+      this.form.mobile = recognize(this.recognizing.recognizedText, 'phone', this.selectedLang)
+      this.form.email = recognize(this.recognizing.recognizedText, 'email', this.selectedLang)
+      this.form.website = recognize(this.recognizing.recognizedText, 'website', this.selectedLang)
     }
   }
 }
@@ -269,7 +269,10 @@ export default{
     margin: .3rem auto;
 }
 .recognizing-progress{
-  text-transform: capitalize;
-  font-family: serif;
+    text-transform: capitalize;
+    font-family: serif;
+    margin: .3rem auto;
+    border: 1px solid black;
+    padding: .2rem auto;
 }
 </style>

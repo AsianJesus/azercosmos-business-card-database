@@ -15,7 +15,7 @@ const regexs = {
     },
     'phone': {
         'eng': /(?:Pho.*?\s|Mo.*?\s)(.*)/,
-        'rus': /(?:\u0422[\u0415\u0435][\041B\043B].*?\s|\u041c[\041E\u043E][\u0411\u0431].*?\s)(.*)/
+        'rus': /(?:\u0422[\u0415\u0435][\u041b\u043b].*?\s|\u041c[\u041E\u043E][\u0411\u0431].*?\s)(.*)/
     },
     'email': {
         'eng': /(?:E-?ma..\s)(.*)|.*@.*/,
@@ -26,31 +26,10 @@ const regexs = {
     }
 }
 
-export function recognizeName (text, lang = null) {
-    if(!lang || !lang in regexs['name'])
+export function recognize (text, type, lang = null) {
+    if(!lang || !lang in regexs[type])
     {
         lang = 'eng'
     }
-    return recognizeByRegexp(text, regexs['name'][lang])
-}
-export function recognizePhone (text, lang = null) {
-    if(!lang || !lang in regexs['phone'])
-    {
-        lang = 'eng'
-    }
-    return recognizeByRegexp(text, regexs['phone'][lang])
-}
-export function recognizeEmail (text, lang = null) {
-    if(!lang || !lang in regexs['email'])
-    {
-        lang = 'eng'
-    }
-    return recognizeByRegexp(text, regexs['email'][lang])
-}
-export function recognizeWebsite (text, lang = null) {
-    if(!lang || !lang in regexs['website'])
-    {
-        lang = 'eng'
-    }
-    return recognizeByRegexp(text, regexs['website'][lang])
+    return recognizeByRegexp(text, regexs[type][lang])
 }
