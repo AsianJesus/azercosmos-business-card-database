@@ -13,7 +13,8 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 import 'vue-awesome/icons'
 import Icon from 'vue-awesome/components/Icon'
 
-const serverURL = 'http://localhost/azercosmos-business-card-database/api/public/'
+const serverURL = '/azercosmos-business-card-database/api/public/'
+// const serverURL = 'http://localhost/azercosmos-business-card-database/api/public/'
 axios.defaults.baseURL = serverURL
 
 Vue.use(VueAxios, axios)
