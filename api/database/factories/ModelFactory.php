@@ -14,7 +14,7 @@
 $factory->define(\App\BusinessCard::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->firstName,
-        'surname' => $faker->lastName,
+//        'surname' => $faker->lastName,
         'company_name' => $faker->company,
         'position' => $faker->jobTitle,
         'address' => $faker->address,
