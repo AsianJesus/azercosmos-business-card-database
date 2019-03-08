@@ -12,11 +12,15 @@
             <div class="row">
                 <div class="col" @keydown="takePhotoAtSpacebar">
                     <div class="new-bcard-webcam-buttons">
-                        <b-btn @click="streaming ? stopWebcam() : startWebcam()" :variant="streaming ? 'danger' : 'warning'">
+                        <b-btn @click="streaming ? stopWebcam() : startWebcam()"
+                               class="bcards-icon-button"
+                               :variant="streaming ? 'danger' : 'warning'">
                             <v-icon name="camera">
                             </v-icon>
                         </b-btn>
-                        <b-btn variant="primary" @click="showCrop = true">
+                        <b-btn variant="primary"
+                               class="bcards-icon-button"
+                               @click="showCrop = true">
                             <v-icon name="file-image">
 
                             </v-icon>

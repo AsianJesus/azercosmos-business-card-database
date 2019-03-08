@@ -69,4 +69,7 @@ export default {
   background: #30303030;
 
 }
+.bcards-icon-button{
+  padding: 3px 8px;
+}
 </style>

@@ -111,12 +111,16 @@
                             </table>
                         </div>
                         <div class="bcards-edit-buttons col-12">
-                            <b-btn @click="saveChanges" variant="success">
+                            <b-btn @click="saveChanges"
+                                   class="bcards-icon-button"
+                                   variant="success">
                                 <v-icon name="save">
 
                                 </v-icon>
                             </b-btn>
-                            <b-btn @click="cancelEditing(true)" variant="danger">
+                            <b-btn @click="cancelEditing(true)"
+                                   class="bcards-icon-button"
+                                   variant="danger">
                                 <v-icon name="ban">
 
                                 </v-icon>
@@ -145,7 +149,9 @@
             </transition>
             <div class="bcards-filter row no-gutters">
                 <div class="bcards-filter-input col-6">
-                    <b-btn :size="'sm'" :variant="'secondary'">
+                    <b-btn :size="'sm'"
+                           class="bcards-icon-button"
+                           :variant="'secondary'">
                         <img @click="filterCards" src="@/assets/icons/search.png" width="16px" class="bcards-filter-search">
                     </b-btn>
                     <input type="text" v-model="filters.name" @input="delayedFilter" v-if="selectedFilter === 1">
@@ -180,7 +186,9 @@
                     </select>
                 </div>
                 <div class="col" style="text-align: right;">
-                    <b-btn @click="showColumns ^= true" variant="primary">
+                    <b-btn @click="showColumns ^= true"
+                           class="bcards-icon-button"
+                           variant="primary">
                         <v-icon name="filter">
 
                         </v-icon>
@@ -192,7 +200,9 @@
                             </columns-list>
                         </div>
                     </transition>
-                    <b-btn @click="createNewCard = true" variant="success">
+                    <b-btn @click="createNewCard = true"
+                           class="bcards-icon-button"
+                           variant="success">
                         <v-icon name="plus-square">
 
                         </v-icon>
@@ -231,7 +241,9 @@
                         <td v-if="columnsToShow.address">{{ bcard.address }}</td>
                         <td v-if="columnsToShow.website">{{ bcard.website }}</td>
                         <td>
-                            <b-btn @click="showCard(index)" class="bcards-table-button" variant="primary">
+                            <b-btn @click="showCard(index)"
+                                   class="bcards-table-button bcards-icon-button"
+                                   variant="primary">
                                 <v-icon name="info">
 
 
@@ -240,8 +252,10 @@
                                     Show card
                                 </i>
                             </b-btn>
-                          <b-btn @click="showSourceImage(index)" class="bcards-table-button"
-                                 variant="warning" v-if="bcard.image_path">
+                          <b-btn @click="showSourceImage(index)"
+                                 class="bcards-table-button bcards-icon-button"
+                                 variant="warning"
+                                 v-if="bcard.image_path">
                               <v-icon name="address-card">
 
                               </v-icon>
@@ -249,7 +263,9 @@
                                   Show original
                               </i>
                           </b-btn>
-                            <b-btn @click="editCard(index)" class="bcards-table-button" v-if="editable(index)">
+                            <b-btn @click="editCard(index)"
+                                   class="bcards-table-button bcards-icon-button"
+                                   v-if="editable(index)">
                                 <v-icon name="pen">
 
                                 </v-icon>
@@ -257,8 +273,10 @@
                                     Edit
                                 </i>
                             </b-btn>
-                            <b-btn @click="deleteCard(bcard.id)" class="bcards-table-button"
-                                   v-if="deletable(index)" variant="danger">
+                            <b-btn @click="deleteCard(bcard.id)"
+                                   class="bcards-table-button bcards-icon-button"
+                                   v-if="deletable(index)"
+                                   variant="danger">
                                 <v-icon name="trash">
 
                                 </v-icon>
@@ -270,7 +288,8 @@
                     </tr>
                 </table>
             </div>
-            <b-btn @click="showMore" v-if="showCardsCount < businessCardsFiltered.length"
+            <b-btn @click="showMore"
+                   v-if="showCardsCount < businessCardsFiltered.length"
                    class="bcards-show-more-button" variant="success">
                 Show more
                 <v-icon name="arrow-down">
