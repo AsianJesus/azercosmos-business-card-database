@@ -1,14 +1,14 @@
 <template>
   <div id="app" class="container-fluid">
     <div class="bcards-header row">
-      <div class="col bcards-header-holder">
+      <!--<div class="col bcards-header-holder">
         <router-link :to="{name: 'BusinessCards'}" class="bcards-header-nav">Main page</router-link>
       </div>
       <div class="col bcards-header-holder">
         <router-link :to="{name: 'BusinessCardsWithOption', params: {option: 'private'}}" class="bcards-header-nav">
           Private
         </router-link>
-      </div>
+      </div>-->
       <div class="col bcards-header-holder">
         <router-link :to="{name: 'BusinessCardsWithOption', params: {option: 'public'}}" class="bcards-header-nav">
           Public
@@ -19,11 +19,11 @@
           My cards
         </router-link>
       </div>
-      <div class="col bcards-header-holder">
+      <!--<div class="col bcards-header-holder">
         <router-link :to="{name: 'NewBusinessCard'}" class="bcards-header-nav">
           New card
         </router-link>
-      </div>
+      </div>-->
     </div>
     <div class="row">
       <div class="col-12">

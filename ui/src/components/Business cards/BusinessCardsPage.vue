@@ -10,22 +10,30 @@
             <transition name="bcard-show">
                 <div class="bcard-show-holder" v-if="cardToShow" @click="hideCard">
                     <div class="bcard-show-form" @click="$event.stopPropagation()">
-                        <div class="row bcard-show-name-holder">
+                        <div class="row bcard-show-name-holder"
+                             style="margin: auto 0 !important;"
+                        >
                             <span class="col-12 bcard-show-name">
                                 {{ cardToShow.name }}
                             </span>
                         </div>
-                        <div class="row bcard-show-company-holder">
+                        <div class="row bcard-show-company-holder"
+                             style="margin: auto 0 !important;"
+                        >
                             <span class="col-12 bcard-show-company">
                                 {{ cardToShow.company_name }}
                             </span>
                         </div>
-                        <div class="row bcard-show-positon-holder">
+                        <div class="row bcard-show-positon-holder"
+                             style="margin: auto 0 !important;"
+                        >
                             <span class="col-12 bcard-show-position">
                                 {{ cardToShow.position }}
                             </span>
                         </div>
-                        <div class="row bcard-show-icons-holder">
+                        <div class="row bcard-show-icons-holder"
+                             style="margin: auto 0 !important;"
+                        >
                             <div class="col-4 bcard-show-icon-holder">
                                 <img src='@/assets/icons/location.png' width="42px">
                             </div>
@@ -36,7 +44,9 @@
                                 <img src='@/assets/icons/web.png' width="42px">
                             </div>
                         </div>
-                        <div class="row bcard-show-additional-info-holder">
+                        <div class="row bcard-show-additional-info-holder"
+                             style="margin: auto 0 !important;"
+                        >
                             <div class="col-4 bcard-show-address">
                                 {{ cardToShow.address }}
                             </div>
@@ -52,7 +62,9 @@
                 </div>
             </transition>
             <transition name="bcard-edit">
-                <div class="bcard-show-holder" v-if="cardToEdit" @click="cancelEditing">
+                <div class="bcard-show-holder"
+                     v-if="cardToEdit"
+                     @click="cancelEditing(false)">
                     <div class="bcard-edit-holder row" @click="$event.stopPropagation()">
                         <div class="col-12">
                             <h2>Edit card #{{cardToEdit.id}}</h2>
@@ -104,7 +116,7 @@
 
                                 </v-icon>
                             </b-btn>
-                            <b-btn @click="cancelEditing" variant="danger">
+                            <b-btn @click="cancelEditing(true)" variant="danger">
                                 <v-icon name="ban">
 
                                 </v-icon>
@@ -114,7 +126,9 @@
                 </div>
             </transition>
             <transition name="bcard-new">
-                <div class="bcard-show-holder" v-if="createNewCard" @click="createNewCard = false">
+                <div class="bcard-show-holder"
+                     v-if="createNewCard"
+                     @click="cancelCreating()">
                     <div class="bcard-new-card-holder" @click="$event.stopPropagation()">
                         <new-business-card @newCard="addCard">
 
@@ -205,7 +219,7 @@
                         <th @click="sortBy('mobile')" class="bcards-info-header" v-if="columnsToShow.mobile">Phone</th>
                         <th @click="sortBy('address')" class="bcards-info-header" v-if="columnsToShow.address">Address</th>
                         <th @click="sortBy('website')" class="bcards-info-header" v-if="columnsToShow.website">Website</th>
-                        <th colspan="4">Controls</th>
+                        <th>Controls</th>
                     </tr>
                     <tr  v-for="(bcard, index) in businessCardsToShow" v-bind:key="index">
                         <td v-if="columnsToShow.id"> {{ bcard.id }}</td>
@@ -226,8 +240,6 @@
                                     Show card
                                 </i>
                             </b-btn>
-                        </td>
-                        <td>
                           <b-btn @click="showSourceImage(index)" class="bcards-table-button"
                                  variant="warning" v-if="bcard.image_path">
                               <v-icon name="address-card">
@@ -237,8 +249,6 @@
                                   Show original
                               </i>
                           </b-btn>
-                        </td>
-                        <td>
                             <b-btn @click="editCard(index)" class="bcards-table-button" v-if="editable(index)">
                                 <v-icon name="pen">
 
@@ -247,8 +257,6 @@
                                     Edit
                                 </i>
                             </b-btn>
-                        </td>
-                        <td>
                             <b-btn @click="deleteCard(bcard.id)" class="bcards-table-button"
                                    v-if="deletable(index)" variant="danger">
                                 <v-icon name="trash">
@@ -471,8 +479,10 @@ export default{
         this.isUpdatingPermissions = false
       })
     },
-    cancelEditing (id) {
-      this.cardToEdit = null
+    cancelEditing (force = false) {
+      if (force || confirm('Are you sure?')) {
+        this.cardToEdit = null
+      }
     },
     saveChanges () {
       this.axios.put('/business-cards/' + this.cardToEdit.id, this.cardToEdit).then(response => {
@@ -517,6 +527,11 @@ export default{
       })
     },
     delayedFilter: lodash.debounce(function () { this.filterCards() }, 500, 1500),
+    cancelCreating (force = false) {
+      if (force || confirm('Are you sure?')) {
+        this.createNewCard = false
+      }
+    },
     addCard (card) {
       console.log(card)
       card.permissions = []
@@ -560,14 +575,15 @@ export default{
     z-index: 5;
     width: 100%;
     height: 100%;
+    overflow: auto;
 }
 .bcard-edit-card-input{
     margin: .4rem auto;
 }
 .bcard-edit-holder{
     background-color: #FFFFFF;
-    max-height: 80%;
-    margin: 5rem 5rem;
+    max-height: 60%;
+    margin: 5rem 10rem;
     border-radius: 2rem;
     border: 3px double rgb(200,200,200);
     box-shadow: 0 0 3px 4px #15151540   ;
@@ -577,7 +593,7 @@ export default{
 }
 .bcard-edit-holder input{
     width: 100%;
-    text-align: center;
+    text-align: left;
     border-radius: 10px;
 }
 .bcards-edit-buttons{
@@ -588,8 +604,7 @@ export default{
 }
 .bcard-new-card-holder{
     background-color: white;
-    max-height: calc(100% - 5rem);
-    margin: 2rem 1rem;
+    margin: 5rem 4rem;
     overflow-y: auto;
     border-radius: 1rem;
     box-shadow: 0 0 4px 8px #43434343;
