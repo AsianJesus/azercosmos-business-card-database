@@ -57,7 +57,7 @@
                                 {{ cardToShow.website }}
                             </div>
                         </div>                          
-                        <img src="@/assets/icons/bottom line.png" class="row bcard-show-bottom-line">
+                        <img src="@/assets/icons/bottom line.png" class="row bcard-show-bottom-line" style="margin: auto 0">
                     </div>
                 </div>
             </transition>
