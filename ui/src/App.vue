@@ -9,16 +9,14 @@
           Private
         </router-link>
       </div>-->
-      <div class="col bcards-header-holder">
-        <router-link :to="{name: 'BusinessCardsWithOption', params: {option: 'public'}}" class="bcards-header-nav">
-          Public
-        </router-link>
-      </div>
-      <div class="col bcards-header-holder">
-        <router-link :to="{name: 'BusinessCardsWithOption', params: {option: 'mycards'}}" class="bcards-header-nav">
+      <router-link :to="{name: 'BusinessCardsWithOption', params: {option: 'public'}}"
+                   class="bcards-header-nav col bcards-header-holder">
+        Public
+      </router-link>
+      <router-link :to="{name: 'BusinessCardsWithOption', params: {option: 'mycards'}}"
+                   class="bcards-header-nav col bcards-header-holder">
           My cards
-        </router-link>
-      </div>
+      </router-link>
       <!--<div class="col bcards-header-holder">
         <router-link :to="{name: 'NewBusinessCard'}" class="bcards-header-nav">
           New card
@@ -39,6 +37,16 @@ export default {
   name: 'App',
   components: {
     Toolbar
+  },
+  created () {
+    this.loadUserInfo()
+  },
+  methods: {
+    loadUserInfo () {
+      this.axios.get('/user').then(response => {
+        this.$store.commit('updateUserInfo', response.data)
+      })
+    }
   }
 }
 </script>
@@ -58,6 +66,9 @@ export default {
 .bcards-header-nav{
   color: white !important;
   text-decoration: none;
+}
+.bcards-header-nav:hover{
+  text-decoration: none !important;
 }
 .bcards-header-holder{
   font-size: 1.1rem;

@@ -23,6 +23,8 @@ $app = new Laravel\Lumen\Application(
     realpath(__DIR__.'/../')
 );
 
+$app->id = require_once __DIR__.'/../config/getSession.php';
+
 $app->withFacades();
 
 $app->withEloquent();

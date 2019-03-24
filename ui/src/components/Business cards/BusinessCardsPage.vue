@@ -77,7 +77,8 @@
                             <b-form-input type="tel" class="bcard-edit-card-input" v-model="cardToEdit.mobile" placeholder="Phone"></b-form-input>
                             <b-form-input type="email" class="bcard-edit-card-input" v-model="cardToEdit.email" placeholder="Email"></b-form-input>
                             <b-form-input type="text" class="bcard-edit-card-input" v-model="cardToEdit.website" placeholder="Website"></b-form-input>
-                            <b-form-select v-model="cardToEdit.private" :options="privacyOptions">
+                            <b-form-select v-model="cardToEdit.private"
+                                           :options="privacyOptions">
 
                             </b-form-select>
                         </div>
@@ -92,20 +93,36 @@
                                     <th>Read</th>
                                     <th>Edit</th>
                                     <th>Delete</th>
+                                    <th></th>
                                 </tr>
                                 <tr v-for="(per, index) in groupPermissions(cardToEdit.permissions)" v-bind:key="index">
-                                    <th>{{ per.user ? per.user.name : per.user_id }}</th>
+                                    <th>{{ per.user ? per.user.NAME : per.user_id }}</th>
                                     <th>
                                         <input type="checkbox" :checked="per[1]" v-if="!isUpdatingPermissions"
-                                               @click="per[1] ? deletePermission(cardToEdit.id, per[1]) : addPermission(cardToEdit.id, per.user.id, 1)">
+                                               @click="per[1] ? deletePermission(cardToEdit.id, per[1])
+                                                    : addPermission(cardToEdit.id, per.user.ID, 1)">
                                     </th>
                                     <th>
                                         <input type="checkbox" :checked="per[2]" v-if="!isUpdatingPermissions"
-                                               @change="per[2] ? deletePermission(cardToEdit.id, per[2]) : addPermission(cardToEdit.id, per.user.id, 2)">
+                                               @change="per[2] ? deletePermission(cardToEdit.id, per[2])
+                                                : addPermission(cardToEdit.id, per.user.ID, 2)">
                                     </th>
                                     <th>
                                         <input type="checkbox" :checked="per[3]" v-if="!isUpdatingPermissions"
-                                               @change="per[3] ? deletePermission(cardToEdit.id, per[3]) : addPermission(cardToEdit.id, per.user.id, 3)">
+                                               @change="per[3] ? deletePermission(cardToEdit.id, per[3])
+                                               : addPermission(cardToEdit.id, per.user.ID, 3)">
+                                    </th>
+                                    <th>
+                                        <i @click="deleteUserPermission(cardToEdit.id, per.user.ID)"
+                                               class="bcards-table-button bcards-icon-button"
+                                               variant="danger">
+                                            <v-icon name="trash">
+
+                                            </v-icon>
+                                            <i class="tooltiptext">
+                                                Delete
+                                            </i>
+                                        </i>
                                     </th>
                                 </tr>
                             </table>
@@ -346,11 +363,11 @@ export default{
       privacyOptions: [
         {
           text: 'Public',
-          value: false
+          value: 0
         },
         {
           text: 'Private',
-          value: true
+          value: 1
         },
       ],
       showCardsCount: cardsOnPage,
@@ -404,7 +421,6 @@ export default{
       this.isLoading = true
       this.axios.get('business-cards',{
         params: {
-          user_id: this.userID,
           filters: this.loadOptions
         }
       }).then(response => {
@@ -427,12 +443,8 @@ export default{
       this.cardToEdit = JSON.parse(JSON.stringify(this.businessCardsToShow[index]))
     },
     deleteCard (id) {
-      if(!confirm('Are you sure?') || confirm('Do you lie?')) return
-      this.axios.delete('/business-cards/' + id, {
-        params: {
-          user_id: this.userID
-        }
-      }).then(response => {
+      if(!confirm('Are you sure?')) return
+      this.axios.delete('/business-cards/' + id).then(response => {
         if(response.data) {
           this.businessCardsAll = this.businessCardsAll.filter(x => x.id !== id)
         }  else {
@@ -458,7 +470,7 @@ export default{
         user: user,
         permission_id: 0,
         business_card_id: this.cardToEdit.id,
-        user_id: user.id
+        user_id: user.ID
       })
     },
     addPermission (cardId, userId, permissionId) {
@@ -480,6 +492,24 @@ export default{
       }).catch(err => {
         this.isUpdatingPermissions = false
       })
+    },
+    deleteUserPermission (cardId, userID) {
+        this.isUpdatingPermissions = true
+        this.axios.delete(`/business-cards/${cardId}/permissions`, {
+          params: {
+            user_id: userID
+          }
+        }).then(response => {
+          this.isUpdatingPermissions = false
+            if(this.cardToEdit && this.cardToEdit.id === cardId) {
+              this.cardToEdit.permissions = response.data
+            }
+            for (let i = 0; i < this.businessCardsAll.length; i++) {
+              if (this.businessCardsAll[i].id === cardId) {
+                this.businessCardsAll[i].permissions = response.data
+              }
+            }
+        })
     },
     deletePermission (cardId, permissionId) {
       this.isUpdatingPermissions = true
@@ -504,6 +534,7 @@ export default{
       }
     },
     saveChanges () {
+      console.log(this.cardToEdit)
       this.axios.put('/business-cards/' + this.cardToEdit.id, this.cardToEdit).then(response => {
         for (let i = 0; i < this.businessCardsAll.length; i++) {
           if (this.businessCardsAll[i].id === response.data.id) {
@@ -601,8 +632,7 @@ export default{
 }
 .bcard-edit-holder{
     background-color: #FFFFFF;
-    max-height: 60%;
-    margin: 5rem 10rem;
+    margin: 5rem 10rem 0 10rem;
     border-radius: 2rem;
     border: 3px double rgb(200,200,200);
     box-shadow: 0 0 3px 4px #15151540   ;
@@ -737,6 +767,9 @@ export default{
 }
 .bcards-show-more-button{
     margin: 1rem auto;
+}
+.bcards-icon-button{
+    cursor: pointer;
 }
 .columns-holder{
     position: absolute;

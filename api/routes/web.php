@@ -21,8 +21,11 @@ $router->get('/business-cards/{id}', 'BusinessCardController@getById');
 $router->post('/business-cards/', 'BusinessCardController@add');
 $router->put('/business-cards/{id}', ['uses'=>'BusinessCardController@update', 'middleware' => 'check_permission']);
 $router->delete('/business-cards/{id}', ['uses'=>'BusinessCardController@delete', 'middleware' => 'check_permission']);
+$router->delete('/business-cards/{id}/permissions', ['uses'=>'BusinessCardController@deletePermissionOfUser',
+                                                    'middleware' => 'check_permission']);
 
 //Users
+$router->get('/user/', 'UserController@getMyUser');
 $router->get('/users/', 'UserController@getAll');
 $router->get('/users/by-name/{name}', 'UserController@getByName');
 $router->get('/users/{id}', 'UserController@getById');

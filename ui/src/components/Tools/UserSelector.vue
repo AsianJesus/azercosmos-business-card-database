@@ -8,7 +8,7 @@
             <div class="user-suggestions-list">
                 <div v-for="(user, index) in suggestionsToShow" v-bind:key="index"
                     @click="selectUser(index)" class="user-suggestion-item">
-                    {{ user.name }}
+                    {{ user.NAME }}
                 </div>
             </div>
         </div>
@@ -33,7 +33,7 @@ export default{
   computed: {
     suggestionsToShow () {
       if (this.name && this.suggestions) {
-        return this.suggestions.filter(u => u.name.toLowerCase().includes(this.name.toLowerCase()))
+        return this.suggestions.filter(u => u.NAME.toLowerCase().includes(this.name.toLowerCase()))
       } else {
         return null
       }

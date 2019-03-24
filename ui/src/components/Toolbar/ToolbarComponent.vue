@@ -17,22 +17,6 @@ export default{
     name () {
       return this.$store.getters.userName
     }
-  },
-  mounted () {
-    this.load()
-  },
-  methods: {
-    load () {
-      if (this.isLoading) return
-      this.isLoading = true
-      this.axios.get('/users/' + this.$store.getters.userId).then(response => {
-        this.isLoading = false
-        this.$store.commit('updateUserInfo', response.data)
-      }).catch(err => {
-        console.log(err)
-        this.isLoading = false
-      })
-    }
   }
 }
 </script>

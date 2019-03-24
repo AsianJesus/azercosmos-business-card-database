@@ -117,7 +117,6 @@ export default{
         email: '',
         webste: '',
         address: '',
-        created_by: this.$store.getters.userId,
         photo: null,
         private: true
       },
@@ -125,15 +124,15 @@ export default{
       privacyOptions: [
         {
           text: 'Please, select privacy level',
-          value: true
+          value: 1
         },
         {
           text: 'Private',
-          value: true
+          value: 1
         },
         {
           text: 'Public',
-          value: false
+          value: 0
         }
       ],
       imageUrl: '',

@@ -25,4 +25,8 @@ class UserController extends Controller
     public function getByName(Request $request, $name) {
         return $this->user::where('name', 'like', '%'.$name.'%')->get();
     }
+
+    public function getMyUser(Request $request) {
+        return $this->getById(app()->id);
+    }
 }

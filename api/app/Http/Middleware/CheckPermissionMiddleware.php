@@ -15,7 +15,7 @@ use \Closure;
 class CheckPermissionMiddleware
 {
     public function handle($request, Closure $next){
-        $user_id = $request->input('user_id', 1);
+        $user_id = app()->id;
         $op = $request->method() == 'DELETE' ? 'delete' : 'edit';
         if (BusinessCard::where('id', $request->id)->firstOrFail()->created_by == $user_id ||
             PermissionUser::where('user_id', $user_id)->where('business_card_id', $request->id)->whereHas('permission',

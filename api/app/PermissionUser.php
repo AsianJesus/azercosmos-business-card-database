@@ -10,7 +10,9 @@ class PermissionUser extends Model
     protected $fillable = [
         'user_id', 'permission_id', 'business_card_id'
     ];
-
+    protected $with = [
+        'permission', 'user'
+    ];
     protected $table = 'permission_user';
 
     public function businessCard()
@@ -20,7 +22,7 @@ class PermissionUser extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'user_id', 'ID');
     }
 
     public function permission()
