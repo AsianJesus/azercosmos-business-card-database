@@ -13,13 +13,13 @@
                 <div class="col" @keydown="takePhotoAtSpacebar">
                     <div class="new-bcard-webcam-buttons">
                         <b-btn @click="streaming ? stopWebcam() : startWebcam()"
-                               class="bcards-icon-button"
+                               class="bcards-icon-button g-standard-button"
                                :variant="streaming ? 'danger' : 'warning'">
                             <v-icon name="camera">
                             </v-icon>
                         </b-btn>
                         <b-btn variant="primary"
-                               class="bcards-icon-button"
+                               class="bcards-icon-button file-icon-button"
                                @click="showCrop = true">
                             <v-icon name="file-image">
 
@@ -67,6 +67,9 @@
                     </div>
                 </div>
                 <div class="col-6">
+                    <h4>
+                        Scan of card
+                    </h4>
                     <webcam ref="webcam" v-model="streaming" :width="675" :height="400"></webcam>
                     <video ref="webcam_video" v-bind:style="{display: streaming ? 'inline' : 'none'}"
                            class="new-bcard-webcam-video">
@@ -118,7 +121,7 @@ export default{
         webste: '',
         address: '',
         photo: null,
-        private: true
+        private: 1
       },
       $Tesseract: null,
       privacyOptions: [
@@ -145,7 +148,7 @@ export default{
       },
       langOptions: [
         {
-          text: 'Please, select language',
+          text: 'Please, select language for recognizing',
           value: null
         },
         {
@@ -267,6 +270,7 @@ export default{
 }
 .new-bcard-webcam-buttons{
     margin: .5rem auto;
+    text-align: left;
 }
 .new-bcard-info-cell{
     margin: .3rem auto;
@@ -277,5 +281,8 @@ export default{
     margin: .3rem auto;
     border: 1px solid black;
     padding: .2rem auto;
+}
+.file-icon-button {
+    padding: 3px 9px;
 }
 </style>

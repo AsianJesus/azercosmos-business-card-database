@@ -4,7 +4,8 @@
             <input type="text" v-model="name" :placeholder="placeholder"
                    @input="delayedSearch(name)" class="user-selector-input">
         </div>
-        <div class="user-selector-suggestions" v-if="suggestions && name">
+        <div class="user-selector-suggestions"
+             v-if="suggestions && suggestions.length && name">
             <div class="user-suggestions-list">
                 <div v-for="(user, index) in suggestionsToShow" v-bind:key="index"
                     @click="selectUser(index)" class="user-suggestion-item">
@@ -51,7 +52,7 @@ export default{
     delayedSearch (template) {
       if (!template) return
       if (!(this.lastTemplate && template.includes(this.lastTemplate))){
-        if(template.length >= 3){
+        if(template.length >= 2){
           this.search(template)
           this.lastTemplate = template
         }
@@ -66,18 +67,24 @@ export default{
 </script>
 <style>
 .user-selector-input{
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
+    border: 0;
     width: 100%;
 }
 .user-selector-suggestions{
     position: absolute;
-    background-color: #ffffff;
-    width: 70%;
-    left: 15%;
+    background-color: #f1f1f1;
+    box-shadow: 0 2px 2px 2px #30303060;
+    width: 100%;
     z-index: 1001;
+    text-align: left;
+    padding-left: .2rem;
 }
 .user-suggestion-item{
     cursor: pointer;
+    margin: .2rem auto;
+    transition: .2s;
+}
+.user-suggestion-item:hover{
+    background-color: #eeeeee;
 }
 </style>

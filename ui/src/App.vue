@@ -88,6 +88,12 @@ export default {
   },
   created () {
     this.loadUserInfo()
+    document.title = this.$route.meta.title
+  },
+  watch: {
+    $route () {
+      document.title = this.$route.meta.title
+    }
   },
   methods: {
     loadUserInfo () {

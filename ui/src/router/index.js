@@ -11,17 +11,26 @@ export default new Router({
     {
       path: '/',
       name: 'BusinessCards',
-      component: BusinessCardsPage
+      component: BusinessCardsPage,
+      meta: {
+        title: 'Business Cards Database'
+      }
     },
     {
       path: '/new-business-card/',
       name: 'NewBusinessCard',
-      component: NewBusinessCard
+      component: NewBusinessCard,
+      meta: {
+        title: 'New Business Card'
+      }
     },
     {
         path: '/:option',
         name: 'BusinessCardsWithOption',
-        component: BusinessCardsPage
+        component: BusinessCardsPage,
+        meta: {
+          title: 'Business Cards Database'
+        }
     },
   ]
 })

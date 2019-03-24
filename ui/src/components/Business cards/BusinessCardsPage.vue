@@ -83,6 +83,9 @@
                             </b-form-select>
                         </div>
                         <div class="col-6">
+                            <h4>
+                                Permissions
+                            </h4>
                             <user-selector placeholder="User" class="bcard-edit-search"
                                            @select="addUserPermission($event)">
 
@@ -129,14 +132,14 @@
                         </div>
                         <div class="bcards-edit-buttons col-12">
                             <b-btn @click="saveChanges"
-                                   class="bcards-icon-button"
+                                   class="bcards-icon-button g-wide-button"
                                    variant="success">
                                 <v-icon name="save">
 
                                 </v-icon>
                             </b-btn>
                             <b-btn @click="cancelEditing(true)"
-                                   class="bcards-icon-button"
+                                   class="bcards-icon-button g-standard-button"
                                    variant="danger">
                                 <v-icon name="ban">
 
@@ -167,7 +170,7 @@
             <div class="bcards-filter row no-gutters">
                 <div class="bcards-filter-input col-6">
                     <b-btn :size="'sm'"
-                           class="bcards-icon-button"
+                           class="bcards-icon-button bcards-filter-search-button"
                            :variant="'secondary'">
                         <img @click="filterCards" src="@/assets/icons/search.png" width="16px" class="bcards-filter-search">
                     </b-btn>
@@ -204,7 +207,7 @@
                 </div>
                 <div class="col" style="text-align: right;">
                     <b-btn @click="showColumns ^= true"
-                           class="bcards-icon-button"
+                           class="bcards-icon-button g-standard-button"
                            variant="primary">
                         <v-icon name="filter">
 
@@ -218,7 +221,7 @@
                         </div>
                     </transition>
                     <b-btn @click="createNewCard = true"
-                           class="bcards-icon-button"
+                           class="bcards-icon-button g-wide-button"
                            variant="success">
                         <v-icon name="plus-square">
 
@@ -259,7 +262,7 @@
                         <td v-if="columnsToShow.website">{{ bcard.website }}</td>
                         <td>
                             <b-btn @click="showCard(index)"
-                                   class="bcards-table-button bcards-icon-button"
+                                   class="bcards-table-button bcards-icon-button g-info-button"
                                    variant="primary">
                                 <v-icon name="info">
 
@@ -281,7 +284,7 @@
                               </i>
                           </b-btn>
                             <b-btn @click="editCard(index)"
-                                   class="bcards-table-button bcards-icon-button"
+                                   class="bcards-table-button g-edit-button bcards-icon-button"
                                    v-if="editable(index)">
                                 <v-icon name="pen">
 
@@ -291,7 +294,7 @@
                                 </i>
                             </b-btn>
                             <b-btn @click="deleteCard(bcard.id)"
-                                   class="bcards-table-button bcards-icon-button"
+                                   class="bcards-table-button bcards-icon-button g-delete-button"
                                    v-if="deletable(index)"
                                    variant="danger">
                                 <v-icon name="trash">
@@ -502,11 +505,11 @@ export default{
         }).then(response => {
           this.isUpdatingPermissions = false
             if(this.cardToEdit && this.cardToEdit.id === cardId) {
-              this.cardToEdit.permissions = response.data
+              this.cardToEdit.permissions = this.cardToEdit.permissions.filter(p => p.user_id !== userID)
             }
             for (let i = 0; i < this.businessCardsAll.length; i++) {
               if (this.businessCardsAll[i].id === cardId) {
-                this.businessCardsAll[i].permissions = response.data
+                this.businessCardsAll[i].permissions = this.businessCardsAll[i].permissions.filter(p => p.user_id !== userID)
               }
             }
         })
@@ -647,6 +650,7 @@ export default{
 }
 .bcards-edit-buttons{
     margin: .4rem auto;
+    text-align: left;
 }
 .bcards-info-header{
     cursor: pointer;
@@ -714,6 +718,9 @@ export default{
 }
 .bcards-filter-search:hover{
     transform: scale(1.2);
+}
+.bcards-filter-search-button {
+    padding: 3px 6px 4px 6px;
 }
 .bcards-filter-input{
     margin: .5rem;

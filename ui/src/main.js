@@ -11,6 +11,7 @@ import Vuex from 'vuex'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import 'vue-awesome/icons'
+import './global.css'
 import Icon from 'vue-awesome/components/Icon'
 import { serverURL } from './config'
 

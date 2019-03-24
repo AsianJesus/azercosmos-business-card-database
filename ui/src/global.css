@@ -1,0 +1,11 @@
+.g-standard-button, .g-edit-button {
+    padding: 3px 7px;
+}
+
+.g-wide-button, .g-delete-button{
+    padding: 3px 8px;
+}
+
+.g-info-button{
+    padding: 3px 12px;
+}
