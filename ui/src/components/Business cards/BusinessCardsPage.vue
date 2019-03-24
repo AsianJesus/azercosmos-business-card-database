@@ -92,11 +92,11 @@
                             </user-selector>
                             <table class="table" v-if="cardToEdit.permissions && cardToEdit.permissions.length">
                                 <tr>
-                                    <th>User</th>
-                                    <th>Read</th>
-                                    <th>Edit</th>
-                                    <th>Delete</th>
-                                    <th></th>
+                                    <th style="border-top: 0;">User</th>
+                                    <th style="border-top: 0;">Read</th>
+                                    <th style="border-top: 0;">Edit</th>
+                                    <th style="border-top: 0;">Delete</th>
+                                    <th style="border-top: 0;"></th>
                                 </tr>
                                 <tr v-for="(per, index) in groupPermissions(cardToEdit.permissions)" v-bind:key="index">
                                     <th>{{ per.user ? per.user.NAME : per.user_id }}</th>
@@ -220,7 +220,7 @@
                             </columns-list>
                         </div>
                     </transition>
-                    <b-btn @click="createNewCard = true"
+                    <b-btn @click="redirectToNewCard"
                            class="bcards-icon-button g-wide-button"
                            variant="success">
                         <v-icon name="plus-square">
@@ -231,8 +231,10 @@
                 <div class="col-12">
                   <div v-for="(value, key) in filters" v-bind:key="key" v-if="value"
                        class="bcard-filter-selected-item" @click="$set(filters, key, null); delayedFilter()" >
-                    {{ key }} - {{ value }}
-                    <img src="@/assets/icons/delete_filter.png" width="10px" >
+                    {{ formatFilterName(key) }} - {{ value }}
+                    <img src="@/assets/icons/delete_filter.png"
+                         class="bcards-icon-button"
+                         width="10px" >
                   </div>
                 </div>
             </div>
@@ -260,7 +262,18 @@
                         <td v-if="columnsToShow.mobile">{{ bcard.mobile }}</td>
                         <td v-if="columnsToShow.address">{{ bcard.address }}</td>
                         <td v-if="columnsToShow.website">{{ bcard.website }}</td>
-                        <td>
+                        <td class="bcards-table-actions">
+                            <b-btn @click="showSourceImage(index)"
+                                   class="bcards-table-button bcards-icon-button g-standard-button"
+                                   variant="warning"
+                                   v-if="bcard.image_path">
+                                <v-icon name="address-card">
+
+                                </v-icon>
+                                <i class="tooltiptext">
+                                    Show original
+                                </i>
+                            </b-btn>
                             <b-btn @click="showCard(index)"
                                    class="bcards-table-button bcards-icon-button g-info-button"
                                    variant="primary">
@@ -272,17 +285,6 @@
                                     Show card
                                 </i>
                             </b-btn>
-                          <b-btn @click="showSourceImage(index)"
-                                 class="bcards-table-button bcards-icon-button"
-                                 variant="warning"
-                                 v-if="bcard.image_path">
-                              <v-icon name="address-card">
-
-                              </v-icon>
-                              <i class="tooltiptext">
-                                  Show original
-                              </i>
-                          </b-btn>
                             <b-btn @click="editCard(index)"
                                    class="bcards-table-button g-edit-button bcards-icon-button"
                                    v-if="editable(index)">
@@ -310,8 +312,7 @@
             </div>
             <b-btn @click="showMore"
                    v-if="showCardsCount < businessCardsFiltered.length"
-                   class="bcards-show-more-button" variant="success">
-                Show more
+                   class="bcards-show-more-button g-wide-button" variant="outline-primary">
                 <v-icon name="arrow-down">
 
                 </v-icon>
@@ -420,6 +421,9 @@ export default{
     this.getConfig()
   },
   methods: {
+    formatFilterName (name) {
+      return name.replace(/[-_]/g, ' ')
+    },
     load () {
       this.isLoading = true
       this.axios.get('business-cards',{
@@ -607,6 +611,9 @@ export default{
     },
     showMore () {
       this.showCardsCount += cardsOnPage
+    },
+    redirectToNewCard () {
+      this.$router.push({ name: 'NewBusinessCard' })
     }
   }
 }
@@ -661,6 +668,10 @@ export default{
     overflow-y: auto;
     border-radius: 1rem;
     box-shadow: 0 0 4px 8px #43434343;
+}
+.bcards-table-actions{
+    text-align: right;
+    whitespace: nowrap;
 }
 .bcard-source-image-holder {
   margin: 3rem 2rem;
@@ -738,6 +749,7 @@ export default{
 }
 .bcards-table-holder{
     overflow-x: auto;
+    text-align: left;
 }
 .bcards-table-header{
     color: #626262;
@@ -774,6 +786,7 @@ export default{
 }
 .bcards-show-more-button{
     margin: 1rem auto;
+    border-radius: 100%;
 }
 .bcards-icon-button{
     cursor: pointer;

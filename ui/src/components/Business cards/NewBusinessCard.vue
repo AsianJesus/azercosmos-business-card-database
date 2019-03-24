@@ -25,7 +25,10 @@
 
                             </v-icon>
                         </b-btn>
-                        <b-btn @click="selectWebcam" v-if="streaming" variant="">
+                        <b-btn @click="selectWebcam"
+                               v-if="streaming"
+                               class="g-standard-button"
+                               variant="success">
                             <v-icon name="image">
 
                             </v-icon>
@@ -167,6 +170,11 @@ export default{
       selectedLang: null
     }
   },
+  computed: {
+    isMain () {
+      return this.$route.name === 'NewBusinessCard'
+    }
+  },
   mounted () {
     this.$Tesseract = Tesseract.create({
       workerPath: this.$store.state.serverURL + '/tesseract/worker.js',
@@ -215,6 +223,9 @@ export default{
       this.axios.post('/business-cards', form).then(response => {
         console.log(response.data)
         this.isAdding = false
+        if (this.isMain) {
+            this.$router.push({ name: 'BusinessCardsWithOption', params: {option: 'mycards'} })
+        }
         this.$emit('newCard', response.data)
       }).catch(err => {
         console.log(err)
@@ -279,7 +290,6 @@ export default{
     text-transform: capitalize;
     font-family: serif;
     margin: .3rem auto;
-    border: 1px solid black;
     padding: .2rem auto;
 }
 .file-icon-button {

@@ -1,8 +1,11 @@
 <template>
     <div class="user-selector-component">
         <div class="user-selector-holder">
-            <input type="text" v-model="name" :placeholder="placeholder"
-                   @input="delayedSearch(name)" class="user-selector-input">
+            <input type="text"
+                   v-model="name"
+                   :placeholder="placeholder"
+                   @input="delayedSearch(name)"
+                   class="user-selector-input">
         </div>
         <div class="user-selector-suggestions"
              v-if="suggestions && suggestions.length && name">
@@ -68,6 +71,8 @@ export default{
 <style>
 .user-selector-input{
     border: 0;
+    border-bottom: 1px solid #30303050;
+    border-radius: unset !important;
     width: 100%;
 }
 .user-selector-suggestions{
@@ -77,6 +82,7 @@ export default{
     width: 100%;
     z-index: 1001;
     text-align: left;
+    min-height: 3rem;
     padding-left: .2rem;
 }
 .user-suggestion-item{
