@@ -1,4 +1,4 @@
 <?php
 
-return 1;
+// return 1;
 return $_SESSION['id'];

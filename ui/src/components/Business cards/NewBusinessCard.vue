@@ -180,9 +180,9 @@ export default{
   },
   mounted () {
     this.$Tesseract = Tesseract.create({
-      workerPath: this.$store.state.serverURL + '/tesseract/worker.js',
-      langPath:   this.$store.state.serverURL + '/tesseract/langs/',
-      corePath:   this.$store.state.serverURL + '/tesseract/index.js'
+      workerPath: this.$store.state.serverURL + 'tesseract/worker.js',
+      langPath:   this.$store.state.serverURL + 'tesseract/langs/',
+      corePath:   this.$store.state.serverURL + 'tesseract/index.js'
     })
   },
   methods: {

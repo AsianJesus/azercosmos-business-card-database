@@ -1,5 +1,6 @@
 <template>
-    <div id="app" class="container-fluid">
+    <div id="app"
+         class="container-fluid">
         <!--<div class="bcards-header row">-->
         <!--&lt;!&ndash;<div class="col bcards-header-holder">-->
         <!--<router-link :to="{name: 'BusinessCards'}" class="bcards-header-nav">Main page</router-link>-->
@@ -67,7 +68,7 @@
 
             </div>
             </nav>
-        <div class="row">
+        <div class="row bcd_router-view">
             <div class="col-12">
                 <router-view></router-view>
             </div>
@@ -108,6 +109,10 @@ export default {
         -moz-osx-font-smoothing: grayscale;
         text-align: center;
         color: #2c3e50;
+    }
+
+    .bcd_router-view {
+      padding: 10px 25px;
     }
 
     .bcards-header {

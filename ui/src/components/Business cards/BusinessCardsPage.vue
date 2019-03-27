@@ -740,8 +740,7 @@ export default{
     padding: 3px 6px 4px 6px;
 }
 .bcards-filter-input{
-    margin: .5rem;
-    margin-top: 0;
+    text-align: left;
 }
 .bcards-filter-input input{
 }
