@@ -26,10 +26,8 @@
         <!--</div>&ndash;&gt;-->
         <!--</div>-->
 
-        <header class="header-class">
-            <nav class="navbar navbar navbar-light navbar-expand-md">
-                <div id="collapse" class="nav-collapse navbar-collapse collapse" style="display: none;">
-                    <ul class="navbar-nav">
+        <nav style="margin-bottom: 25px">
+            <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
                         <!--<li class="nav-link router-link-exact-active router-link-active active-module" id="link">-->
                         <!--<router-link :to="{name: 'BusinessCards'}"-->
                         <!--id="link"-->
@@ -47,14 +45,14 @@
                         <!--</router-link>-->
                         <router-link :to="{name: 'BusinessCardsWithOption', params: {option: 'public'}}"
                                      id="link"
-                                     class="nav-link"
+                                     class="nav-link nav-item"
                                      tag="li"
                         >
                             Public
                         </router-link>
                         <router-link :to="{name: 'BusinessCardsWithOption', params: {option: 'mycards'}}"
                                      id="link"
-                                     class="nav-link"
+                                     class="nav-link nav-item"
                                      tag="li"
                         >
                             My cards
@@ -67,10 +65,8 @@
                         <!--New Card-->
                         <!--</router-link>-->
 
-                    </ul>
-                </div>
+            </div>
             </nav>
-        </header>
         <div class="row">
             <div class="col-12">
                 <router-view></router-view>
@@ -236,4 +232,26 @@ export default {
         color: #7c7c7c;
         box-shadow: 0 0 3px 3px #30303020 inset;
     }
+    .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active{
+        border-color: rgb(222, 226, 230) !important;
+    }
+
+    .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.router-link-exact-active {
+        /*color: #f3f3f3;*/
+        background-color: #ededed !important;
+        border-color: transparent transparent #f3f3f3 !important;
+        border-bottom: 2px solid !important;
+        font-size: 20px;
+        font-weight: bold;
+
+    }
+
+    .nav-tabs .nav-link {
+        border: 1px solid transparent;
+        border-top-left-radius: .25rem;
+        border-top-right-radius: .25rem;
+        /*color: #eee;*/
+        font-size: 20px;
+    }
+
 </style>

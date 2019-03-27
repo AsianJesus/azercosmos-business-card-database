@@ -73,6 +73,9 @@
                     <h4>
                         Scan of card
                     </h4>
+                    <div>
+                        {{ recognizing.recognizedText }}
+                    </div>
                     <webcam ref="webcam" v-model="streaming" :width="675" :height="400"></webcam>
                     <video ref="webcam_video" v-bind:style="{display: streaming ? 'inline' : 'none'}"
                            class="new-bcard-webcam-video">

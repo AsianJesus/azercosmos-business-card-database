@@ -416,6 +416,12 @@ export default{
           : 0 ));
     }
   },
+  created () {
+    if (!this.$route.params.option) {
+      this.$router.push({ name: 'BusinessCardsWithOption', params: { option: 'public' } })
+    }
+
+  },
   mounted () {
     this.load()
     this.getConfig()
