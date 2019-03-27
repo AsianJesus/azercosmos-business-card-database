@@ -15,23 +15,18 @@
                         <b-btn @click="streaming ? stopWebcam() : startWebcam()"
                                class="bcards-icon-button g-standard-button"
                                :variant="streaming ? 'danger' : 'warning'">
-                            <v-icon name="camera">
-                            </v-icon>
+                            <font-awesome-icon :icon="cameraIcon" />
                         </b-btn>
                         <b-btn variant="primary"
                                class="bcards-icon-button file-icon-button"
                                @click="showCrop = true">
-                            <v-icon name="file-image">
-
-                            </v-icon>
+                            <font-awesome-icon :icon="fileImageIcon" />
                         </b-btn>
                         <b-btn @click="selectWebcam"
                                v-if="streaming"
                                class="g-standard-button"
                                variant="success">
-                            <v-icon name="image">
-
-                            </v-icon>
+                            <font-awesome-icon :icon="imageIcon" />
                         </b-btn>
                     </div>
                     <div>
@@ -63,9 +58,7 @@
                     <div class="new-bcard-submit">
                         <b-btn class="business-card-submit" variant="success" @click="send">
                             Create
-                            <v-icon name="plus">
-
-                            </v-icon>
+                            <font-awesome-icon :icon="plusIcon" />
                         </b-btn>
                     </div>
                 </div>
@@ -98,9 +91,7 @@
 
                     </div>
                     <vue-image-crop v-model="showCrop" noCircle :width="675" :height="400" langType="en"
-                                    @crop-success="uploadFile">
-
-                    </vue-image-crop>
+                                    @crop-success="uploadFile" />
                 </div>
             </div>
         </div>
@@ -111,6 +102,7 @@ import Webcam from '@/components/Webcam/Webcam.vue'
 import VueImageCrop from 'vue-image-crop-upload'
 import Tesseract from 'tesseract.js'
 import { recognize } from '@/assets/js/parsingFunctions.js'
+import { faCamera, faFileImage, faImage, faPlus } from '@fortawesome/free-solid-svg-icons'
 export default{
   components: {
     Webcam,
@@ -176,7 +168,11 @@ export default{
   computed: {
     isMain () {
       return this.$route.name === 'NewBusinessCard'
-    }
+    },
+    cameraIcon: () => faCamera,
+    fileImageIcon: () => faFileImage,
+    imageIcon: () => faImage,
+    plusIcon: () => faPlus,
   },
   mounted () {
     this.$Tesseract = Tesseract.create({

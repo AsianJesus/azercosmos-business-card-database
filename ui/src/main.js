@@ -14,6 +14,7 @@ import 'vue-awesome/icons'
 import './global.css'
 import Icon from 'vue-awesome/components/Icon'
 import { serverURL } from './config'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 axios.defaults.baseURL = serverURL
 
@@ -22,6 +23,8 @@ Vue.use(Vuex)
 Vue.use(VueCookie)
 Vue.use(VueBootstrap)
 Vue.component('v-icon', Icon)
+Vue.component('font-awesome-icon', FontAwesomeIcon)
+
 
 const store = new Vuex.Store({
   state: {

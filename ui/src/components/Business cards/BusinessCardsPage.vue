@@ -119,9 +119,7 @@
                                         <i @click="deleteUserPermission(cardToEdit.id, per.user.ID)"
                                                class="bcards-table-button bcards-icon-button"
                                                variant="danger">
-                                            <v-icon name="trash">
-
-                                            </v-icon>
+                                            <font-awesome-icon :icon="trashIcon" />
                                             <i class="tooltiptext">
                                                 Delete
                                             </i>
@@ -134,16 +132,12 @@
                             <b-btn @click="saveChanges"
                                    class="bcards-icon-button g-wide-button"
                                    variant="success">
-                                <v-icon name="save">
-
-                                </v-icon>
+                                <font-awesome-icon :icon="saveIcon" />
                             </b-btn>
                             <b-btn @click="cancelEditing(true)"
                                    class="bcards-icon-button g-standard-button"
                                    variant="danger">
-                                <v-icon name="ban">
-
-                                </v-icon>
+                                <font-awesome-icon :icon="banIcon" />
                             </b-btn>
                         </div>
                     </div>
@@ -172,7 +166,10 @@
                     <b-btn :size="'sm'"
                            class="bcards-icon-button bcards-filter-search-button"
                            :variant="'secondary'">
+<!--
                         <img @click="filterCards" src="@/assets/icons/search.png" width="16px" class="bcards-filter-search">
+-->
+                        <font-awesome-icon  :icon="searchIcon" />
                     </b-btn>
                     <input type="text" v-model="filters.name" @input="delayedFilter" v-if="selectedFilter === 1">
                     <input type="text" v-model="filters.company_name" @input="delayedFilter" v-if="selectedFilter === 2">
@@ -209,23 +206,17 @@
                     <b-btn @click="showColumns ^= true"
                            class="bcards-icon-button g-standard-button"
                            variant="primary">
-                        <v-icon name="filter">
-
-                        </v-icon>
+                        <font-awesome-icon :icon="filterIcon" />
                     </b-btn>
                     <transition name="columns">
                         <div class="columns-holder" v-if="showColumns">
-                            <columns-list v-model="columnsToShow" @input="saveConfig">
-
-                            </columns-list>
+                            <columns-list v-model="columnsToShow" @input="saveConfig" />
                         </div>
                     </transition>
                     <b-btn @click="redirectToNewCard"
                            class="bcards-icon-button g-wide-button"
                            variant="success">
-                        <v-icon name="plus-square">
-
-                        </v-icon>
+                        <font-awesome-icon :icon="plusIcon" />
                     </b-btn>
                 </div>
                 <div class="col-12">
@@ -243,17 +234,81 @@
                     <tr class="bcards-table-header">
                         <th @click="sortBy('id')" class="bcards-info-header" v-if="columnsToShow.id">
                             ID
+                            <font-awesome-icon v-if="sorting.by === 'id' && sorting.asc"
+                                               :icon="arrowUp" />
+                            <font-awesome-icon v-if="sorting.by === 'id' && !sorting.asc"
+                                               :icon="arrowDown" />
                         </th>
-                        <th scope="col" class="bcards-info-header" @click="sortBy('name')" v-if="columnsToShow.name">Name</th>
-                        <th @click="sortBy('company_name')" class="bcards-info-header" v-if="columnsToShow.company_name">Company</th>
-                        <th @click="sortBy('position')" class="bcards-info-header" v-if="columnsToShow.position">Position</th>
-                        <th @click="sortBy('email')" class="bcards-info-header" v-if="columnsToShow.email">Email</th>
-                        <th @click="sortBy('mobile')" class="bcards-info-header" v-if="columnsToShow.mobile">Phone</th>
-                        <th @click="sortBy('address')" class="bcards-info-header" v-if="columnsToShow.address">Address</th>
-                        <th @click="sortBy('website')" class="bcards-info-header" v-if="columnsToShow.website">Website</th>
+                        <th scope="col"
+                            class="bcards-info-header"
+                            @click="sortBy('name')"
+                            v-if="columnsToShow.name">
+                            Name
+                            <font-awesome-icon v-if="sorting.by === 'name' && sorting.asc"
+                                               :icon="arrowUp" />
+                            <font-awesome-icon v-if="sorting.by === 'name' && !sorting.asc"
+                                               :icon="arrowDown" />
+                        </th>
+                        <th @click="sortBy('company_name')"
+                            class="bcards-info-header"
+                            v-if="columnsToShow.company_name">
+                            Company
+                            <font-awesome-icon v-if="sorting.by === 'company_name' && sorting.asc"
+                                               :icon="arrowUp" />
+                            <font-awesome-icon v-if="sorting.by === 'company_name' && !sorting.asc"
+                                               :icon="arrowDown" />
+                        </th>
+                        <th @click="sortBy('position')"
+                            class="bcards-info-header"
+                            v-if="columnsToShow.position">
+                            Position
+                            <font-awesome-icon v-if="sorting.by === 'position' && sorting.asc"
+                                               :icon="arrowUp" />
+                            <font-awesome-icon v-if="sorting.by === 'position' && !sorting.asc"
+                                               :icon="arrowDown" />
+                        </th>
+                        <th @click="sortBy('email')"
+                            class="bcards-info-header"
+                            v-if="columnsToShow.email">
+                            Email
+                            <font-awesome-icon v-if="sorting.by === 'email' && sorting.asc"
+                                               :icon="arrowUp" />
+                            <font-awesome-icon v-if="sorting.by === 'email' && !sorting.asc"
+                                               :icon="arrowDown" />
+                        </th>
+                        <th @click="sortBy('mobile')"
+                            class="bcards-info-header"
+                            v-if="columnsToShow.mobile">
+                            Phone
+                            <font-awesome-icon v-if="sorting.by === 'mobile' && sorting.asc"
+                                               :icon="arrowUp" />
+                            <font-awesome-icon v-if="sorting.by === 'mobile' && !sorting.asc"
+                                               :icon="arrowDown" />
+                        </th>
+                        <th @click="sortBy('address')"
+                            class="bcards-info-header"
+                            v-if="columnsToShow.address">
+                            Address
+                            <font-awesome-icon v-if="sorting.by === 'address' && sorting.asc"
+                                               :icon="arrowUp" />
+                            <font-awesome-icon v-if="sorting.by === 'address' && !sorting.asc"
+                                               :icon="arrowDown" />
+                        </th>
+                        <th @click="sortBy('website')"
+                            class="bcards-info-header"
+                            v-if="columnsToShow.website">
+                            Website
+                            <font-awesome-icon v-if="sorting.by === 'website' && sorting.asc"
+                                               :icon="arrowUp" />
+                            <font-awesome-icon v-if="sorting.by === 'website' && !sorting.asc"
+                                               :icon="arrowDown" />
+                        </th>
                         <th>Controls</th>
                     </tr>
-                    <tr  v-for="(bcard, index) in businessCardsToShow" v-bind:key="index">
+                    <tr  v-for="(bcard, index) in businessCardsToShow"
+                         v-bind:key="index"
+                         class="bcards-table-element"
+                         @click="showCard(index)" >
                         <td v-if="columnsToShow.id"> {{ bcard.id }}</td>
                         <td v-if="columnsToShow.name">{{ bcard.name }}</td>
                         <td v-if="columnsToShow.company_name">{{ bcard.company_name }}</td>
@@ -262,7 +317,8 @@
                         <td v-if="columnsToShow.mobile">{{ bcard.mobile }}</td>
                         <td v-if="columnsToShow.address">{{ bcard.address }}</td>
                         <td v-if="columnsToShow.website">{{ bcard.website }}</td>
-                        <td class="bcards-table-actions">
+                        <td class="bcards-table-actions"
+                            @click="$event.stopPropagation()" >
                             <b-btn @click="showSourceImage(index)"
                                    class="bcards-table-button bcards-icon-button g-standard-button"
                                    variant="warning"
@@ -274,23 +330,10 @@
                                     Show original
                                 </i>
                             </b-btn>
-                            <b-btn @click="showCard(index)"
-                                   class="bcards-table-button bcards-icon-button g-info-button"
-                                   variant="primary">
-                                <v-icon name="info">
-
-
-                                </v-icon>
-                                <i class="tooltiptext">
-                                    Show card
-                                </i>
-                            </b-btn>
                             <b-btn @click="editCard(index)"
                                    class="bcards-table-button g-edit-button bcards-icon-button"
                                    v-if="editable(index)">
-                                <v-icon name="pen">
-
-                                </v-icon>
+                                <font-awesome-icon :icon="editIcon" />
                                 <i class="tooltiptext">
                                     Edit
                                 </i>
@@ -299,9 +342,7 @@
                                    class="bcards-table-button bcards-icon-button g-delete-button"
                                    v-if="deletable(index)"
                                    variant="danger">
-                                <v-icon name="trash">
-
-                                </v-icon>
+                                <font-awesome-icon :icon="trashIcon" />
                                 <i class="tooltiptext">
                                     Delete
                                 </i>
@@ -313,9 +354,7 @@
             <b-btn @click="showMore"
                    v-if="showCardsCount < businessCardsFiltered.length"
                    class="bcards-show-more-button g-wide-button" variant="outline-primary">
-                <v-icon name="arrow-down">
-
-                </v-icon>
+                <v-icon name="arrow-down" />
             </b-btn>
         </div>
     </div>
@@ -325,6 +364,7 @@ import ColumnsList from '@/components/Tools/ColumnsList.vue'
 import NewBusinessCard from '@/components/Business cards/NewBusinessCard.vue'
 import UserSelector from '@/components/Tools/UserSelector.vue'
 import lodash from 'lodash'
+import { faEdit, faTrashAlt, faCaretDown, faCaretUp, faFilter, faPlus, faSearch, faSave, faBan } from '@fortawesome/free-solid-svg-icons'
 const cardsOnPage = 5
 const availableLoadOptions = {
     'mycards': {
@@ -414,7 +454,16 @@ export default{
       (this.sorting.asc ? 1 : -1) * (a[this.sorting.by] ? ((typeof a[this.sorting.by] === 'string') ?
           a[this.sorting.by].localeCompare(b[this.sorting.by]) : a[this.sorting.by] - b[this.sorting.by])
           : 0 ));
-    }
+    },
+    editIcon: () => faEdit,
+    trashIcon: () => faTrashAlt,
+    arrowDown: () => faCaretDown,
+    arrowUp: () => faCaretUp,
+    filterIcon: () => faFilter,
+    plusIcon: () => faPlus,
+    searchIcon: () => faSearch,
+    saveIcon: () => faSave,
+    banIcon: () => faBan
   },
   created () {
     if (!this.$route.params.option) {
@@ -677,7 +726,7 @@ export default{
 }
 .bcards-table-actions{
     text-align: right;
-    whitespace: nowrap;
+    white-space: nowrap;
 }
 .bcard-source-image-holder {
   margin: 3rem 2rem;
@@ -761,6 +810,9 @@ export default{
     font-weight: bold;
     border-bottom: 4px solid #9e9e9e
 }
+.bcards-table-header th{
+    white-space: nowrap;
+}
 .bcards-table{
     max-width: 100%;
     font-family: Segoe UI,Frutiger,Frutiger Linotype,Dejavu Sans,Helvetica Neue,Arial,sans-serif;
@@ -794,6 +846,9 @@ export default{
     border-radius: 100%;
 }
 .bcards-icon-button{
+    cursor: pointer;
+}
+.bcards-table-element {
     cursor: pointer;
 }
 .columns-holder{
