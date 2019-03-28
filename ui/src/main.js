@@ -7,7 +7,6 @@ import VueAxios from 'vue-axios'
 import axios from 'axios'
 import VueBootstrap from 'bootstrap-vue'
 import VueCookie from 'vue-cookie'
-import Vuex from 'vuex'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import 'vue-awesome/icons'
@@ -15,36 +14,15 @@ import './global.css'
 import Icon from 'vue-awesome/components/Icon'
 import { serverURL } from './config'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import store from './store'
 
 axios.defaults.baseURL = serverURL
 
 Vue.use(VueAxios, axios)
-Vue.use(Vuex)
 Vue.use(VueCookie)
 Vue.use(VueBootstrap)
 Vue.component('v-icon', Icon)
 Vue.component('font-awesome-icon', FontAwesomeIcon)
-
-
-const store = new Vuex.Store({
-  state: {
-    serverURL: serverURL,
-    user: null
-  },
-  getters: {
-    userId: state => {
-      return 1
-    },
-    userName: state => {
-      return state.user ? state.user.name : null
-    }
-  },
-  mutations: {
-    updateUserInfo (state, userInfo) {
-      state.user = userInfo
-    }
-  }
-})
 
 Vue.config.productionTip = false
 
