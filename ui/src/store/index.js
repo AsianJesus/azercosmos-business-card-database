@@ -14,7 +14,7 @@ const state = {
 const mutations = {
   updateUserInfo (state, userInfo) {
     Object.keys(userInfo).forEach(field => {
-      state.user[field] = userInfo[field]
+      state.user[field.toLowerCase()] = userInfo[field]
     })
   }
 }
