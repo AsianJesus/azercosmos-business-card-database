@@ -9,3 +9,16 @@
 .g-info-button{
     padding: 3px 12px;
 }
+.tooltiptext{
+    visibility: hidden;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 5px 6px;
+    border-radius: 6px;
+    bottom: 75%;
+    right: 0;
+    /* Position the tooltip text - see examples below! */
+    position: absolute;
+    z-index: 1;
+}

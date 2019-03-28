@@ -1,12 +1,12 @@
 <template>
     <div class="business-cards-page">
-        <div v-if="isLoading">
+        <!--<div v-if="isLoading">
             <h2>
                 Content is loading..
                 Please be patient
             </h2>
-        </div>
-        <div v-else>
+        </div>-->
+        <div>
             <transition name="bcard-show">
                 <div class="bcard-show-holder" v-if="cardToShow" @click="hideCard">
                     <div class="bcard-show-form" @click="$event.stopPropagation()">
@@ -230,7 +230,7 @@
                 </div>
             </div>
             <div class="bcards-table-holder">
-                <table class="table bcards-table">
+                <table class="table table-bordered bcards-table">
                     <tr class="bcards-table-header">
                         <th @click="sortBy('id')" class="bcards-info-header" v-if="columnsToShow.id">
                             ID
@@ -319,33 +319,22 @@
                         <td v-if="columnsToShow.website">{{ bcard.website }}</td>
                         <td class="bcards-table-actions"
                             @click="$event.stopPropagation()" >
-                            <b-btn @click="showSourceImage(index)"
-                                   class="bcards-table-button bcards-icon-button g-standard-button"
-                                   variant="warning"
-                                   v-if="bcard.image_path">
-                                <v-icon name="address-card">
-
-                                </v-icon>
-                                <i class="tooltiptext">
-                                    Show original
-                                </i>
-                            </b-btn>
                             <b-btn @click="editCard(index)"
                                    class="bcards-table-button g-edit-button bcards-icon-button"
                                    v-if="editable(index)">
                                 <font-awesome-icon :icon="editIcon" />
-                                <i class="tooltiptext">
+                                <!--<i class="tooltiptext">
                                     Edit
-                                </i>
+                                </i>-->
                             </b-btn>
                             <b-btn @click="deleteCard(bcard.id)"
                                    class="bcards-table-button bcards-icon-button g-delete-button"
                                    v-if="deletable(index)"
                                    variant="danger">
                                 <font-awesome-icon :icon="trashIcon" />
-                                <i class="tooltiptext">
+                                <!--<i class="tooltiptext">
                                     Delete
-                                </i>
+                                </i>-->
                             </b-btn>
                         </td>
                     </tr>
@@ -439,7 +428,7 @@ export default{
     loadOptions () {
       let options = availableLoadOptions[this.option] || null
       if (options && options['created_by'] && options['created_by'] === 'my_id') {
-        options['created_by'] = this.userID
+        options['created_by'] = this.userId
       }
       return options
     },
@@ -611,7 +600,11 @@ export default{
       this.cardToEdit = null
     },
     showCard (index) {
-      this.cardToShow = this.businessCardsToShow[index]
+      if (this.businessCardsToShow[index].image_path) {
+        this.showSourceImage(index)
+      } else {
+        this.cardToShow = this.businessCardsToShow[index]
+      }
     },
     hideCard () {
       this.cardToShow = null
@@ -819,8 +812,18 @@ export default{
     margin: 0;
     border-top: 0 !important;
 }
+.table td{
+    padding: .3rem;
+    font-size: 15px;
+}
 .bcards-table tr:nth-child(even){
-    background-color: #f2f2f2;
+    background-color: rgba(0, 0, 0, 0.05);
+}
+.bcards-table tr:hover{
+    background-color: rgba(0, 0, 0, 0.1)
+}
+.bcards-table tr:first-of-type:hover{
+    background-color: transparent !important;
 }
 .bcards-table-button{
     position: relative;

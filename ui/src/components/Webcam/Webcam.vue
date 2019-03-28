@@ -1,9 +1,10 @@
 <template>
     <div class="webcam-component">
-        <canvas ref="canvas" style="display: none;">
-
-        </canvas>
-        <video ref="video" v-bind:srcObject="stream" style="display: none;"></video>
+        <canvas ref="canvas"
+                style="display: none;" />
+        <video ref="video"
+               v-bind:srcObject="stream"
+               style="display: none;" />
     </div>
 </template>
 <script>
@@ -11,11 +12,11 @@ export default{
   props: {
     width: {
       type: Number,
-      default: 360
+      default: 720
     },
     height: {
       type: Number,
-      default: 480
+      default: 960
     },
     value: {
       type: Boolean,
@@ -39,7 +40,7 @@ export default{
   methods: {
     startVideo (callback) {
       if (this.streaming) return
-      navigator.mediaDevices.getUserMedia({ video: {height: this.height, width: this.width}, audio: false}).then(stream => {
+      navigator.mediaDevices.getUserMedia({ video: {}}).then(stream => {
         this.streaming = true
         this.stream = stream
         this.$refs.video.srcObject = stream
@@ -66,8 +67,8 @@ export default{
         this.startVideo()
       }
       let context = this.$refs.canvas.getContext('2d')
-      this.$refs.canvas.width = this.width
-      this.$refs.canvas.height = this.height
+      this.$refs.canvas.width = this.$refs.video.videoWidth
+      this.$refs.canvas.height = this.$refs.video.videoHeight
       context.drawImage(this.$refs.video, 0, 0, this.width, this.height)
       this.imageUrl = this.$refs.canvas.toDataURL('image/jpeg')
       return this.imageUrl

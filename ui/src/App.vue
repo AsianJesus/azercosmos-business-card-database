@@ -69,7 +69,8 @@
             </div>
             </nav>
         <div class="row bcd_router-view">
-            <div class="col-12">
+            <div class="col-12"
+                 v-if="$store.getters.userId" >
                 <router-view></router-view>
             </div>
         </div>

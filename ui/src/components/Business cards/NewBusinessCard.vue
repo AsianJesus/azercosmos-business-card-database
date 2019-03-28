@@ -10,23 +10,23 @@
         </div>
         <div class="business-card-form col-12" v-else>
             <div class="row">
-                <div class="col" @keydown="takePhotoAtSpacebar">
+                <div class="col">
                     <div class="new-bcard-webcam-buttons">
-                        <b-btn @click="streaming ? stopWebcam() : startWebcam()"
+                        <b-btn @click="startWebcam"
+                               v-if="!streaming"
                                class="bcards-icon-button g-standard-button"
-                               :variant="streaming ? 'danger' : 'warning'">
+                               variant="warning">
                             <font-awesome-icon :icon="cameraIcon" />
+                            <!--<i class="tooltiptext">
+                                Webcam
+                            </i>-->
+                            Capture
                         </b-btn>
                         <b-btn variant="primary"
                                class="bcards-icon-button file-icon-button"
                                @click="showCrop = true">
                             <font-awesome-icon :icon="fileImageIcon" />
-                        </b-btn>
-                        <b-btn @click="selectWebcam"
-                               v-if="streaming"
-                               class="g-standard-button"
-                               variant="success">
-                            <font-awesome-icon :icon="imageIcon" />
+                            Upload file
                         </b-btn>
                     </div>
                     <div>
@@ -57,32 +57,46 @@
                     </div>
                     <div class="new-bcard-submit">
                         <b-btn class="business-card-submit" variant="success" @click="send">
-                            Create
                             <font-awesome-icon :icon="plusIcon" />
+                            Create
                         </b-btn>
                     </div>
                 </div>
                 <div class="col-6">
-                    <h4>
-                        Scan of card
-                    </h4>
+                    <div class="row">
+                        <div class="col-6">
+                            <b-form-select :options="langOptions" v-model="selectedLang" @change="rerunRecognizing" />
+                        </div>
+                        <div class="col-6"
+                             style="text-align: right;" >
+                            <b-btn @click="selectWebcam"
+                                   v-if="streaming"
+                                   class="bcards-icon-button"
+                                   variant="success">
+                                <font-awesome-icon :icon="cameraIcon" />
+                                Capture
+                            </b-btn>
+                        </div>
+                    </div>
                     <div>
                         {{ recognizing.recognizedText }}
                     </div>
-                    <webcam ref="webcam" v-model="streaming" :width="675" :height="400"></webcam>
+                    <webcam ref="webcam"
+                            :height="500"
+                            :width="750"
+                            v-model="streaming" />
                     <video ref="webcam_video" v-bind:style="{display: streaming ? 'inline' : 'none'}"
                            class="new-bcard-webcam-video">
 
                     </video>
-                    <b-form-select :options="langOptions" v-model="selectedLang" @change="rerunRecognizing">
-
-                    </b-form-select>
                     <div v-if="recognizing.progress" class="recognizing-progress">
                         <h5>
                           {{ recognizing.progress.status }}
                         </h5>
-                        <b-progress :value="recognizing.progress.progress" :max="1" label="Recognizing" show-progress>
-                        </b-progress>
+                        <b-progress :value="recognizing.progress.progress"
+                                    :max="1"
+                                    label="Recognizing"
+                                    show-progress />
                     </div>
                     <div @click="showCrop = true">
                         <img :src="imageUrl"
@@ -90,7 +104,12 @@
                              class="new-bcard-image" v-if="imageUrl">
 
                     </div>
-                    <vue-image-crop v-model="showCrop" noCircle :width="675" :height="400" langType="en"
+                    <vue-image-crop v-model="showCrop"
+                                    noCircle
+                                    :width="500"
+                                    :height="300"
+                                    langType="en"
+                                    ref="imageCrop"
                                     @crop-success="uploadFile" />
                 </div>
             </div>
@@ -146,7 +165,7 @@ export default{
       },
       langOptions: [
         {
-          text: 'Please, select language for recognizing',
+          text: 'Language',
           value: null
         },
         {
@@ -162,7 +181,8 @@ export default{
           value: 'aze'
         }
       ],
-      selectedLang: null
+      selectedLang: null,
+      $keyListener: null
     }
   },
   computed: {
@@ -175,6 +195,7 @@ export default{
     plusIcon: () => faPlus,
   },
   mounted () {
+    this.startWebcam()
     this.$Tesseract = Tesseract.create({
       workerPath: this.$store.state.serverURL + 'tesseract/worker.js',
       langPath:   this.$store.state.serverURL + 'tesseract/langs/',
@@ -183,16 +204,27 @@ export default{
   },
   methods: {
     selectWebcam () {
-      this.uploadFile(this.$refs.webcam.takePicture())
+      let image = this.$refs.webcam.takePicture()
+      fetch(image).then(photo => photo.blob()).then(photo => {
+          console.log(photo)
+          this.$refs.imageCrop.setSourceImg(photo)
+      })
+      this.showCrop = true
+      // this.stopWebcam()
     },
     startWebcam () {
       this.$refs.webcam.startVideo(stream => {
         this.$refs.webcam_video.srcObject = stream
         this.$refs.webcam_video.play()
       })
+      if (!this.$keyListener) {
+        document.addEventListener('keydown', this.takePhotoAtSpacebar)
+      }
     },
     stopWebcam () {
       this.$refs.webcam.stopVideo()
+      document.removeEventListener('keydown', this.$keyListener)
+      this.$keyListener = null
     },
     takePhotoAtSpacebar (event) {
       if(this.streaming && event.keyCode === 32) {
@@ -200,7 +232,8 @@ export default{
       }
     },
     uploadFile (url) {
-      this.imageUrl = url  
+      this.imageUrl = url
+      this.stopWebcam()
       fetch(this.imageUrl).then(photo => photo.blob()).then(file => {
         this.form.photo = file
         this.recognizeImage(file)
@@ -293,5 +326,11 @@ export default{
 }
 .file-icon-button {
     padding: 3px 9px;
+}
+.bcards-icon-button {
+    position: relative;
+}
+.bcards-icon-button:hover .tooltiptext{
+    visibility: visible;
 }
 </style>
