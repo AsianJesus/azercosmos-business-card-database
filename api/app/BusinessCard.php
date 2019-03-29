@@ -14,6 +14,10 @@ class BusinessCard extends Model
         'mobile', 'email', 'website', 'image_path', 'created_by', 'deleted_by'
     ];
 
+    protected $with = [
+        'notes'
+    ];
+
     protected $table = 'business_cards';
 
     public function created_by()
@@ -24,6 +28,10 @@ class BusinessCard extends Model
     public function permissions()
     {
         return $this->hasMany(PermissionUser::class, 'business_card_id');
+    }
+
+    public function notes() {
+        return $this->hasMany(Note::class);
     }
 
 }

@@ -30,30 +30,43 @@
                         </b-btn>
                     </div>
                     <div>
-                        <b-form-input class="new-bcard-info-cell" v-model="form.name" id="name" placeholder="Name" type="text">
-
-                        </b-form-input>
-                        <b-form-input class="new-bcard-info-cell" type="text" placeholder="Company" v-model="form.company_name">
-
-                        </b-form-input>
-                        <b-form-input class="new-bcard-info-cell" type="text" placeholder="Position" v-model="form.position">
-
-                        </b-form-input>
-                        <b-form-input class="new-bcard-info-cell" type="text" placeholder="Address" v-model="form.address">
-
-                        </b-form-input>
-                        <b-form-input class="new-bcard-info-cell" type="tel" placeholder="Phone" v-model="form.mobile">
-
-                        </b-form-input>
-                        <b-form-input class="new-bcard-info-cell" type="email" placeholder="Email" v-model="form.email">
-
-                        </b-form-input>
-                        <b-form-input class="new-bcard-info-cell" type="text" placeholder="Website" v-model="form.website">
-
-                        </b-form-input>
-                        <b-form-select class="new-bcard-info-cell" v-model="form.private" :options="privacyOptions">
-
-                        </b-form-select>
+                        <b-form-input class="new-bcard-info-cell"
+                                      v-model="form.name"
+                                      id="name"
+                                      placeholder="Name"
+                                      type="text" />
+                        <b-form-input class="new-bcard-info-cell"
+                                      type="text"
+                                      placeholder="Company"
+                                      v-model="form.company_name" />
+                        <b-form-input class="new-bcard-info-cell"
+                                      type="text"
+                                      placeholder="Position"
+                                      v-model="form.position" />
+                        <b-form-input class="new-bcard-info-cell"
+                                      type="text"
+                                      placeholder="Address"
+                                      v-model="form.address" />
+                        <b-form-input class="new-bcard-info-cell"
+                                      type="tel"
+                                      placeholder="Phone"
+                                      v-model="form.mobile" />
+                        <b-form-input class="new-bcard-info-cell"
+                                      type="email"
+                                      placeholder="Email"
+                                      v-model="form.email" />
+                        <b-form-input class="new-bcard-info-cell"
+                                      type="text"
+                                      placeholder="Website"
+                                      v-model="form.website" />
+                        <b-form-select class="new-bcard-info-cell"
+                                       v-model="form.private"
+                                       :options="privacyOptions" />
+                    </div>
+                    <div>
+                        <b-form-textarea    class="new-bcard-info-cell"
+                                            placeholder="Note"
+                                            v-model="form.note" />
                     </div>
                     <div class="new-bcard-submit">
                         <b-btn class="business-card-submit" variant="success" @click="send">
@@ -135,6 +148,7 @@ export default{
         position: '',
         mobile: '',
         email: '',
+        note: '',
         webste: '',
         address: '',
         photo: null,

@@ -25,7 +25,11 @@ class BusinessCardController extends Controller
             $request['image_path'] = 'images/'.$name;
         }
         $request['created_by'] = app()->id;
-        return parent::add($request);
+        $card = parent::add($request);
+        if ($request->input('note')) {
+            $card->notes()->create(['note' => $request->input('note')]);
+        }
+        return $card->load(['permissions', 'notes']);
     }
     public function getAll(Request $request)
     {
