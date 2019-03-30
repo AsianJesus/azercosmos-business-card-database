@@ -9,55 +9,65 @@
         <div>
             <transition name="bcard-show">
                 <div class="bcard-show-holder" v-if="cardToShow" @click="hideCard">
-                    <div class="bcard-show-form" @click="$event.stopPropagation()">
-                        <div class="row bcard-show-name-holder"
-                             style="margin: auto 0 !important;"
-                        >
+                    <div class="bcard-show-info-holder">
+                        <div class="bcard-show-form" @click="$event.stopPropagation()">
+                            <div class="row bcard-show-name-holder"
+                                 style="margin: auto 0 !important;"
+                            >
                             <span class="col-12 bcard-show-name">
                                 {{ cardToShow.name }}
                             </span>
-                        </div>
-                        <div class="row bcard-show-company-holder"
-                             style="margin: auto 0 !important;"
-                        >
+                            </div>
+                            <div class="row bcard-show-company-holder"
+                                 style="margin: auto 0 !important;"
+                            >
                             <span class="col-12 bcard-show-company">
                                 {{ cardToShow.company_name }}
                             </span>
-                        </div>
-                        <div class="row bcard-show-positon-holder"
-                             style="margin: auto 0 !important;"
-                        >
+                            </div>
+                            <div class="row bcard-show-positon-holder"
+                                 style="margin: auto 0 !important;"
+                            >
                             <span class="col-12 bcard-show-position">
                                 {{ cardToShow.position }}
                             </span>
+                            </div>
+                            <div class="row bcard-show-icons-holder"
+                                 style="margin: auto 0 !important;"
+                            >
+                                <div class="col-4 bcard-show-icon-holder">
+                                    <img src='@/assets/icons/location.png' width="42px">
+                                </div>
+                                <div class="col-4 bcard-show-icon-holder">
+                                    <img src='@/assets/icons/phone.png' width="42px">
+                                </div>
+                                <div class="col-4 bcard-show-icon-holder">
+                                    <img src='@/assets/icons/web.png' width="42px">
+                                </div>
+                            </div>
+                            <div class="row bcard-show-additional-info-holder"
+                                 style="margin: auto 0 !important;"
+                            >
+                                <div class="col-4 bcard-show-address">
+                                    {{ cardToShow.address }}
+                                </div>
+                                <div class="col-4 bcard-show-mobile">
+                                    {{ cardToShow.mobile }}
+                                </div>
+                                <div class="col-4 bcard-show-website">
+                                    {{ cardToShow.website }}
+                                </div>
+                            </div>
+                            <img src="@/assets/icons/bottom line.png" class="row bcard-show-bottom-line" style="margin: auto 0">
                         </div>
-                        <div class="row bcard-show-icons-holder"
-                             style="margin: auto 0 !important;"
-                        >
-                            <div class="col-4 bcard-show-icon-holder">
-                                <img src='@/assets/icons/location.png' width="42px">
-                            </div>
-                            <div class="col-4 bcard-show-icon-holder">
-                                <img src='@/assets/icons/phone.png' width="42px">
-                            </div>
-                            <div class="col-4 bcard-show-icon-holder">
-                                <img src='@/assets/icons/web.png' width="42px">
-                            </div>
+                        <div class="bcard-note-header"
+                             v-if="cardToShow.note" >
+                            Note
                         </div>
-                        <div class="row bcard-show-additional-info-holder"
-                             style="margin: auto 0 !important;"
-                        >
-                            <div class="col-4 bcard-show-address">
-                                {{ cardToShow.address }}
-                            </div>
-                            <div class="col-4 bcard-show-mobile">
-                                {{ cardToShow.mobile }}
-                            </div>
-                            <div class="col-4 bcard-show-website">
-                                {{ cardToShow.website }}
-                            </div>
-                        </div>                          
-                        <img src="@/assets/icons/bottom line.png" class="row bcard-show-bottom-line" style="margin: auto 0">
+                        <div class="bcard-note-body"
+                             v-if="cardToShow.note" >
+                            {{ cardToShow.note }}
+                        </div>
                     </div>
                 </div>
             </transition>
@@ -155,9 +165,22 @@
                 </div>
             </transition>
             <transition name="bcard-source-image">
-                <div class="bcard-show-holder" v-if="imageToShow" @click="imageToShow = null">
+                <div class="bcard-show-holder"
+                     v-if="cardToShowSourceImage"
+                     @click="cardToShowSourceImage = null">
                   <div class="bcard-source-image-holder">
-                    <img :src="$store.state.serverURL + '/' + imageToShow" class="bcard-source-image" @click="$event.stopPropagation()">
+                      <div class="bcard-show-info-holder">
+                          <img :src="$store.state.serverURL + '/' + cardToShowSourceImage.image_path"
+                               class="bcard-source-image">
+                          <div class="bcard-note-header"
+                               v-if="cardToShowSourceImage.note" >
+                              Note
+                          </div>
+                          <div class="bcard-note-body"
+                               v-if="cardToShowSourceImage.note" >
+                              {{ cardToShowSourceImage.note }}
+                          </div>
+                      </div>
                   </div>
                 </div>
             </transition>
@@ -171,13 +194,38 @@
 -->
                         <font-awesome-icon  :icon="searchIcon" />
                     </b-btn>
-                    <input type="text" v-model="filters.name" @input="delayedFilter" v-if="selectedFilter === 1">
-                    <input type="text" v-model="filters.company_name" @input="delayedFilter" v-if="selectedFilter === 2">
-                    <input type="text" v-model="filters.position" @input="delayedFilter" v-if="selectedFilter === 3">
-                    <input type="text" v-model="filters.email" @input="delayedFilter" v-if="selectedFilter === 4">
-                    <input type="text" v-model="filters.mobile" @input="delayedFilter" v-if="selectedFilter === 5">
-                    <input type="text" v-model="filters.address" @input="delayedFilter" v-if="selectedFilter === 6">
-                    <input type="text" v-model="filters.website" @input="delayedFilter" v-if="selectedFilter === 7">
+                    <input type="text"
+                           v-model="filters.name"
+                           @input="delayedFilter"
+                           v-if="selectedFilter === 1">
+                    <input type="text"
+                           v-model="filters.company_name"
+                           @input="delayedFilter"
+                           v-if="selectedFilter === 2">
+                    <input type="text"
+                           v-model="filters.position"
+                           @input="delayedFilter"
+                           v-if="selectedFilter === 3">
+                    <input type="text"
+                           v-model="filters.email"
+                           @input="delayedFilter"
+                           v-if="selectedFilter === 4">
+                    <input type="text"
+                           v-model="filters.mobile"
+                           @input="delayedFilter"
+                           v-if="selectedFilter === 5">
+                    <input type="text"
+                           v-model="filters.address"
+                           @input="delayedFilter"
+                           v-if="selectedFilter === 6">
+                    <input type="text"
+                           v-model="filters.website"
+                           @input="delayedFilter"
+                           v-if="selectedFilter === 7">
+                    <input type="text"
+                           v-model="filters.note"
+                           @input="delayedFilter"
+                           v-if="selectedFilter === 8">
                     <select v-model="selectedFilter" style="height: 100%;">
                         <option :value="1">
                             Name
@@ -199,6 +247,9 @@
                         </option>
                         <option :value="7">
                             Website
+                        </option>
+                        <option :value="8">
+                            Note
                         </option>
                     </select>
                 </div>
@@ -409,8 +460,8 @@ export default{
       cardToEdit: null,
       cardToShow: null,
       showColumns: false,
-      imageToShow: false,
-      createNewCard: false
+      createNewCard: false,
+      cardToShowSourceImage: null
     }
   },
   watch: {
@@ -475,7 +526,10 @@ export default{
           filters: this.loadOptions
         }
       }).then(response => {
-        this.businessCardsAll = response.data
+        this.businessCardsAll = response.data.map(b => {
+          b.note = b.notes.length ? b.notes[0].note : ''
+          return b
+        })
         this.isLoading = false
       }).catch(err => {
         console.log(err)
@@ -655,7 +709,7 @@ export default{
       }
     },
     showSourceImage (index) {
-      this.imageToShow = this.businessCardsToShow[index].image_path
+      this.cardToShowSourceImage = this.businessCardsToShow[index]
     },
     showMore () {
       this.showCardsCount += cardsOnPage
@@ -710,6 +764,7 @@ export default{
 .bcards-info-header{
     cursor: pointer;
 }
+.
 .bcard-new-card-holder{
     background-color: white;
     margin: 5rem 4rem;
@@ -722,20 +777,22 @@ export default{
     white-space: nowrap;
 }
 .bcard-source-image-holder {
-  margin: 3rem 2rem;
-  max-height: calc(100vh - 6rem);
   border-radius: 1rem;
-  overflow-y: auto;
+  overflow-y: hidden;
+  max-height: 100%;
 }
 .bcard-source-image{
   border-radius: inherit;
+  width: 100%;
   overflow-y: auto;
 }
 .bcard-show-form{
    background-color: rgb(240,240,240);
-    margin: 10% auto;
-    width: 45%;
-    box-shadow: 0 0 30px 10px #212529B3;
+    margin: 0 auto 1rem auto;
+    width: 100%;
+    border: 1px solid #00000030;
+    border-radius: 3px;
+    text-align: center;
 }
 .bcard-show-name{
     font-weight: bold;
@@ -746,6 +803,7 @@ export default{
 }
 .bcard-show-position{
     font-size: 1.1rem;
+    margin-bottom: .4rem;
 }
 .bcard-show-positon-holder{
     margin-bottom: 1.5rem;
@@ -762,6 +820,21 @@ export default{
     margin-bottom: 1rem;
     height: 72px;
 }
+.bcard-show-info-holder {
+    width: 48%;
+    text-align: left;
+    background-color: white;
+    box-shadow: 0 1px 2px 2px #00000030;
+    border-radius: 10px;
+    margin: calc(10% - 1rem) auto;
+    padding: 1rem 5%;
+}
+.bcard-note-header {
+    border-bottom: 1px solid #00000020;
+    font-size: 1.1rem;
+    font-style: italic;
+}
+
 .bcard-show-bottom-line{
     background-color: lightblue;
     height: 14px;
