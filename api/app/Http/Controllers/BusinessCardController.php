@@ -51,4 +51,14 @@ class BusinessCardController extends Controller
         $business_card->permissions()->where('user_id', $user_id)->delete();
         return $business_card->permissions()->get();
     }
+    
+     public function update(Request $request, $id)
+    {
+//        $this->validate($request, $this->rules);
+        $update = $this->business_card::findOrFail($id);
+        $result = $update->fill($request->all())->save();
+
+        return response()->json($update);
+    }
+
 }
