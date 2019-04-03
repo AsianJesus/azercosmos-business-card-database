@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\BusinessCard;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class BusinessCardController extends Controller
 {
@@ -57,7 +58,9 @@ class BusinessCardController extends Controller
 //        $this->validate($request, $this->rules);
         $update = $this->business_card::findOrFail($id);
         $result = $update->fill($request->all())->save();
-
+        DB::table("bcard_notes")->where("business_card_id",$id)->update([
+        "note"=>$request->note
+        ]);      
         return response()->json($update);
     }
 

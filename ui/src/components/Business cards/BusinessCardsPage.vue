@@ -87,6 +87,7 @@
                             <b-form-input type="tel" class="bcard-edit-card-input" v-model="cardToEdit.mobile" placeholder="Phone"></b-form-input>
                             <b-form-input type="email" class="bcard-edit-card-input" v-model="cardToEdit.email" placeholder="Email"></b-form-input>
                             <b-form-input type="text" class="bcard-edit-card-input" v-model="cardToEdit.website" placeholder="Website"></b-form-input>
+                            <b-form-input type="text" class="bcard-edit-card-input" v-model="cardToEdit.note" placeholder="Note"></b-form-input>
                             <b-form-select v-model="cardToEdit.private"
                                            :options="privacyOptions">
 
@@ -639,6 +640,7 @@ export default{
       }
     },
     saveChanges () {
+      this.cardToEdit.notes[0].note=this.cardToEdit.note;
       console.log(this.cardToEdit)
       this.axios.put('/business-cards/' + this.cardToEdit.id, this.cardToEdit).then(response => {
         for (let i = 0; i < this.businessCardsAll.length; i++) {
@@ -652,6 +654,7 @@ export default{
         console.log(err)
       })
       this.cardToEdit = null
+      this.load();
     },
     showCard (index) {
       if (this.businessCardsToShow[index].image_path) {
@@ -821,13 +824,13 @@ export default{
     height: 72px;
 }
 .bcard-show-info-holder {
-    width: 48%;
+    width: 40%;
     text-align: left;
     background-color: white;
     box-shadow: 0 1px 2px 2px #00000030;
     border-radius: 10px;
     margin: calc(10% - 1rem) auto;
-    padding: 1rem 5%;
+  //  padding: 1rem 5%;
 }
 .bcard-note-header {
     border-bottom: 1px solid #00000020;
@@ -919,7 +922,7 @@ export default{
 }
 .bcards-show-more-button{
     margin: 1rem auto;
-    border-radius: 100%;
+    border-radius: 100% !important;
 }
 .bcards-icon-button{
     cursor: pointer;
