@@ -739,9 +739,9 @@ export default{
     right: 0;
     top: 0;
     z-index: 5;
-    width: 1000px;
+    /*width: 1000px;*/
     height: 100%;
-    overflow: auto;
+    /*overflow: auto;*/
 }
 .bcard-edit-card-input{
     margin: .4rem auto;
