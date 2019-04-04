@@ -736,9 +736,10 @@ export default{
 .bcard-show-holder{
     position: fixed;
     left: 0;
+    right: 0;
     top: 0;
     z-index: 5;
-    width: 100%;
+    width: 1000px;
     height: 100%;
     overflow: auto;
 }
@@ -746,11 +747,11 @@ export default{
     margin: .4rem auto;
 }
 .bcard-edit-holder{
-    background-color: #FFFFFF;
-    margin: 5rem 10rem 0 10rem;
-    border-radius: 2rem;
-    border: 3px double rgb(200,200,200);
-    box-shadow: 0 0 3px 4px #15151540   ;
+    background-color: #fff;
+    margin: 5rem 10rem 0;
+    border-radius: 5px;
+    border: 1px solid #c8c8c8;
+    /* box-shadow: 0 0 3px 4px #15151540; */
     padding: 1rem;
     font-style: italic;
     overflow-y: auto;
@@ -821,7 +822,7 @@ export default{
 .bcard-show-additional-info-holder {
     margin-top: 1rem;
     margin-bottom: 1rem;
-    height: 72px;
+    min-height: 72px;
 }
 .bcard-show-info-holder {
     width: 40%;
@@ -830,7 +831,7 @@ export default{
     box-shadow: 0 1px 2px 2px #00000030;
     border-radius: 10px;
     margin: calc(10% - 1rem) auto;
-  //  padding: 1rem 5%;
+    padding: 1rem 1rem;
 }
 .bcard-note-header {
     border-bottom: 1px solid #00000020;
