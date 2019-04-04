@@ -64,11 +64,11 @@ class BusinessCardController extends Controller
         $result = $update->fill($request->all())->save();
         $note = DB::table("bcard_notes")->where("business_card_id", $id)->first();
         if ($note != null) {
-            DB::table("bcard_notes")->where("business_card_id", $id)->create([
+            DB::table("bcard_notes")->where("business_card_id", $id)->update([
                 "note" => $request->note
             ]);
         } else {
-            DB::table("bcard_notes")->where("business_card_id", $id)->create([
+            DB::table("bcard_notes")->where("business_card_id", $id)->insert([
                 "note" => $request->note,
                 "business_card_id" => $id
             ]);
