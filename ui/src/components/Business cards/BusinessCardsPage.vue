@@ -751,11 +751,14 @@ export default{
     margin: 5rem 10rem 0;
     border-radius: 5px;
     border: 1px solid #c8c8c8;
-    /* box-shadow: 0 0 3px 4px #15151540; */
     padding: 1rem;
+    position: relative;
     font-style: italic;
     overflow-y: auto;
-}
+    width: 70%;
+    /* text-align: left; */
+    box-shadow: 0 1px 2px 2px #00000030;
+    margin-left: 15% !important;}
 .bcard-edit-holder input{
     width: 100%;
     text-align: left;
