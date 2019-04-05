@@ -67,8 +67,8 @@ export default{
         this.startVideo()
       }
       let context = this.$refs.canvas.getContext('2d')
-      this.$refs.canvas.width = this.$refs.video.videoWidth
-      this.$refs.canvas.height = this.$refs.video.videoHeight
+      this.$refs.canvas.width = 750
+      this.$refs.canvas.height = 520
       context.drawImage(this.$refs.video, 0, 0, this.width, this.height)
       this.imageUrl = this.$refs.canvas.toDataURL('image/jpeg')
       return this.imageUrl

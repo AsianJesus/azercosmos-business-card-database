@@ -94,9 +94,16 @@
 
                     </video>
 
-                    <div class="" v-bind:style="{display: !streaming ? 'inline' : 'none'}">
-                        <img src="@/assets/image.png" height="400px" id="default-image" alt="">
+                    <div  class="" v-bind:style="{display: !streaming ? 'inline' : 'none'}">
+                        <img style="cursor: pointer;"  @click="showCrop = true" v-if="!imageUrl" src="@/assets/image.png" height="400px" id="default-image" alt="">
                     </div>
+                    <div @click="showCrop = true">
+                        <img :src="imageUrl"
+                             alt="Card image"
+                             class="new-bcard-image" v-if="imageUrl">
+
+                    </div>
+
                     <div class="row">
                         <div class=" bcard-centerizer"
                              style="text-align: right;">
@@ -125,17 +132,11 @@
                                     label="Recognizing"
                                     show-progress/>
                     </div>
-                    <div @click="showCrop = true">
-                        <img :src="imageUrl"
-                             alt="Card image"
-                             class="new-bcard-image" v-if="imageUrl">
-
-                    </div>
 
                     <vue-image-crop v-model="showCrop"
                                     noCircle
-                                    :width="auto"
-                                    :height="auto"
+                                    :width="300"
+                                    :height="200"
                                     langType="en"
                                     ref="imageCrop"
                                     @crop-success="uploadFile"/>
