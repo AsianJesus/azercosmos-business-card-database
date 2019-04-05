@@ -58,8 +58,8 @@
                                     {{ cardToShow.website }}
                                 </div>
                             </div>
-                            <img src="@/assets/icons/bottom line.png" class="row bcard-show-bottom-line"
-                                 style="margin: auto 0">
+<!--                            <img src="@/assets/icons/bottom line.png" class="row bcard-show-bottom-line"-->
+<!--                                 style="margin: auto 0">-->
                         </div>
                         <div class="bcard-note-header"
                              v-if="cardToShow.note">
@@ -841,15 +841,15 @@
 
     .bcard-show-name {
         font-weight: bold;
-        font-size: 2.4rem;
+        font-size: 28px;
     }
 
     .bcard-show-company {
-        font-size: 1.6rem;
+        font-size: 25px;
     }
 
     .bcard-show-position {
-        font-size: 1.1rem;
+        font-size: 20px;
         margin-bottom: .4rem;
     }
 
