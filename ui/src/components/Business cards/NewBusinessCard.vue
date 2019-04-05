@@ -23,8 +23,9 @@
                             Capture
                         </b-btn>
                         <b-btn variant="primary"
+                               v-else
                                class="bcards-icon-button file-icon-button"
-                               @click="showCrop = true">
+                               @click="streaming = false">
                             <font-awesome-icon :icon="fileImageIcon"/>
                             Upload file
                         </b-btn>
@@ -92,7 +93,11 @@
                            class="new-bcard-webcam-video">
 
                     </video>
-                    <div class="row" >
+
+                    <div class="" v-bind:style="{display: !streaming ? 'inline' : 'none'}">
+                        <img src="@/assets/image.png" height="400px" id="default-image" alt="">
+                    </div>
+                    <div class="row">
                         <div class=" bcard-centerizer"
                              style="text-align: right;">
                             <b-btn @click="selectWebcam"
@@ -102,6 +107,13 @@
                                 <font-awesome-icon :icon="cameraIcon"/>
                                 Capture
                             </b-btn>
+                            <b-btn variant="primary" v-else
+                                   class="bcards-icon-button file-icon-button"
+                                   @click="showCrop = true">
+                                <font-awesome-icon :icon="fileImageIcon"/>
+                                Upload file
+                            </b-btn>
+
                         </div>
                     </div>
                     <div v-if="recognizing.progress" class="recognizing-progress">
@@ -122,8 +134,8 @@
 
                     <vue-image-crop v-model="showCrop"
                                     noCircle
-                                    :width="500"
-                                    :height="300"
+                                    :width="auto"
+                                    :height="auto"
                                     langType="en"
                                     ref="imageCrop"
                                     @crop-success="uploadFile"/>
@@ -213,7 +225,7 @@
             plusIcon: () => faPlus,
         },
         mounted() {
-            this.startWebcam()
+            // this.startWebcam()
             this.$Tesseract = Tesseract.create({
                 workerPath: this.$store.state.serverURL + 'tesseract/worker.js',
                 langPath: this.$store.state.serverURL + 'tesseract/langs/',
@@ -226,11 +238,13 @@
                 fetch(image).then(photo => photo.blob()).then(photo => {
                     console.log(photo)
                     this.$refs.imageCrop.setSourceImg(photo)
+
                 })
                 this.showCrop = true
                 // this.stopWebcam()
             },
             startWebcam() {
+                this.streaming = true
                 this.$refs.webcam.startVideo(stream => {
                     this.$refs.webcam_video.srcObject = stream
                     this.$refs.webcam_video.play()
@@ -362,7 +376,8 @@
     .bcards-icon-button:hover .tooltiptext {
         visibility: visible;
     }
-    .bcard-centerizer{
+
+    .bcard-centerizer {
         text-align: center;
         display: table;
         margin: 0 auto;
