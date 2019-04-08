@@ -69,6 +69,52 @@
                                          placeholder="Note"
                                          v-model="form.note"/>
                     </div>
+<!--                    <div>-->
+<!--                        <h4>-->
+<!--                            Permissions-->
+<!--                        </h4>-->
+<!--                        <user-selector placeholder="User" class="bcard-edit-search"-->
+<!--                                       @select="addUserPermission($event)">-->
+
+<!--                        </user-selector>-->
+<!--                        <table class="table" v-if="form.permissions && form.permissions.length">-->
+<!--                            <tr>-->
+<!--                                <th style="border-top: 0;">User</th>-->
+<!--                                <th style="border-top: 0;">Read</th>-->
+<!--                                <th style="border-top: 0;">Edit</th>-->
+<!--                                <th style="border-top: 0;">Delete</th>-->
+<!--                                <th style="border-top: 0;"></th>-->
+<!--                            </tr>-->
+<!--                            <tr v-for="(per, index) in groupPermissions(form.permissions)" v-bind:key="index">-->
+<!--                                <th>{{ per.user ? per.user.NAME : per.user_id }}</th>-->
+<!--                                <th>-->
+<!--                                    <input type="checkbox" :checked="per[1]" v-if="!isUpdatingPermissions"-->
+<!--                                           @click="per[1] ? deletePermission(form.id, per[1])-->
+<!--                                                    : addPermission(form.id, per.user.ID, 1,per.user)">-->
+<!--                                </th>-->
+<!--                                <th>-->
+<!--                                    <input type="checkbox" :checked="per[2]" v-if="!isUpdatingPermissions"-->
+<!--                                           @change="per[2] ? deletePermission(form.id, per[2])-->
+<!--                                                : addPermission(form.id, per.user.ID, 2,per.user)">-->
+<!--                                </th>-->
+<!--                                <th>-->
+<!--                                    <input type="checkbox" :checked="per[3]" v-if="!isUpdatingPermissions"-->
+<!--                                           @change="per[3] ? deletePermission(form.id, per[3])-->
+<!--                                               : addPermission(form.id, per.user.ID, 3,per.user)">-->
+<!--                                </th>-->
+<!--                                <th>-->
+<!--                                    <i @click="deleteUserPermission(form.id, per.user.ID)"-->
+<!--                                       class="bcards-table-button bcards-icon-button"-->
+<!--                                       variant="danger">-->
+<!--                                        <font-awesome-icon :icon="trashIcon"/>-->
+<!--                                        <i class="tooltiptext">-->
+<!--                                            Delete-->
+<!--                                        </i>-->
+<!--                                    </i>-->
+<!--                                </th>-->
+<!--                            </tr>-->
+<!--                        </table>-->
+<!--                    </div>-->
                     <div class="new-bcard-submit">
                         <b-btn class="business-card-submit" variant="success" @click="send">
                             <font-awesome-icon :icon="plusIcon"/>
@@ -85,7 +131,7 @@
                     <!--                    <div>-->
                     <!--                        {{ recognizing.recognizedText }}-->
                     <!--                    </div>-->
-                    <clipper-basic ref="clipper"  class="my-clipper" :src="cropUrl">
+                    <clipper-basic ref="clipper" class="my-clipper" :src="cropUrl">
                         <div class="placeholder" slot="placeholder">No image</div>
                     </clipper-basic>
 
@@ -98,10 +144,10 @@
 
                     </video>
 
-<!--                    <div class="" v-bind:style="{display: !streaming ? 'inline' : 'none'}">-->
-<!--&lt;!&ndash;                        <img style="cursor: pointer;" @click="showCrop = true" v-if="!imageUrl" src="@/assets/image.png"&ndash;&gt;-->
-<!--&lt;!&ndash;                             height="400px" id="default-image" alt="">&ndash;&gt;-->
-<!--                    </div>-->
+                    <!--                    <div class="" v-bind:style="{display: !streaming ? 'inline' : 'none'}">-->
+                    <!--&lt;!&ndash;                        <img style="cursor: pointer;" @click="showCrop = true" v-if="!imageUrl" src="@/assets/image.png"&ndash;&gt;-->
+                    <!--&lt;!&ndash;                             height="400px" id="default-image" alt="">&ndash;&gt;-->
+                    <!--                    </div>-->
                     <div class="row">
                         <div class=" bcard-centerizer"
                              style="text-align: right;">
@@ -112,18 +158,19 @@
                                 <font-awesome-icon :icon="cameraIcon"/>
                                 Capture
                             </b-btn>
-                            <b-btn  variant="success" class="bcards-icon-button" v-if="cropUrl" @click="getResult">Crop</b-btn>
+                            <b-btn variant="success" class="bcards-icon-button" v-if="cropUrl" @click="getResult">Crop
+                            </b-btn>
 
                             <!--                            <b-btn variant="primary" v-else-->
-<!--                                   class="bcards-icon-button file-icon-button"-->
-<!--                                   @click="upload($event)">-->
-<!--                                <font-awesome-icon :icon="fileImageIcon"/>-->
-<!--                                Upload file-->
-<!--                            </b-btn>-->
+                            <!--                                   class="bcards-icon-button file-icon-button"-->
+                            <!--                                   @click="upload($event)">-->
+                            <!--                                <font-awesome-icon :icon="fileImageIcon"/>-->
+                            <!--                                Upload file-->
+                            <!--                            </b-btn>-->
 
                         </div>
                     </div>
-                    <div >
+                    <div>
                         <img :src="imageUrl"
                              alt="Card image"
                              class="new-bcard-image" v-if="imageUrl">
@@ -175,9 +222,10 @@
     import VueImageCrop from 'vue-image-crop-upload'
     import Tesseract from 'tesseract.js'
     import {recognize} from '@/assets/js/parsingFunctions.js'
-    import {faCamera, faFileImage, faImage, faPlus} from '@fortawesome/free-solid-svg-icons'
+    import {faCamera, faFileImage, faImage, faPlus, faTrashAlt} from '@fortawesome/free-solid-svg-icons'
     import {clipperBasic, clipperPreview} from 'vuejs-clipper'
     import PictureInput from 'vue-picture-input'
+    import UserSelector from '@/components/Tools/UserSelector.vue'
 
     export default {
         components: {
@@ -185,6 +233,7 @@
             VueImageCrop,
             clipperBasic,
             clipperPreview,
+            UserSelector,
             'picture-input': PictureInput
 
         },
@@ -200,8 +249,10 @@
                     webste: '',
                     address: '',
                     photo: null,
-                    private: 1
+                    private: 1,
+                    permissions: []
                 },
+                users: null,
                 $Tesseract: null,
                 privacyOptions: [
                     {
@@ -245,7 +296,9 @@
                     }
                 ],
                 selectedLang: null,
-                $keyListener: null
+                $keyListener: null,
+                isUpdatingPermissions: false,
+                permissionsForUsers: null
             }
         },
         computed: {
@@ -256,6 +309,8 @@
             fileImageIcon: () => faFileImage,
             imageIcon: () => faImage,
             plusIcon: () => faPlus,
+            trashIcon: () => faTrashAlt,
+
         },
         mounted() {
             // this.startWebcam()
@@ -281,7 +336,53 @@
                     this.cropUrl = window.URL.createObjectURL(e.target.files[0]);
                 }
             },
-            onChange (image) {
+            groupPermissions(permissions) {
+                let result = {}
+                for (let i = 0; i < permissions.length; i++) {
+                    if (!result[permissions[i].user_id]) {
+                        result[permissions[i].user_id] = {user: permissions[i].user}
+                    }
+                    result[permissions[i].user_id][permissions[i].permission_id] = 1
+                }
+                console.log(result)
+                return result
+            },
+            addUserPermission(user) {
+                this.form.permissions.push({
+                    user: user,
+                    permission_id: 0,
+                    business_card_id: this.form.id,
+                    user_id: user.ID
+                })
+            },
+            addPermission(cardId, userId, permissionId, user) {
+                let permission = {
+                    business_card_id: null,
+                    user_id: userId,
+                    permission_id: permissionId,
+                    user: user
+                }
+                this.form.permissions.push(permission)
+                console.log(this.form.permissions)
+            },
+            deletePermission(cardId, permissionId, userId) {
+                this.isUpdatingPermissions = true
+                console.log( this.form.permissions.forEach())
+                // this.form.permissions.forEach()
+
+                // this.form.permissions = this.form.permissions.filter(x => x.id !== permissionId)
+                this.isUpdatingPermissions = false
+                console.log(this.form.permissions)
+            },
+
+            deleteUserPermission(cardId, userID) {
+                this.isUpdatingPermissions = true
+                this.form.permissions = this.form.permissions.filter(p => p.user_id !== userID)
+                this.isUpdatingPermissions = false
+
+            },
+
+            onChange(image) {
                 console.log('New picture selected!')
                 if (image) {
                     console.log('Picture loaded.')

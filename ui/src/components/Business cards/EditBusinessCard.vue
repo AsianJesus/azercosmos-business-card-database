@@ -394,11 +394,11 @@
             deletePermission(cardId, permissionId) {
                 this.isUpdatingPermissions = true
                 this.axios.delete('/user-permissions/' + permissionId).then(response => {
-                    for (let i = 0; i < this.businessCardsAll.length; i++) {
-                        if (this.businessCardsAll[i].id === cardId) {
-                            this.businessCardsAll[i].permissions = this.businessCardsAll[i].permissions.filter(x => x.id === permissionId)
-                        }
-                    }
+                    // for (let i = 0; i < this.businessCardsAll.length; i++) {
+                    //     if (this.businessCardsAll[i].id === cardId) {
+                    //         this.businessCardsAll[i].permissions = this.businessCardsAll[i].permissions.filter(x => x.id === permissionId)
+                    //     }
+                    // }
                     if (this.form && this.form.id === cardId) {
                         this.form.permissions = this.form.permissions.filter(x => x.id !== permissionId)
                     }
