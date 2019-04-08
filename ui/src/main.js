@@ -15,11 +15,21 @@ import Icon from 'vue-awesome/components/Icon'
 import { serverURL } from './config'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import store from './store'
+import VuejsClipper from 'vuejs-clipper'
+import PictureInput from 'vue-picture-input'
 
 axios.defaults.baseURL = serverURL
 
+Vue.use(VuejsClipper ,{
+  components: {
+    clipperBasic: true,
+    clipperPreview: true
+  }
+})
+
 Vue.use(VueAxios, axios)
 Vue.use(VueCookie)
+Vue.use(PictureInput)
 Vue.use(VueBootstrap)
 Vue.component('v-icon', Icon)
 Vue.component('font-awesome-icon', FontAwesomeIcon)

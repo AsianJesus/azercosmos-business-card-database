@@ -85,6 +85,10 @@
                     <!--                    <div>-->
                     <!--                        {{ recognizing.recognizedText }}-->
                     <!--                    </div>-->
+                    <clipper-basic ref="clipper"  class="my-clipper" :src="cropUrl">
+                        <div class="placeholder" slot="placeholder">No image</div>
+                    </clipper-basic>
+
                     <webcam ref="webcam"
                             :height="500"
                             :width="750"
@@ -94,16 +98,10 @@
 
                     </video>
 
-                    <div  class="" v-bind:style="{display: !streaming ? 'inline' : 'none'}">
-                        <img style="cursor: pointer;"  @click="showCrop = true" v-if="!imageUrl" src="@/assets/image.png" height="400px" id="default-image" alt="">
-                    </div>
-                    <div @click="showCrop = true">
-                        <img :src="imageUrl"
-                             alt="Card image"
-                             class="new-bcard-image" v-if="imageUrl">
-
-                    </div>
-
+<!--                    <div class="" v-bind:style="{display: !streaming ? 'inline' : 'none'}">-->
+<!--&lt;!&ndash;                        <img style="cursor: pointer;" @click="showCrop = true" v-if="!imageUrl" src="@/assets/image.png"&ndash;&gt;-->
+<!--&lt;!&ndash;                             height="400px" id="default-image" alt="">&ndash;&gt;-->
+<!--                    </div>-->
                     <div class="row">
                         <div class=" bcard-centerizer"
                              style="text-align: right;">
@@ -114,15 +112,40 @@
                                 <font-awesome-icon :icon="cameraIcon"/>
                                 Capture
                             </b-btn>
-                            <b-btn variant="primary" v-else
-                                   class="bcards-icon-button file-icon-button"
-                                   @click="showCrop = true">
-                                <font-awesome-icon :icon="fileImageIcon"/>
-                                Upload file
-                            </b-btn>
+                            <button @click="getResult">Crop</button>
+
+                            <!--                            <b-btn variant="primary" v-else-->
+<!--                                   class="bcards-icon-button file-icon-button"-->
+<!--                                   @click="upload($event)">-->
+<!--                                <font-awesome-icon :icon="fileImageIcon"/>-->
+<!--                                Upload file-->
+<!--                            </b-btn>-->
 
                         </div>
                     </div>
+                    <div >
+                        <img :src="imageUrl"
+                             alt="Card image"
+                             class="new-bcard-image" v-if="imageUrl">
+
+                    </div>
+
+                    <picture-input
+                            ref="pictureInput"
+                            width="500"
+                            height="500"
+                            margin="16"
+                            accept="image/jpeg,image/png"
+                            size="10"
+                            v-if="!streaming"
+                            button-class="btn"
+                            :custom-strings="{
+                            upload: '<h1>Bummer!</h1>',
+                            drag: 'Drag a image or click to upload'
+                          }"
+                            @change="onChange">
+                    </picture-input>
+
                     <div v-if="recognizing.progress" class="recognizing-progress">
                         <h5>
                             {{ recognizing.progress.status }}
@@ -133,13 +156,15 @@
                                     show-progress/>
                     </div>
 
-                    <vue-image-crop v-model="showCrop"
-                                    noCircle
-                                    :width="300"
-                                    :height="200"
-                                    langType="en"
-                                    ref="imageCrop"
-                                    @crop-success="uploadFile"/>
+
+                    <!--                    <vue-image-crop v-model="showCrop"-->
+                    <!--                                    noCircle-->
+                    <!--                                    :width="300"-->
+                    <!--                                    :height="200"-->
+                    <!--                                    langType="en"-->
+                    <!--                                    ref="imageCrop"-->
+                    <!--                                    @crop-success="uploadFile"/>-->
+
                 </div>
             </div>
         </div>
@@ -151,11 +176,17 @@
     import Tesseract from 'tesseract.js'
     import {recognize} from '@/assets/js/parsingFunctions.js'
     import {faCamera, faFileImage, faImage, faPlus} from '@fortawesome/free-solid-svg-icons'
+    import {clipperBasic, clipperPreview} from 'vuejs-clipper'
+    import PictureInput from 'vue-picture-input'
 
     export default {
         components: {
             Webcam,
-            VueImageCrop
+            VueImageCrop,
+            clipperBasic,
+            clipperPreview,
+            'picture-input': PictureInput
+
         },
         data() {
             return {
@@ -187,6 +218,7 @@
                     }
                 ],
                 imageUrl: '',
+                cropUrl: '',
                 isAdding: false,
                 streaming: false,
                 showCrop: false,
@@ -234,6 +266,30 @@
             })
         },
         methods: {
+            getResult: function () {
+                const canvas = this.$refs.clipper.clip();//call component's clip method
+                this.imageUrl = canvas.toDataURL("image/jpg", 1);//canvas->image
+                fetch(this.imageUrl).then(photo => photo.blob()).then(file => {
+                    this.form.photo = file
+                    this.recognizeImage(file)
+                })
+
+            },
+            upload: function (e) {
+                if (e.target.files.length !== 0) {
+                    if (this.cropUrl) URL.revokeObjectURL(this.cropUrl)
+                    this.cropUrl = window.URL.createObjectURL(e.target.files[0]);
+                }
+            },
+            onChange (image) {
+                console.log('New picture selected!')
+                if (image) {
+                    console.log('Picture loaded.')
+                    this.cropUrl = image
+                } else {
+                    console.log('FileReader API not supported: use the <form>, Luke!')
+                }
+            },
             selectWebcam() {
                 let image = this.$refs.webcam.takePicture()
                 fetch(image).then(photo => photo.blob()).then(photo => {
@@ -241,7 +297,7 @@
                     this.$refs.imageCrop.setSourceImg(photo)
 
                 })
-                this.showCrop = true
+                this.cropUrl = image
                 // this.stopWebcam()
             },
             startWebcam() {
@@ -321,6 +377,17 @@
     }
 </script>
 <style>
+    .placeholder {
+        text-align: center;
+        padding: 20px;
+        background-color: lightgray;
+    }
+
+    .my-clipper {
+        width: 100%;
+        max-width: 700px;
+    }
+
     .new-business-card-page {
         width: 100%;
         padding: 1rem;
@@ -333,9 +400,9 @@
     }
 
     .new-bcard-webcam-video {
-        /*width: 100%;*/
+        width: 100%;
         border-radius: 1rem;
-        height: 380px;
+        /*height: 380px;*/
         margin-top: 15px;
     }
 
