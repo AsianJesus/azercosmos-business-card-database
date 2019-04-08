@@ -17,13 +17,15 @@ $router->get('/', function () use ($router) {
 
 //Business cards
 $router->get('/business-cards', ['middleware' => 'business_cards_filter', 'uses' => 'BusinessCardController@getAll']);
-$router->get('/business-cards/excel', ['middleware' => 'business_cards_filter', 'uses' => 'BusinessCardController@exportExcel']);
+$router->get('/business-cards-one/{id}', ['middleware' => 'business_cards_filter', 'uses' => 'BusinessCardController@getOne']);
 $router->get('/business-cards/{id}', 'BusinessCardController@getById');
 $router->post('/business-cards/', 'BusinessCardController@add');
 $router->put('/business-cards/{id}', ['uses'=>'BusinessCardController@update', 'middleware' => 'check_permission']);
+$router->post('/business-cards/{id}', ['uses'=>'BusinessCardController@update', 'middleware' => 'check_permission']);
 $router->delete('/business-cards/{id}', ['uses'=>'BusinessCardController@delete', 'middleware' => 'check_permission']);
 $router->delete('/business-cards/{id}/permissions', ['uses'=>'BusinessCardController@deletePermissionOfUser',
                                                     'middleware' => 'check_permission']);
+$router->get('/business-cards-excel', ['middleware' => 'business_cards_filter', 'uses' => 'BusinessCardController@exportExcel']);
 
 //Users
 $router->get('/user/', 'UserController@getMyUser');

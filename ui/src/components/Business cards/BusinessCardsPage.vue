@@ -385,14 +385,14 @@
                         <td v-if="columnsToShow.website">{{ bcard.website }}</td>
                         <td class="bcards-table-actions"
                             @click="$event.stopPropagation()">
-                            <b-btn @click="editCard(index)"
-                                   class="bcards-table-button g-edit-button bcards-icon-button"
-                                   v-if="editable(index)">
-                                <font-awesome-icon :icon="editIcon"/>
-                                <!--<i class="tooltiptext">
-                                    Edit
-                                </i>-->
-                            </b-btn>
+                            <router-link :to="{name: 'EditBusinessCard', params: {id: bcard.id}}">
+                                <b-btn
+                                       class="bcards-table-button g-edit-button bcards-icon-button"
+                                       >
+                                    <font-awesome-icon :icon="editIcon"/>
+                                </b-btn>
+
+                            </router-link>
                             <b-btn @click="deleteCard(bcard.id)"
                                    class="bcards-table-button bcards-icon-button g-delete-button"
                                    v-if="deletable(index)"
@@ -548,7 +548,7 @@
                 return name.replace(/[-_]/g, ' ')
             },
             exportedExcel() {
-                this.axios.get('business-cards/excel', {
+                this.axios.get('business-cards-excel', {
                     params: {
                         filters: this.loadOptions
                     }

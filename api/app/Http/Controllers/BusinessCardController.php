@@ -49,6 +49,22 @@ class BusinessCardController extends Controller
         return $query->with('permissions.permission', 'permissions.user')->orderBy('created_at', 'desc')->get();
     }
 
+    public function getOne(Request $request, $id)
+    {
+        $query = $this->business_card::query();
+        if ($request->input('filters')) {
+            $filters = $request->input('filters');
+            if (is_string($filters)) {
+                $filters = (array)json_decode($filters);
+            }
+            foreach (array_keys($filters) as $key) {
+                $query->where($key, $filters[$key]);
+            }
+        }
+        return $query->with('permissions.permission', 'permissions.user')->where('id',$id)->orderBy('created_at', 'desc')->get();
+    }
+
+
     public function exportExcel(Request $request)
     {
         $query = $this->business_card::query();
@@ -63,7 +79,7 @@ class BusinessCardController extends Controller
         }
         return $query->with('permissions.permission', 'permissions.user')->orderBy('created_at', 'desc')->get();
         foreach ($query as $row) {
-            $query["note"] = isset($row->notes[0]->note) ?$row->notes[0]->note : " ";
+            $query["note"] = isset($row->notes[0]->note) ? $row->notes[0]->note : " ";
         }
         return $query;
     }
@@ -79,6 +95,14 @@ class BusinessCardController extends Controller
     public function update(Request $request, $id)
     {
 //        $this->validate($request, $this->rules);
+//        return $request->all();
+        if ($request->file('photo')) {
+            $photo = $request->file('photo');
+            $name = time() . '.' . $photo->extension();
+            $photo->move('images/', $name);
+            $request['image_path'] = 'images/' . $name;
+        }
+
         $update = $this->business_card::findOrFail($id);
         $result = $update->fill($request->all())->save();
         $note = DB::table("bcard_notes")->where("business_card_id", $id)->first();
