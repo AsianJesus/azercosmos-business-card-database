@@ -44,14 +44,14 @@
                         <!--&gt;-->
                         <!--Private-->
                         <!--</router-link>-->
-                        <router-link :to="{name: 'BusinessCardsWithOption', params: {option: 'public'}}"
+                        <router-link :to="{name: 'BusinessCardsWithOption', params: {option: 'mycards'}}"
                                      id="link"
                                      class="nav-link nav-item"
                                      tag="li"
                         >
-                            Public
+                            All Cards
                         </router-link>
-                        <router-link :to="{name: 'BusinessCardsWithOption', params: {option: 'mycards'}}"
+                        <router-link :to="{name: 'BusinessCardsWithOption', params: {option: 'private'}}"
                                      id="link"
                                      class="nav-link nav-item"
                                      tag="li"

@@ -49,6 +49,25 @@ class BusinessCardController extends Controller
         return $query->with('permissions.permission', 'permissions.user')->orderBy('created_at', 'desc')->get();
     }
 
+    public function exportExcel(Request $request)
+    {
+        $query = $this->business_card::query();
+        if ($request->input('filters')) {
+            $filters = $request->input('filters');
+            if (is_string($filters)) {
+                $filters = (array)json_decode($filters);
+            }
+            foreach (array_keys($filters) as $key) {
+                $query->where($key, $filters[$key]);
+            }
+        }
+        return $query->with('permissions.permission', 'permissions.user')->orderBy('created_at', 'desc')->get();
+        foreach ($query as $row) {
+            $query["note"] = isset($row->notes[0]->note) ?$row->notes[0]->note : " ";
+        }
+        return $query;
+    }
+
     public function deletePermissionOfUser(Request $request, $id)
     {
         $user_id = $request->input('user_id');

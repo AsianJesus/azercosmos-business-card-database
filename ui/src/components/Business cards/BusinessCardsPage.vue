@@ -58,8 +58,8 @@
                                     {{ cardToShow.website }}
                                 </div>
                             </div>
-<!--                            <img src="@/assets/icons/bottom line.png" class="row bcard-show-bottom-line"-->
-<!--                                 style="margin: auto 0">-->
+                            <!--                            <img src="@/assets/icons/bottom line.png" class="row bcard-show-bottom-line"-->
+                            <!--                                 style="margin: auto 0">-->
                         </div>
                         <div class="bcard-note-header"
                              v-if="cardToShow.note">
@@ -279,6 +279,11 @@
                            variant="success">
                         <font-awesome-icon :icon="plusIcon"/>
                     </b-btn>
+                    <b-btn @click="exportedExcel"
+                           class="bcards-icon-button g-wide-button"
+                           variant="success">
+                        <font-awesome-icon :icon="excelIcon"/>
+                    </b-btn>
                 </div>
                 <div class="col-12">
                     <div v-for="(value, key) in filters" v-bind:key="key" v-if="value"
@@ -414,6 +419,8 @@
     import NewBusinessCard from '@/components/Business cards/NewBusinessCard.vue'
     import UserSelector from '@/components/Tools/UserSelector.vue'
     import lodash from 'lodash'
+    import exportFromJSON from 'export-from-json'
+
     import {
         faEdit,
         faTrashAlt,
@@ -423,10 +430,11 @@
         faPlus,
         faSearch,
         faSave,
-        faBan
+        faBan,
+        faFileExcel
     } from '@fortawesome/free-solid-svg-icons'
 
-    const cardsOnPage = 5
+    const cardsOnPage = 15
     const availableLoadOptions = {
         'mycards': {
             'created_by': 'my_id'
@@ -522,7 +530,8 @@
             plusIcon: () => faPlus,
             searchIcon: () => faSearch,
             saveIcon: () => faSave,
-            banIcon: () => faBan
+            banIcon: () => faBan,
+            excelIcon: () => faFileExcel,
         },
         created() {
             if (!this.$route.params.option) {
@@ -537,6 +546,35 @@
         methods: {
             formatFilterName(name) {
                 return name.replace(/[-_]/g, ' ')
+            },
+            exportedExcel() {
+                this.axios.get('business-cards/excel', {
+                    params: {
+                        filters: this.loadOptions
+                    }
+                }).then(response => {
+                    let data = response.data;
+                    let fileName = 'download'
+                    let exportType = 'csv'
+                    delete data.notes
+                    data.forEach(function(entry) {
+                        entry.note = entry.notes.length ? entry.notes[0].note : ''
+                        delete entry.notes
+                        delete entry.permissions
+                        delete entry.deleted_by
+                        delete entry.deleted_at
+                        delete entry.updated_at
+                        delete entry.image_path
+                    });
+
+                    exportFromJSON({data, fileName, exportType})
+
+                    // this.isLoading = false
+                }).catch(err => {
+                    console.log(err)
+                    this.isLoading = false
+                })
+
             },
             load() {
                 this.isLoading = true
