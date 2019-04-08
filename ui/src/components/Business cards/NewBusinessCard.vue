@@ -112,7 +112,7 @@
                                 <font-awesome-icon :icon="cameraIcon"/>
                                 Capture
                             </b-btn>
-                            <button @click="getResult">Crop</button>
+                            <b-btn  variant="success" class="bcards-icon-button" v-if="cropUrl" @click="getResult">Crop</b-btn>
 
                             <!--                            <b-btn variant="primary" v-else-->
 <!--                                   class="bcards-icon-button file-icon-button"-->
