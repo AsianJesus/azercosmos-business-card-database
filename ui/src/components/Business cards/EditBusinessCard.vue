@@ -132,11 +132,6 @@
                     </div>
                 </div>
                 <div class="col-6">
-                    <div class="row">
-                        <div class="bcard-centerizer">
-                            <b-form-select :options="langOptions" v-model="selectedLang" @change="rerunRecognizing"/>
-                        </div>
-                    </div>
                     <!--                    <div>-->
                     <!--                        {{ recognizing.recognizedText }}-->
                     <!--                    </div>-->
@@ -157,7 +152,7 @@
                     <!--&lt;!&ndash;                        <img style="cursor: pointer;" @click="showCrop = true" v-if="!imageUrl" src="@/assets/image.png"&ndash;&gt;-->
                     <!--&lt;!&ndash;                             height="400px" id="default-image" alt="">&ndash;&gt;-->
                     <!--                    </div>-->
-                    <div class="row">
+                    <div style="margin-top: 10px;" class="row">
                         <div class=" bcard-centerizer"
                              style="text-align: right;">
                             <b-btn @click="selectWebcam"
@@ -179,7 +174,7 @@
 
                         </div>
                     </div>
-                    <div>
+                    <div style="margin-top: 10px;">
                         <img :src="imageUrl"
                              alt="Card image"
                              class="new-bcard-image" v-if="imageUrl">
@@ -189,7 +184,7 @@
                     <picture-input
                             ref="pictureInput"
                             width="500"
-                            height="500"
+                            height="250"
                             margin="16"
                             accept="image/jpeg,image/png"
                             size="10"
@@ -202,6 +197,12 @@
                             @change="onChange">
                     </picture-input>
 
+                    <div style="margin-top: 10px;" class="row">
+                        <div class="bcard-centerizer">
+                            <b-form-select :options="langOptions" v-model="selectedLang" @change="rerunRecognizing"/>
+                        </div>
+                    </div>
+
                     <div v-if="recognizing.progress" class="recognizing-progress">
                         <h5>
                             {{ recognizing.progress.status }}
@@ -212,16 +213,9 @@
                                     show-progress/>
                     </div>
 
-                    <img id="getImageData"
-                         :src="'http://localhost/azercosmos-business-card-database/api/public/'+form.image_path" alt="">
+<!--                    <img id="getImageData"-->
+<!--                         :src="'http://localhost/azercosmos-business-card-database/api/public/'+form.image_path" alt="">-->
 
-                    <!--                    <vue-image-crop v-model="showCrop"-->
-                    <!--                                    noCircle-->
-                    <!--                                    :width="300"-->
-                    <!--                                    :height="200"-->
-                    <!--                                    langType="en"-->
-                    <!--                                    ref="imageCrop"-->
-                    <!--                                    @crop-success="uploadFile"/>-->
 
                 </div>
             </div>
@@ -535,6 +529,11 @@
                 } else {
                     console.log('FileReader API not supported: use the <form>, Luke!')
                 }
+                fetch(this.cropUrl).then(photo => photo.blob()).then(file => {
+                    this.form.photo = file
+                    this.recognizeImage(file)
+                })
+
             },
             selectWebcam() {
                 let image = this.$refs.webcam.takePicture()
