@@ -213,8 +213,8 @@
                                     show-progress/>
                     </div>
 
-<!--                    <img id="getImageData"-->
-<!--                         :src="'http://localhost/azercosmos-business-card-database/api/public/'+form.image_path" alt="">-->
+                    <!--                    <img id="getImageData"-->
+                    <!--                         :src="'http://localhost/azercosmos-business-card-database/api/public/'+form.image_path" alt="">-->
 
 
                 </div>
@@ -418,7 +418,8 @@
                         .then(response => {
                             image = new Buffer(response.data, 'binary').toString('base64')
                             console.log(image)
-                            this.imageUrl = image
+                            this.cropUrl = "data:image/png;base64," + image
+                            this.imageUrl = "data:image/png;base64," + image
                         })
 
                     // this.getDataUri('http://localhost/azercosmos-business-card-database/api/public/images/1554720141.png', function (dataUri) {
