@@ -26,6 +26,7 @@
     "vue-axios": "^2.1.4",
     "vue-cookie": "^1.1.4",
     "vue-image-crop-upload": "^2.5.0",
+    "vue-multiselect": "^2.1.4",
     "vue-picture-input": "^2.1.6",
     "vue-router": "^3.0.1",
     "vue-select": "^2.5.1",

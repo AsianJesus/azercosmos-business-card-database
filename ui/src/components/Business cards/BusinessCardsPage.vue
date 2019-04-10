@@ -535,7 +535,7 @@
         },
         created() {
             if (!this.$route.params.option) {
-                this.$router.push({name: 'BusinessCardsWithOption', params: {option: 'public'}})
+                this.$router.push({name: 'BusinessCardsWithOption', params: {option: 'mycards'}})
             }
 
         },
@@ -553,24 +553,35 @@
                         filters: this.loadOptions
                     }
                 }).then(response => {
-                    let data = response.data;
-                    let fileName = 'download'
-                    let exportType = 'csv'
-                    delete data.notes
-                    data.forEach(function(entry) {
-                        entry.note = entry.notes.length ? entry.notes[0].note : ''
-                        delete entry.notes
-                        delete entry.permissions
-                        delete entry.deleted_by
-                        delete entry.deleted_at
-                        delete entry.updated_at
-                        delete entry.image_path
-                    });
+                        let data = response.data;
+                        let fileName = 'download'
+                        let exportType = 'csv'
+                        delete data.notes
+                        data.forEach(function (entry) {
+                            entry.note = entry.notes.length ? entry.notes[0].note : ''
+                            delete entry.notes
+                            delete entry.permissions
+                            delete entry.deleted_by
+                            delete entry.deleted_at
+                            delete entry.updated_at
+                            delete entry.image_path
+                        });
 
-                    exportFromJSON({data, fileName, exportType})
+                        for (var f in data) {
+                            let check = this.columnsToShow
+                            Object.keys(data[f]).forEach(function (key) {
+                                if (check.hasOwnProperty(key) === false || check[key] !== true) {
+                                    // console.log(key)
+                                    delete data[f][key]
+                                }
+                            });
+                        }
 
-                    // this.isLoading = false
-                }).catch(err => {
+                        exportFromJSON({data, fileName, exportType})
+
+                        // this.isLoading = false
+                    }
+                ).catch(err => {
                     console.log(err)
                     this.isLoading = false
                 })
@@ -592,18 +603,22 @@
                     console.log(err)
                     this.isLoading = false
                 })
-            },
+            }
+            ,
             editable(index) {
                 return this.businessCardsToShow[index].created_by.toString() === this.$store.getters.userId.toString() ||
                     this.businessCardsToShow[index].permissions.filter(x => x.permission_id === 2).length > 0
-            },
+            }
+            ,
             deletable(index) {
                 return this.businessCardsToShow[index].created_by.toString() === this.$store.getters.userId.toString() ||
                     this.businessCardsToShow[index].permissions.filter(x => x.permission_id === 3).length > 0
-            },
+            }
+            ,
             editCard(index) {
                 this.cardToEdit = JSON.parse(JSON.stringify(this.businessCardsToShow[index]))
-            },
+            }
+            ,
             deleteCard(id) {
                 if (!confirm('Are you sure?')) return
                 this.axios.delete('/business-cards/' + id).then(response => {
@@ -616,7 +631,8 @@
                     console.log(err)
                     alert('Couldn\'t delete due to server trouble')
                 })
-            },
+            }
+            ,
             groupPermissions(permissions) {
                 let result = {}
                 for (let i = 0; i < permissions.length; i++) {
@@ -626,7 +642,8 @@
                     result[permissions[i].user_id][permissions[i].permission_id] = permissions[i].id
                 }
                 return result
-            },
+            }
+            ,
             addUserPermission(user) {
                 this.cardToEdit.permissions.push({
                     user: user,
@@ -634,7 +651,8 @@
                     business_card_id: this.cardToEdit.id,
                     user_id: user.ID
                 })
-            },
+            }
+            ,
             addPermission(cardId, userId, permissionId) {
                 this.isUpdatingPermissions = true
                 this.axios.post('/user-permissions', {
@@ -654,7 +672,8 @@
                 }).catch(err => {
                     this.isUpdatingPermissions = false
                 })
-            },
+            }
+            ,
             deleteUserPermission(cardId, userID) {
                 this.isUpdatingPermissions = true
                 this.axios.delete(`/business-cards/${cardId}/permissions`, {
@@ -672,7 +691,8 @@
                         }
                     }
                 })
-            },
+            }
+            ,
             deletePermission(cardId, permissionId) {
                 this.isUpdatingPermissions = true
                 this.axios.delete('/user-permissions/' + permissionId).then(response => {
@@ -689,12 +709,14 @@
                     console.log(err)
                     this.isUpdatingPermissions = false
                 })
-            },
+            }
+            ,
             cancelEditing(force = false) {
                 if (force || confirm('Are you sure?')) {
                     this.cardToEdit = null
                 }
-            },
+            }
+            ,
             saveChanges() {
 
                 if (this.cardToEdit.notes.length > 0)
@@ -714,17 +736,20 @@
                     console.log(err)
                 })
                 this.cardToEdit = null
-            },
+            }
+            ,
             showCard(index) {
                 if (this.businessCardsToShow[index].image_path) {
                     this.showSourceImage(index)
                 } else {
                     this.cardToShow = this.businessCardsToShow[index]
                 }
-            },
+            }
+            ,
             hideCard() {
                 this.cardToShow = null
-            },
+            }
+            ,
             sortBy(field) {
                 if (field) {
                     if (this.sorting.by === field) {
@@ -734,7 +759,8 @@
                         this.sorting.asc = true
                     }
                 }
-            },
+            }
+            ,
             filterCards() {
                 return this.businessCardsAll.filter(card => {
                     for (let param in this.filters) {
@@ -746,7 +772,8 @@
                     }
                     return true
                 })
-            },
+            }
+            ,
             delayedFilter: lodash.debounce(function () {
                 this.filterCards()
             }, 500, 1500),
@@ -754,7 +781,8 @@
                 if (force || confirm('Are you sure?')) {
                     this.createNewCard = false
                 }
-            },
+            }
+            ,
             addCard(card) {
                 console.log(card)
                 card.permissions = []
@@ -762,22 +790,27 @@
                 this.filterCards()
                 this.sortBy()
                 this.createNewCard = false
-            },
+            }
+            ,
             saveConfig() {
                 this.$cookie.set('columns-config', JSON.stringify(this.columnsToShow), 30)
-            },
+            }
+            ,
             getConfig() {
                 let saved = this.$cookie.get('columns-config')
                 if (saved) {
                     this.columnsToShow = JSON.parse(saved)
                 }
-            },
+            }
+            ,
             showSourceImage(index) {
                 this.cardToShowSourceImage = this.businessCardsToShow[index]
-            },
+            }
+            ,
             showMore() {
                 this.showCardsCount += cardsOnPage
-            },
+            }
+            ,
             redirectToNewCard() {
                 this.$router.push({name: 'NewBusinessCard'})
             }

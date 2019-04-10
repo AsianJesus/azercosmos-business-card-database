@@ -73,10 +73,19 @@
                         <h4>
                             Permissions
                         </h4>
-                        <user-selector placeholder="User" class="bcard-edit-search"
-                                       @select="addUserPermission($event)">
+                        <!--                        <user-selector placeholder="User" class="bcard-edit-search"-->
+                        <!--                                       @select="addUserPermission($event)">-->
 
-                        </user-selector>
+                        <!--                        </user-selector>-->
+                        <label class="">Tagging</label>
+                        <multiselect v-model="value" tag-placeholder="Add this as new tag"
+                                     placeholder="Search user" label="name" :clear-on-select="false"
+                                     :close-on-select="false"
+                                     track-by="ID" :options="options" :multiple="true" :taggable="true"
+                                     @remove="removeTag"
+                                     @select="selectedTags"></multiselect>
+
+
                         <table class="table" v-if="form.permissions && form.permissions.length">
                             <tr>
                                 <th style="border-top: 0;">User</th>
@@ -203,6 +212,8 @@
                                     show-progress/>
                     </div>
 
+                    <img id="getImageData"
+                         :src="'http://localhost/azercosmos-business-card-database/api/public/'+form.image_path" alt="">
 
                     <!--                    <vue-image-crop v-model="showCrop"-->
                     <!--                                    noCircle-->
@@ -223,10 +234,12 @@
     import Tesseract from 'tesseract.js'
     import {recognize} from '@/assets/js/parsingFunctions.js'
     import {
-        faCamera, faFileImage, faImage, faPlus, faTrashAlt} from '@fortawesome/free-solid-svg-icons'
+        faCamera, faFileImage, faImage, faPlus, faTrashAlt
+    } from '@fortawesome/free-solid-svg-icons'
     import {clipperBasic, clipperPreview} from 'vuejs-clipper'
     import PictureInput from 'vue-picture-input'
     import UserSelector from '@/components/Tools/UserSelector.vue'
+    import Multiselect from 'vue-multiselect'
 
     export default {
         components: {
@@ -235,7 +248,8 @@
             clipperBasic,
             clipperPreview,
             UserSelector,
-            'picture-input': PictureInput
+            'picture-input': PictureInput,
+            Multiselect
         },
         data() {
             return {
@@ -285,6 +299,9 @@
                 selectedLang: null,
                 $keyListener: null,
                 isUpdatingPermissions: false,
+                options: [],
+                value: [],
+
 
             }
         },
@@ -308,8 +325,86 @@
         },
         created() {
             this.loadMe()
+
+            // this.options
+            this.axios.get('/users').then(response => {
+                this.options = response.data
+                this.options.forEach(function (element) {
+                    element.name = element.NAME
+
+                }.bind(this))
+                console.log("sd")
+                console.log(this.options)
+
+            })
+            // this.getDataUri('http://localhost/azercosmos-business-card-database/api/public/images/1554720141.png', function (dataUri) {
+            //     console.log(dataUri)
+            // });
+            // let base64 = this.getBase64Image(document.getElementById("getImageData"));
+            // console.log(base64)
+
         },
         methods: {
+            getDataUri(url, callback) {
+                var image = new Image();
+
+                image.onload = function () {
+                    var canvas = document.createElement('canvas');
+                    canvas.width = this.naturalWidth; // or 'width' if you want a special/scaled size
+                    canvas.height = this.naturalHeight; // or 'height' if you want a special/scaled size
+
+                    canvas.getContext('2d').drawImage(this, 0, 0);
+
+                    // Get raw image data
+                    callback(canvas.toDataURL('image/png').replace(/^data:image\/(png|jpg);base64,/, ''));
+
+                    // ... or get as Data URI
+                    callback(canvas.toDataURL('image/png'));
+                };
+
+                image.src = url;
+            },
+            getBase64Image(img) {
+                var canvas = document.createElement("canvas");
+                canvas.width = img.width;
+                canvas.height = img.height;
+                var ctx = canvas.getContext("2d");
+                ctx.drawImage(img, 0, 0);
+                var dataURL = canvas.toDataURL("image/png");
+                return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+            },
+            selectedTags(user) {
+                console.log(user)
+                this.form.permissions.push({
+                    user: user,
+                    permission_id: 0,
+                    business_card_id: this.form.id,
+                    user_id: user.ID
+                })
+
+            },
+            removeTag(user) {
+                let cardId = this.form.id
+                console.log(user)
+                this.isUpdatingPermissions = true
+                this.axios.delete(`/business-cards/${cardId}/permissions`, {
+                    params: {
+                        user_id: user.ID
+                    }
+                }).then(response => {
+                    this.isUpdatingPermissions = false
+                    if (this.form && this.form.id === cardId) {
+                        this.form.permissions = this.form.permissions.filter(p => p.user_id !== user.ID)
+                    }
+                    for (let i = 0; i < this.businessCardsAll.length; i++) {
+                        if (this.businessCardsAll[i].id === cardId) {
+                            this.businessCardsAll[i].permissions = this.businessCardsAll[i].permissions.filter(p => p.user_id !== user.ID)
+                        }
+                    }
+                })
+
+            },
+
             loadMe() {
                 let uri = `business-cards-one/${this.$route.params.id}`;
 
@@ -320,6 +415,20 @@
                     this.form = JSON.parse(JSON.stringify(response.data[0]))
 
                     console.log(this.form)
+
+                    let image = this.form.image_path
+
+                    this.axios.get(image, {
+                        responseType: 'arraybuffer'
+                    })
+                        .then(response => {
+                            this.imageUrl = new Buffer(response.data, 'binary').toString('base64')
+                        })
+
+                    // this.getDataUri('http://localhost/azercosmos-business-card-database/api/public/images/1554720141.png', function (dataUri) {
+                    //     this.imageUrl = dataUri
+                    // });
+
                 }).catch(err => {
                     console.log(err)
                     this.isLoading = false
@@ -329,6 +438,7 @@
             getResult: function () {
                 const canvas = this.$refs.clipper.clip();//call component's clip method
                 this.imageUrl = canvas.toDataURL("image/jpg", 1);//canvas->image
+                console.log(this.imageUrl)
                 fetch(this.imageUrl).then(photo => photo.blob()).then(file => {
                     this.form.photo = file
                     this.recognizeImage(file)
