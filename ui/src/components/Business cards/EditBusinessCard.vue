@@ -422,7 +422,9 @@
                         responseType: 'arraybuffer'
                     })
                         .then(response => {
-                            this.imageUrl = new Buffer(response.data, 'binary').toString('base64')
+                            image = new Buffer(response.data, 'binary').toString('base64')
+                            console.log(image)
+                            this.imageUrl = image
                         })
 
                     // this.getDataUri('http://localhost/azercosmos-business-card-database/api/public/images/1554720141.png', function (dataUri) {
