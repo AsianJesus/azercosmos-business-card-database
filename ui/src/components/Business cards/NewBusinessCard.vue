@@ -69,52 +69,52 @@
                                          placeholder="Note"
                                          v-model="form.note"/>
                     </div>
-<!--                    <div>-->
-<!--                        <h4>-->
-<!--                            Permissions-->
-<!--                        </h4>-->
-<!--                        <user-selector placeholder="User" class="bcard-edit-search"-->
-<!--                                       @select="addUserPermission($event)">-->
+                    <!--                    <div>-->
+                    <!--                        <h4>-->
+                    <!--                            Permissions-->
+                    <!--                        </h4>-->
+                    <!--                        <user-selector placeholder="User" class="bcard-edit-search"-->
+                    <!--                                       @select="addUserPermission($event)">-->
 
-<!--                        </user-selector>-->
-<!--                        <table class="table" v-if="form.permissions && form.permissions.length">-->
-<!--                            <tr>-->
-<!--                                <th style="border-top: 0;">User</th>-->
-<!--                                <th style="border-top: 0;">Read</th>-->
-<!--                                <th style="border-top: 0;">Edit</th>-->
-<!--                                <th style="border-top: 0;">Delete</th>-->
-<!--                                <th style="border-top: 0;"></th>-->
-<!--                            </tr>-->
-<!--                            <tr v-for="(per, index) in groupPermissions(form.permissions)" v-bind:key="index">-->
-<!--                                <th>{{ per.user ? per.user.NAME : per.user_id }}</th>-->
-<!--                                <th>-->
-<!--                                    <input type="checkbox" :checked="per[1]" v-if="!isUpdatingPermissions"-->
-<!--                                           @click="per[1] ? deletePermission(form.id, per[1])-->
-<!--                                                    : addPermission(form.id, per.user.ID, 1,per.user)">-->
-<!--                                </th>-->
-<!--                                <th>-->
-<!--                                    <input type="checkbox" :checked="per[2]" v-if="!isUpdatingPermissions"-->
-<!--                                           @change="per[2] ? deletePermission(form.id, per[2])-->
-<!--                                                : addPermission(form.id, per.user.ID, 2,per.user)">-->
-<!--                                </th>-->
-<!--                                <th>-->
-<!--                                    <input type="checkbox" :checked="per[3]" v-if="!isUpdatingPermissions"-->
-<!--                                           @change="per[3] ? deletePermission(form.id, per[3])-->
-<!--                                               : addPermission(form.id, per.user.ID, 3,per.user)">-->
-<!--                                </th>-->
-<!--                                <th>-->
-<!--                                    <i @click="deleteUserPermission(form.id, per.user.ID)"-->
-<!--                                       class="bcards-table-button bcards-icon-button"-->
-<!--                                       variant="danger">-->
-<!--                                        <font-awesome-icon :icon="trashIcon"/>-->
-<!--                                        <i class="tooltiptext">-->
-<!--                                            Delete-->
-<!--                                        </i>-->
-<!--                                    </i>-->
-<!--                                </th>-->
-<!--                            </tr>-->
-<!--                        </table>-->
-<!--                    </div>-->
+                    <!--                        </user-selector>-->
+                    <!--                        <table class="table" v-if="form.permissions && form.permissions.length">-->
+                    <!--                            <tr>-->
+                    <!--                                <th style="border-top: 0;">User</th>-->
+                    <!--                                <th style="border-top: 0;">Read</th>-->
+                    <!--                                <th style="border-top: 0;">Edit</th>-->
+                    <!--                                <th style="border-top: 0;">Delete</th>-->
+                    <!--                                <th style="border-top: 0;"></th>-->
+                    <!--                            </tr>-->
+                    <!--                            <tr v-for="(per, index) in groupPermissions(form.permissions)" v-bind:key="index">-->
+                    <!--                                <th>{{ per.user ? per.user.NAME : per.user_id }}</th>-->
+                    <!--                                <th>-->
+                    <!--                                    <input type="checkbox" :checked="per[1]" v-if="!isUpdatingPermissions"-->
+                    <!--                                           @click="per[1] ? deletePermission(form.id, per[1])-->
+                    <!--                                                    : addPermission(form.id, per.user.ID, 1,per.user)">-->
+                    <!--                                </th>-->
+                    <!--                                <th>-->
+                    <!--                                    <input type="checkbox" :checked="per[2]" v-if="!isUpdatingPermissions"-->
+                    <!--                                           @change="per[2] ? deletePermission(form.id, per[2])-->
+                    <!--                                                : addPermission(form.id, per.user.ID, 2,per.user)">-->
+                    <!--                                </th>-->
+                    <!--                                <th>-->
+                    <!--                                    <input type="checkbox" :checked="per[3]" v-if="!isUpdatingPermissions"-->
+                    <!--                                           @change="per[3] ? deletePermission(form.id, per[3])-->
+                    <!--                                               : addPermission(form.id, per.user.ID, 3,per.user)">-->
+                    <!--                                </th>-->
+                    <!--                                <th>-->
+                    <!--                                    <i @click="deleteUserPermission(form.id, per.user.ID)"-->
+                    <!--                                       class="bcards-table-button bcards-icon-button"-->
+                    <!--                                       variant="danger">-->
+                    <!--                                        <font-awesome-icon :icon="trashIcon"/>-->
+                    <!--                                        <i class="tooltiptext">-->
+                    <!--                                            Delete-->
+                    <!--                                        </i>-->
+                    <!--                                    </i>-->
+                    <!--                                </th>-->
+                    <!--                            </tr>-->
+                    <!--                        </table>-->
+                    <!--                    </div>-->
                     <div class="new-bcard-submit">
                         <b-btn class="business-card-submit" variant="success" @click="send">
                             <font-awesome-icon :icon="plusIcon"/>
@@ -123,11 +123,6 @@
                     </div>
                 </div>
                 <div class="col-6">
-                    <div class="row">
-                        <div class="bcard-centerizer">
-                            <b-form-select :options="langOptions" v-model="selectedLang" @change="rerunRecognizing"/>
-                        </div>
-                    </div>
                     <!--                    <div>-->
                     <!--                        {{ recognizing.recognizedText }}-->
                     <!--                    </div>-->
@@ -148,7 +143,7 @@
                     <!--&lt;!&ndash;                        <img style="cursor: pointer;" @click="showCrop = true" v-if="!imageUrl" src="@/assets/image.png"&ndash;&gt;-->
                     <!--&lt;!&ndash;                             height="400px" id="default-image" alt="">&ndash;&gt;-->
                     <!--                    </div>-->
-                    <div class="row">
+                    <div style="margin-top: 10px;" class="row">
                         <div class=" bcard-centerizer"
                              style="text-align: right;">
                             <b-btn @click="selectWebcam"
@@ -170,52 +165,58 @@
 
                         </div>
                     </div>
-                    <div>
+                    <div style="margin-top: 10px;">
                         <img :src="imageUrl"
                              alt="Card image"
                              class="new-bcard-image" v-if="imageUrl">
 
-                    </div>
+                        </div>
 
-                    <picture-input
-                            ref="pictureInput"
-                            width="500"
-                            height="500"
-                            margin="16"
-                            accept="image/jpeg,image/png"
-                            size="10"
-                            v-if="!streaming"
-                            button-class="btn"
-                            :custom-strings="{
+                        <picture-input
+                                ref="pictureInput"
+                                width="500"
+                                height="250"
+                                margin="16"
+                                accept="image/jpeg,image/png"
+                                size="10"
+                                v-if="!streaming"
+                                button-class="btn"
+                                :custom-strings="{
                             upload: '<h1>Bummer!</h1>',
                             drag: 'Drag a image or click to upload'
                           }"
-                            @change="onChange">
-                    </picture-input>
+                                @change="onChange">
+                        </picture-input>
+                        <div class="row">
+                            <div class="bcard-centerizer">
+                                <b-form-select :options="langOptions" v-model="selectedLang"
+                                               @change="rerunRecognizing"/>
+                            </div>
+                        </div>
 
-                    <div v-if="recognizing.progress" class="recognizing-progress">
-                        <h5>
-                            {{ recognizing.progress.status }}
-                        </h5>
-                        <b-progress :value="recognizing.progress.progress"
-                                    :max="1"
-                                    label="Recognizing"
-                                    show-progress/>
+                        <div v-if="recognizing.progress" class="recognizing-progress">
+                            <h5>
+                                {{ recognizing.progress.status }}
+                            </h5>
+                            <b-progress :value="recognizing.progress.progress"
+                                        :max="1"
+                                        label="Recognizing"
+                                        show-progress/>
+                        </div>
+
+
+                        <!--                    <vue-image-crop v-model="showCrop"-->
+                        <!--                                    noCircle-->
+                        <!--                                    :width="300"-->
+                        <!--                                    :height="200"-->
+                        <!--                                    langType="en"-->
+                        <!--                                    ref="imageCrop"-->
+                        <!--                                    @crop-success="uploadFile"/>-->
+
                     </div>
-
-
-                    <!--                    <vue-image-crop v-model="showCrop"-->
-                    <!--                                    noCircle-->
-                    <!--                                    :width="300"-->
-                    <!--                                    :height="200"-->
-                    <!--                                    langType="en"-->
-                    <!--                                    ref="imageCrop"-->
-                    <!--                                    @crop-success="uploadFile"/>-->
-
                 </div>
             </div>
         </div>
-    </div>
 </template>
 <script>
     import Webcam from '@/components/Webcam/Webcam.vue'
@@ -367,7 +368,7 @@
             },
             deletePermission(cardId, permissionId, userId) {
                 this.isUpdatingPermissions = true
-                console.log( this.form.permissions.forEach())
+                console.log(this.form.permissions.forEach())
                 // this.form.permissions.forEach()
 
                 // this.form.permissions = this.form.permissions.filter(x => x.id !== permissionId)
