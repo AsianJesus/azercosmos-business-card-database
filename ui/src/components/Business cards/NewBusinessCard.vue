@@ -181,7 +181,7 @@
                                 size="10"
                                 style="margin-top: 10px;"
                                 v-if="!streaming"
-                                button-class="btn"
+                                button-class="btn btn-primary"
                                 :custom-strings="{
                             upload: '<h1>Bummer!</h1>',
                             drag: 'Drag a image or click to upload'

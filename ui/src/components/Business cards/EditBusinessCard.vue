@@ -190,7 +190,7 @@
                             size="10"
                             style="margin-top: 10px;"
                             v-if="!streaming"
-                            button-class="btn"
+                            button-class="btn btn-primary"
                             :custom-strings="{
                             upload: '<h1>Bummer!</h1>',
                             drag: 'Drag a image or click to upload'
@@ -413,15 +413,18 @@
 
                     let image = this.form.image_path
 
-                    this.axios.get(image, {
-                        responseType: 'arraybuffer'
-                    })
-                        .then(response => {
-                            image = new Buffer(response.data, 'binary').toString('base64')
-                            console.log(image)
-                            this.cropUrl = "data:image/png;base64," + image
-                            this.imageUrl = "data:image/png;base64," + image
+                    if (image!=null){
+                        this.axios.get(image, {
+                            responseType: 'arraybuffer'
                         })
+                            .then(response => {
+                                image = new Buffer(response.data, 'binary').toString('base64')
+                                console.log(image)
+                                this.cropUrl = "data:image/png;base64," + image
+                                this.imageUrl = "data:image/png;base64," + image
+                            })
+
+                    }
 
                     // this.getDataUri('http://localhost/azercosmos-business-card-database/api/public/images/1554720141.png', function (dataUri) {
                     //     this.imageUrl = dataUri
