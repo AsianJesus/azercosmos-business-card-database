@@ -179,6 +179,7 @@
                                 margin="16"
                                 accept="image/jpeg,image/png"
                                 size="10"
+                                style="margin-top: 10px;"
                                 v-if="!streaming"
                                 button-class="btn"
                                 :custom-strings="{
