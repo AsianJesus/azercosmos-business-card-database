@@ -279,11 +279,6 @@
                            variant="success">
                         <font-awesome-icon :icon="plusIcon"/>
                     </b-btn>
-                    <b-btn @click="exportedExcel"
-                           class="bcards-icon-button g-wide-button"
-                           variant="success">
-                        <font-awesome-icon :icon="excelIcon"/>
-                    </b-btn>
                 </div>
                 <div class="col-12">
                     <div v-for="(value, key) in filters" v-bind:key="key" v-if="value"
@@ -387,8 +382,8 @@
                             @click="$event.stopPropagation()">
                             <router-link :to="{name: 'EditBusinessCard', params: {id: bcard.id}}">
                                 <b-btn
-                                       class="bcards-table-button g-edit-button bcards-icon-button"
-                                       >
+                                        class="bcards-table-button g-edit-button bcards-icon-button"
+                                >
                                     <font-awesome-icon :icon="editIcon"/>
                                 </b-btn>
 
@@ -411,6 +406,13 @@
                    class="bcards-show-more-button g-wide-button" variant="outline-primary">
                 <v-icon name="arrow-down"/>
             </b-btn>
+            <b-btn @click="exportedExcel"
+                   class=" g-wide-button"
+                   variant="success"
+                   style="display: block;border-radius:0 !important;float: right;margin-top: 10px;">
+                Excel
+            </b-btn>
+
         </div>
     </div>
 </template>
