@@ -31,6 +31,14 @@ class BusinessCardController extends Controller
         if ($request->input('note')) {
             $card->notes()->create(['note' => $request->input('note')]);
         }
+        foreach($request->input('permissions', []) as $user_id => $permissions) {
+            foreach($permissions as $permission) {
+                $card->permissions()->create([
+                    'user_id' => $user_id,
+                    'permission_id' => $permission
+                ]);
+            }
+        }
         return $card->load(['permissions', 'notes']);
     }
 

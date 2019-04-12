@@ -115,6 +115,65 @@
                     <!--                            </tr>-->
                     <!--                        </table>-->
                     <!--                    </div>-->
+                    <div>
+                        <h4>
+                            Permissions
+                        </h4>
+                        <!--                        <user-selector placeholder="User" class="bcard-edit-search"-->
+                        <!--                                       @select="addUserPermission($event)">-->
+
+                        <!--                        </user-selector>-->
+                        <label class="">Tagging</label>
+                        <multiselect v-model="permissionUsers" tag-placeholder="Add this as new tag"
+                                     placeholder="Search user" label="NAME"
+                                     :clear-on-select="false"
+                                     :close-on-select="false"
+                                     track-by="ID" :options="userOptions" :multiple="true" :taggable="true"
+                                     @remove="removeTag"
+                                     @select="addTag"></multiselect>
+
+
+                        <table class="table">
+                            <tr>
+                                <th style="border-top: 0;">User</th>
+                                <th style="border-top: 0;">Read</th>
+                                <th style="border-top: 0;">Edit</th>
+                                <th style="border-top: 0;">Delete</th>
+                                <th style="border-top: 0;"></th>
+                            </tr>
+                            <tr v-for="(per, id) in userPermissions" v-bind:key="index">
+                                <th>{{ users[id] ? users[id].NAME : users[id].user_id }}</th>
+                                <th>
+                                    <input type="checkbox"
+                                           :checked="hasPermission(per, 1)"
+                                           @click="hasPermission(per, 1) ? deletePermission(id, 1)
+                                                    : addPermission(id, 1)">
+                                </th>
+                                <th>
+                                    <input type="checkbox"
+                                           :checked="hasPermission(per, 2)"
+                                           @change="hasPermission(per, 2) ? deletePermission(id, 2)
+                                                : addPermission(id, 2)">
+                                </th>
+                                <th>
+                                    <input type="checkbox"
+                                           :checked="hasPermission(per, 3)"
+                                           @change="hasPermission(per, 3) ? deletePermission(id, 3)
+                                               : addPermission(id, 3)">
+                                </th>
+                                <th>
+                                    <i @click="deleteUserPermission(per.user.ID)"
+                                       class="bcards-table-button bcards-icon-button"
+                                       variant="danger">
+                                        <font-awesome-icon :icon="trashIcon"/>
+                                        <i class="tooltiptext">
+                                            Delete
+                                        </i>
+                                    </i>
+                                </th>
+                            </tr>
+                        </table>
+                    </div>
                     <div class="new-bcard-submit">
                         <b-btn class="business-card-submit" variant="success" @click="send">
                             <font-awesome-icon :icon="plusIcon"/>
@@ -227,7 +286,7 @@
     import {faCamera, faFileImage, faImage, faPlus, faTrashAlt} from '@fortawesome/free-solid-svg-icons'
     import {clipperBasic, clipperPreview} from 'vuejs-clipper'
     import PictureInput from 'vue-picture-input'
-    import UserSelector from '@/components/Tools/UserSelector.vue'
+    import Multiselect from 'vue-multiselect'
 
     export default {
         components: {
@@ -235,7 +294,7 @@
             VueImageCrop,
             clipperBasic,
             clipperPreview,
-            UserSelector,
+            Multiselect: Multiselect,
             'picture-input': PictureInput
 
         },
@@ -254,7 +313,6 @@
                     private: 1,
                     permissions: []
                 },
-                users: null,
                 $Tesseract: null,
                 privacyOptions: [
                     {
@@ -300,7 +358,10 @@
                 selectedLang: null,
                 $keyListener: null,
                 isUpdatingPermissions: false,
-                permissionsForUsers: null
+                userOptions: [],
+                users: {},
+                userPermissions: {},
+                permissionUsers: []
             }
         },
         computed: {
@@ -321,6 +382,7 @@
                 langPath: this.$store.state.serverURL + 'tesseract/langs/',
                 corePath: this.$store.state.serverURL + 'tesseract/index.js'
             })
+            this.loadUsers()
         },
         methods: {
             getResult: function () {
@@ -338,52 +400,34 @@
                     this.cropUrl = window.URL.createObjectURL(e.target.files[0]);
                 }
             },
-            groupPermissions(permissions) {
-                let result = {}
-                for (let i = 0; i < permissions.length; i++) {
-                    if (!result[permissions[i].user_id]) {
-                        result[permissions[i].user_id] = {user: permissions[i].user}
-                    }
-                    result[permissions[i].user_id][permissions[i].permission_id] = 1
-                }
-                console.log(result)
-                return result
-            },
-            addUserPermission(user) {
-                this.form.permissions.push({
-                    user: user,
-                    permission_id: 0,
-                    business_card_id: this.form.id,
-                    user_id: user.ID
+
+            loadUsers () {
+                this.axios.get('/users').then(response => {
+                    this.userOptions = response.data
+                    this.userOptions.forEach(u => {
+                      this.users[u.ID] = u
+                    })
                 })
             },
-            addPermission(cardId, userId, permissionId, user) {
-                let permission = {
-                    business_card_id: null,
-                    user_id: userId,
-                    permission_id: permissionId,
-                    user: user
-                }
-                this.form.permissions.push(permission)
-                console.log(this.form.permissions)
+            removeTag (user) {
+              delete this.userPermissions[user.ID]
             },
-            deletePermission(cardId, permissionId, userId) {
-                this.isUpdatingPermissions = true
-                console.log(this.form.permissions.forEach())
-                // this.form.permissions.forEach()
-
-                // this.form.permissions = this.form.permissions.filter(x => x.id !== permissionId)
-                this.isUpdatingPermissions = false
-                console.log(this.form.permissions)
+            addTag (user) {
+              this.userPermissions[user.ID] = []
             },
-
-            deleteUserPermission(cardId, userID) {
-                this.isUpdatingPermissions = true
-                this.form.permissions = this.form.permissions.filter(p => p.user_id !== userID)
-                this.isUpdatingPermissions = false
-
+            addPermission (userID, permissionID) {
+              this.userPermissions[userID] = this.userPermissions[userID] || []
+              this.userPermissions[userID].push(permissionID)
             },
-
+            deletePermission(userID, permissionID) {
+              this.userPermissions[userID] = this.userPermissions[userID] || []
+              this.userPermissions[userID] = this.userPermissions[userID].filter(p => p !== permissionID)
+            },
+            deleteUserPermission (userID) {
+              delete this.userPermissions[userID]
+              this.permissionUsers = this.permissionUsers.filter(p => p && p.ID !== userID)
+            },
+            hasPermission: (permissions, permissionID) => permissions.some(p => p === permissionID),
             onChange(image) {
                 console.log('New picture selected!')
                 if (image) {
@@ -439,10 +483,15 @@
             send() {
                 if (this.isAdding) return
                 this.isAdding = true
-                var form = new FormData()
+                let form = new FormData()
                 for (let key in this.form) {
                     form.set(key, this.form[key])
                 }
+                Object.keys(this.userPermissions).forEach(userID => {
+                  this.userPermissions[userID].forEach(perID => {
+                    form.set(`permissions[${userID}][]`, perID)
+                  })
+                })
                 form.append('photo', this.form.photo)
                 this.axios.post('/business-cards', form).then(response => {
                     console.log(response.data)

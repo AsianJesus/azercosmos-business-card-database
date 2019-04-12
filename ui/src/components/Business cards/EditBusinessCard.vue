@@ -3,7 +3,7 @@
         <div class="col-12 new-business-card-header">
             Edit Business Card
         </div>
-        <div v-if="isAdding" class="col-12">
+        <div v-if="isAdding || !form" class="col-12">
             <h2>
                 Please wait for a second...
             </h2>
@@ -391,11 +391,11 @@
                     if (this.form && this.form.id === cardId) {
                         this.form.permissions = this.form.permissions.filter(p => p.user_id !== user.ID)
                     }
-                    for (let i = 0; i < this.businessCardsAll.length; i++) {
+                    /* for (let i = 0; i < this.businessCardsAll.length; i++) {
                         if (this.businessCardsAll[i].id === cardId) {
                             this.businessCardsAll[i].permissions = this.businessCardsAll[i].permissions.filter(p => p.user_id !== user.ID)
                         }
-                    }
+                    } */
                 })
 
             },
@@ -495,11 +495,12 @@
                     if (this.form && this.form.id === cardId) {
                         this.form.permissions = this.form.permissions.filter(p => p.user_id !== userID)
                     }
-                    for (let i = 0; i < this.businessCardsAll.length; i++) {
+                    /*for (let i = 0; i < this.businessCardsAll.length; i++) {
                         if (this.businessCardsAll[i].id === cardId) {
                             this.businessCardsAll[i].permissions = this.businessCardsAll[i].permissions.filter(p => p.user_id !== userID)
                         }
-                    }
+                    }*/
+                    this.value = this.value.filter(u => u.ID !== userID)
                 })
             },
             deletePermission(cardId, permissionId) {
@@ -695,6 +696,7 @@
 
     .bcards-icon-button {
         position: relative;
+        cursor: pointer;
     }
 
     .bcards-icon-button:hover .tooltiptext {
