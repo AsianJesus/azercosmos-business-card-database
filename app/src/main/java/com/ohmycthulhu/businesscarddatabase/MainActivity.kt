@@ -1,7 +1,10 @@
 package com.ohmycthulhu.businesscarddatabase
 
+import android.Manifest
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
+import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu
 import android.view.MenuItem
@@ -10,15 +13,22 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
+    val REQUEST_PERMISSIONS = 1;
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
         fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
+            Intent(this, NewCardActivity::class.java).also({
+                startActivity(it)
+            })
         }
+    }
+
+    private fun requestPermissions() {
+        ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), REQUEST_PERMISSIONS)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
