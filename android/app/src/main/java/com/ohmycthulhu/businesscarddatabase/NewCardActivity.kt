@@ -1,5 +1,6 @@
 package com.ohmycthulhu.businesscarddatabase
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -29,12 +30,12 @@ class NewCardActivity : AppCompatActivity() {
     var image: Bitmap? = null
     lateinit var requestQueue: RequestQueue
     var fileToDelete: File? = null
-    var imagePath: String? = null
     lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_card_photo)
+        setResult(Activity.RESULT_CANCELED)
 
         requestQueue = Volley.newRequestQueue(this)
 
@@ -107,12 +108,14 @@ class NewCardActivity : AppCompatActivity() {
             Response.Listener {
             Toast.makeText(this, "It worked!", Toast.LENGTH_SHORT).show()
             if (fileToDelete != null) {
-                // (fileToDelete as File).delete()
+                (fileToDelete as File).delete()
             }
+            finish()
+            setResult(Activity.RESULT_OK)
         }, Response.ErrorListener {
             Toast.makeText(this, "Error occurred: ${it.message}", Toast.LENGTH_LONG).show()
             if (fileToDelete != null) {
-                // (fileToDelete as File).delete()
+                (fileToDelete as File).delete()
             }
         })
         request.addStringParam("name", name)
@@ -127,7 +130,7 @@ class NewCardActivity : AppCompatActivity() {
         if (image != null) {
             val bytes = ByteArrayOutputStream()
             image.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
-            var path = MediaStore.Images.Media.insertImage(contentResolver, image, "Title", null)
+            val path = MediaStore.Images.Media.insertImage(contentResolver, image, "Title", null)
             Toast.makeText(this, "Path is $path", Toast.LENGTH_SHORT).show()
             try {
                 fileToDelete = File(path)
@@ -136,8 +139,6 @@ class NewCardActivity : AppCompatActivity() {
             }
             request.addFile("photo", getPath(Uri.parse(path)))
         }
-
-        Toast.makeText(this, "Size of request is ${request.body?.size ?: 0}", Toast.LENGTH_SHORT).show()
         request.tag = "new_card"
         requestQueue.add(request)
     }
@@ -151,8 +152,11 @@ class NewCardActivity : AppCompatActivity() {
                 image = bundle.get("data") as Bitmap
             }
         }
-        if (requestCode == REQUEST_PICK_IMAGE) {
+        if (requestCode == REQUEST_PICK_IMAGE && data != null) {
             Toast.makeText(this, "You picked image", Toast.LENGTH_SHORT).show()
+            val pickUri = data.data
+            image = if(pickUri != null) MediaStore.Images.Media.getBitmap(contentResolver, pickUri) else null
+
         }
     }
 
