@@ -11,6 +11,7 @@ import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.SimpleAdapter
 import android.widget.Toast
 import com.android.volley.Request
 import com.android.volley.RequestQueue
@@ -19,12 +20,14 @@ import com.android.volley.request.JsonArrayRequest
 import com.android.volley.toolbox.Volley
 
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.content_main.*
 import org.json.JSONObject
 
 class MainActivity : AppCompatActivity() {
 
     val REQUEST_PERMISSIONS = 1
     val REQUEST_CONFIG = 2
+    val REQUEST_NEW_CARD = 3
     lateinit var requestQueue: RequestQueue
     var cards: Array<BusinessCard> = arrayOf()
     lateinit var sharedPreferences: SharedPreferences
@@ -39,13 +42,16 @@ class MainActivity : AppCompatActivity() {
         requestQueue = Volley.newRequestQueue(this)
 
         fab.setOnClickListener { view ->
-            Intent(this, NewCardActivity::class.java).also({
-                startActivity(it)
-            })
+            Intent(this, NewCardActivity::class.java).also {
+                startActivityForResult(it, REQUEST_NEW_CARD)
+            }
         }
 
-        loadCards()
 
+        loadCards()
+        cardsList.setOnItemClickListener { parent, view, position, id ->
+            Toast.makeText(this, "It works!", Toast.LENGTH_SHORT).show()
+        }
         requestPermissions()
     }
 
@@ -70,6 +76,7 @@ class MainActivity : AppCompatActivity() {
                         obj.getString("website"), obj.getString("position"),
                         obj.getInt("private") == 1, note, imagePath)
                 })
+                showCards()
             },
             Response.ErrorListener {
                 Toast.makeText(this, "Error occurred on loading cards: ${it.message}", Toast.LENGTH_LONG).show()
@@ -85,9 +92,29 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun showCards () {
+        val elements = ArrayList<HashMap<String, String>>()
+
+        for (card in cards) {
+            val hash = HashMap<String, String>()
+            hash.put("name", card.name)
+            hash.put("company", "${card.company ?: ""} - ${card.position ?: ""}")
+            elements.add(hash)
+        }
+
+        val to = intArrayOf(R.id.listItemName, R.id.listItemCompany)
+        val adapter = SimpleAdapter(this, elements, R.layout.list_item, arrayOf("name", "company"), to)
+        cardsList.adapter = adapter
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_CONFIG) {
+            if (resultCode == Activity.RESULT_OK) {
+                loadCards()
+            }
+        }
+        if (requestCode == REQUEST_NEW_CARD) {
             if (resultCode == Activity.RESULT_OK) {
                 loadCards()
             }
