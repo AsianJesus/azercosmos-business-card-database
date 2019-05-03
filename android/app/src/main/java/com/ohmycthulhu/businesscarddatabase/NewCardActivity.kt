@@ -1,9 +1,13 @@
 package com.ohmycthulhu.businesscarddatabase
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.support.v4.content.CursorLoader
 import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
 import com.android.volley.Request
@@ -26,12 +30,15 @@ class NewCardActivity : AppCompatActivity() {
     lateinit var requestQueue: RequestQueue
     var fileToDelete: File? = null
     var imagePath: String? = null
+    lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_card_photo)
 
         requestQueue = Volley.newRequestQueue(this)
+
+        sharedPreferences = getSharedPreferences("com.ohmycthulhu.businesscarddatabase", Context.MODE_PRIVATE)
 
         makePhotoFab.setOnClickListener { dispatchTakePhoto() }
         choosePhotoFab.setOnClickListener { dispatchChoosePhoto() }
@@ -95,7 +102,9 @@ class NewCardActivity : AppCompatActivity() {
             Toast.makeText(this, e.message, Toast.LENGTH_LONG).show()
             return
         }
-        val request = SimpleMultiPartRequest(Request.Method.POST, "http://192.168.1.8/business-cards", Response.Listener {
+        val request = SimpleMultiPartRequest(Request.Method.POST,
+            "${sharedPreferences.getString("api_address", "http://192.168.1.8")}/business-cards",
+            Response.Listener {
             Toast.makeText(this, "It worked!", Toast.LENGTH_SHORT).show()
             if (fileToDelete != null) {
                 // (fileToDelete as File).delete()
@@ -118,14 +127,14 @@ class NewCardActivity : AppCompatActivity() {
         if (image != null) {
             val bytes = ByteArrayOutputStream()
             image.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
-            val path = MediaStore.Images.Media.insertImage(contentResolver, image, "Title", null)
+            var path = MediaStore.Images.Media.insertImage(contentResolver, image, "Title", null)
             Toast.makeText(this, "Path is $path", Toast.LENGTH_SHORT).show()
             try {
                 fileToDelete = File(path)
             } catch (e: Exception) {
                 Toast.makeText(this, "Error while opened file: ${e.message}", Toast.LENGTH_SHORT).show()
             }
-            request.addFile("photo", path)
+            request.addFile("photo", getPath(Uri.parse(path)))
         }
 
         Toast.makeText(this, "Size of request is ${request.body?.size ?: 0}", Toast.LENGTH_SHORT).show()
@@ -145,5 +154,16 @@ class NewCardActivity : AppCompatActivity() {
         if (requestCode == REQUEST_PICK_IMAGE) {
             Toast.makeText(this, "You picked image", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun getPath(contentUri: Uri): String {
+        val proj = arrayOf(MediaStore.Images.Media.DATA)
+        val loader = CursorLoader(applicationContext, contentUri, proj, null, null, null)
+        val cursor = loader.loadInBackground()
+        val column_index = cursor?.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+        cursor?.moveToFirst()
+        val result = cursor?.getString(column_index as Int)
+        cursor?.close()
+        return result as String
     }
 }
