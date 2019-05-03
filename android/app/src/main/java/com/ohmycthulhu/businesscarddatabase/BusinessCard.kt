@@ -1,7 +1,8 @@
 package com.ohmycthulhu.businesscarddatabase
 
-class BusinessCard (name: String, company: String?, email: String?, address: String?, phone: String?, website: String?, position: String?, private: Boolean, note: String?, imagePath: String?) {
+import java.io.Serializable
 
+class BusinessCard (name: String, company: String?, email: String?, address: String?, phone: String?, website: String?, position: String?, private: Boolean, note: String?, imagePath: String?) : Serializable {
     var name: String
     var company: String?
     var position: String?
@@ -25,4 +26,5 @@ class BusinessCard (name: String, company: String?, email: String?, address: Str
         this.note = note
         this.imagePath = imagePath
     }
+
 }

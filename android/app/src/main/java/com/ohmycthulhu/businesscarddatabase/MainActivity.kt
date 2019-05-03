@@ -50,7 +50,15 @@ class MainActivity : AppCompatActivity() {
 
         loadCards()
         cardsList.setOnItemClickListener { parent, view, position, id ->
-            Toast.makeText(this, "It works!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "It works! You selected ${cards[position].name}", Toast.LENGTH_SHORT).show()
+            Intent(this, ShowCardActivity::class.java).also { intent ->
+                val extras = Bundle()
+                extras.putString("name", cards[position].name)
+                intent.putExtras(extras)
+                intent.putExtra("card", cards[position])
+                startActivity(intent)
+            }
+
         }
         requestPermissions()
     }
