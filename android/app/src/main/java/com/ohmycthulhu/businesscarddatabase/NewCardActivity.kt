@@ -139,7 +139,6 @@ class NewCardActivity : AppCompatActivity() {
             Toast.makeText(this, "You picked image", Toast.LENGTH_SHORT).show()
             val pickUri = data.data
             image = if(pickUri != null) MediaStore.Images.Media.getBitmap(contentResolver, pickUri) else null
-
         }
     }
 

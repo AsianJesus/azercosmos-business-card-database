@@ -5,7 +5,10 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
+import android.support.v4.content.CursorLoader
 import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
 import com.android.volley.Request
@@ -16,6 +19,7 @@ import com.android.volley.toolbox.Volley
 import kotlinx.android.synthetic.main.activity_edit_card.*
 import kotlinx.android.synthetic.main.activity_new_card_photo.*
 import org.json.JSONObject
+import java.io.ByteArrayOutputStream
 import java.io.File
 
 class EditCardActivity : AppCompatActivity() {
@@ -25,6 +29,10 @@ class EditCardActivity : AppCompatActivity() {
     lateinit var sharedPreferences: SharedPreferences
     lateinit var requestQueue: RequestQueue
     private var isSaving: Boolean = false
+    private var fileToDelete: File? = null
+
+    private val REQUEST_IMAGE_CAPTURE = 2
+    private val REQUEST_PICK_IMAGE = 3
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,14 +57,31 @@ class EditCardActivity : AppCompatActivity() {
             editCardEmail.setText(card.email)
             editCardNote.setText(card.note)
             editCardIsPrivate.isChecked = card.private
+
+            editCardSaveButton.setOnClickListener {
+                saveChanges()
+            }
         }
 
-        editCardSaveButton.setOnClickListener {
-            saveChanges()
+        editCardChoosePhotoFab.setOnClickListener {
+            Intent().also {
+                it.type = "image/*"
+                it.action = Intent.ACTION_GET_CONTENT
+                startActivityForResult(Intent.createChooser(it, "Select picture"), REQUEST_PICK_IMAGE)
+            }
         }
+
+        editCardMakePhotoFab.setOnClickListener {
+            Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+                takePictureIntent.resolveActivity(packageManager)?.also {
+                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+                }
+            }
+        }
+
     }
 
-    fun saveChanges (): Boolean {
+    private fun saveChanges (): Boolean {
 
         if (isSaving) {
             Toast.makeText(this, "Already saving card", Toast.LENGTH_SHORT).show()
@@ -92,18 +117,18 @@ class EditCardActivity : AppCompatActivity() {
             "${sharedPreferences.getString("api_address", "http://192.168.1.8")}/business-cards/${card.id}",
             Response.Listener {
                 Toast.makeText(this, "It worked!", Toast.LENGTH_SHORT).show()
-                /*if (fileToDelete != null) {
+                if (fileToDelete != null) {
                     (fileToDelete as File).delete()
-                }*/
+                }
                 isSaving = false
                 update(it)
                 finish()
             }, Response.ErrorListener {
                 Toast.makeText(this, "Error occurred: ${it.message}", Toast.LENGTH_LONG).show()
                 isSaving = false
-                /*if (fileToDelete != null) {
+                if (fileToDelete != null) {
                     (fileToDelete as File).delete()
-                }*/
+                }
             })
         isSaving = true
         request.addStringParam("name", name)
@@ -117,8 +142,48 @@ class EditCardActivity : AppCompatActivity() {
         request.addStringParam("note", note)
 
         request.tag = "edit_card"
-
+        if (image != null) {
+            val bytes = ByteArrayOutputStream()
+            image.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+            val path = MediaStore.Images.Media.insertImage(contentResolver, image, "Title", null)
+            Toast.makeText(this, "Path is $path", Toast.LENGTH_SHORT).show()
+            try {
+                fileToDelete = File(path)
+            } catch (e: Exception) {
+                Toast.makeText(this, "Error while opened file: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+            request.addFile("photo", getPath(Uri.parse(path)))
+        }
         requestQueue.add(request)
+    }
+
+    private fun getPath(uri: Uri): String {
+        val proj = arrayOf(MediaStore.Images.Media.DATA)
+        val loader = CursorLoader(applicationContext, uri, proj, null, null, null)
+        val cursor = loader.loadInBackground()
+        val columnIndex = cursor?.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+        cursor?.moveToFirst()
+        val result = cursor?.getString(columnIndex as Int)
+        cursor?.close()
+        return result as String
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_IMAGE_CAPTURE && data != null) {
+            Toast.makeText(this, "You took photo!", Toast.LENGTH_SHORT).show()
+            val bundle = data.extras
+            if (bundle != null) {
+                image = bundle.get("data") as Bitmap
+            }
+        }
+        if (requestCode == REQUEST_PICK_IMAGE && data != null) {
+            Toast.makeText(this, "You picked image", Toast.LENGTH_SHORT).show()
+            val pickUri = data.data
+            image = if(pickUri != null) MediaStore.Images.Media.getBitmap(contentResolver, pickUri) else null
+        }
     }
 
     fun update(result: String) {
