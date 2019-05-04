@@ -74,15 +74,16 @@ class MainActivity : AppCompatActivity() {
             "${sharedPreferences.getString("api_address", "http://192.168.1.8")}/business-cards",
             null,
             Response.Listener {
+                val userID = sharedPreferences.getInt("user_id", 1)
                 cards = Array(it.length(), fun (index): BusinessCard {
                     val obj = it[index] as JSONObject
                     val note = if(obj.has("note")) obj.getString("note") else ""
-                    val imagePath = if(obj.has("image_path")) obj.getString("image_path") else null
+                    val imagePath = obj.getString("image_path")
 
-                    return BusinessCard(obj.getString("name"), obj.getString("company_name"),
+                    return BusinessCard(obj.getInt("id"), obj.getString("name"), obj.getString("company_name"),
                         obj.getString("email"), obj.getString("address"), obj.getString("mobile"),
                         obj.getString("website"), obj.getString("position"),
-                        obj.getInt("private") == 1, note, imagePath)
+                        obj.getInt("private") == 1, note, imagePath, obj.getInt("created_by") == userID)
                 })
                 showCards()
             },
@@ -90,6 +91,7 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "Error occurred on loading cards: ${it.message}", Toast.LENGTH_LONG).show()
             })
         request.tag = "load_cards"
+        request.setShouldCache(false)
         requestQueue.add(request)
     }
 
@@ -142,6 +144,10 @@ class MainActivity : AppCompatActivity() {
         return when(item.itemId) {
             R.id.action_settings -> {
                 openSettings()
+                return true
+            }
+            R.id.action_refresh -> {
+                loadCards()
                 return true
             }
             else -> super.onOptionsItemSelected(item)

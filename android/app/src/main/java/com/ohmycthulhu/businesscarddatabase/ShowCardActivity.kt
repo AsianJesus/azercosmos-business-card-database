@@ -1,11 +1,14 @@
 package com.ohmycthulhu.businesscarddatabase
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.drawable.Drawable
 import android.os.AsyncTask
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_show_card.*
@@ -14,6 +17,7 @@ import java.net.URL
 
 class ShowCardActivity : AppCompatActivity() {
     private lateinit var sharedPreferences: SharedPreferences
+    private val REQUEST_EDIT_CARD  = 2
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,19 +30,43 @@ class ShowCardActivity : AppCompatActivity() {
         if (card == null) {
             Toast.makeText(this, "Card is null", Toast.LENGTH_SHORT).show()
         } else {
-            showCardName.text = card.name
-            showCardCompany.text = card.company ?: ""
-            showCardPosition.text = card.position ?: ""
-            showCardAddress.text = card.address ?: ""
-            showCardPosition.text = card.website ?: ""
-            showCardPhone.text = card.phone ?: ""
+            setFields(card)
+        }
+    }
 
-            if (card.imagePath != null) {
+    private fun setFields (card: BusinessCard) {
+        showCardName.text = card.name
+        showCardCompany.text = card.company ?: ""
+        showCardPosition.text = card.position ?: ""
+        showCardAddress.text = card.address ?: ""
+        showCardPosition.text = card.website ?: ""
+        showCardPhone.text = card.phone ?: ""
 
-                val url = "${sharedPreferences.getString("api_address", "http://192.168.1.8")}/images/1556898701.jpeg"
-                Toast.makeText(this, "Loading image from $url", Toast.LENGTH_SHORT).show()
+        if (card.hasImage()) {
 
-                LoadImage(showCardImage, this).execute(url)
+            val url = "${sharedPreferences.getString("api_address", "http://192.168.1.8")}/images/1556898701.jpeg"
+            Toast.makeText(this, "Loading image from $url", Toast.LENGTH_SHORT).show()
+
+            LoadImage(showCardImage, this).execute(url)
+        }
+        if (card.isMine) {
+            showCardEditButton.visibility = View.VISIBLE
+
+            showCardEditButton.setOnClickListener {
+                Intent(this, EditCardActivity::class.java).also { intent ->
+                    intent.putExtra("card", card)
+                    startActivityForResult(intent, REQUEST_EDIT_CARD)
+                }
+            }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_EDIT_CARD) {
+            if (resultCode == Activity.RESULT_OK && data != null) {
+                val card = data.getSerializableExtra("new_card") as BusinessCard
+                setFields(card)
             }
         }
     }

@@ -1,8 +1,10 @@
 package com.ohmycthulhu.businesscarddatabase
 
+import android.util.Log
 import java.io.Serializable
 
-class BusinessCard (name: String, company: String?, email: String?, address: String?, phone: String?, website: String?, position: String?, private: Boolean, note: String?, imagePath: String?) : Serializable {
+class BusinessCard (id: Int, name: String, company: String?, email: String?, address: String?, phone: String?, website: String?, position: String?, private: Boolean, note: String?, imagePath: String?, isMine: Boolean) : Serializable {
+    var id: Int
     var name: String
     var company: String?
     var position: String?
@@ -13,8 +15,10 @@ class BusinessCard (name: String, company: String?, email: String?, address: Str
     var private: Boolean
     var note: String?
     var imagePath: String?
+    var isMine: Boolean
 
     init {
+        this.id = id
         this.name = name
         this.company = company
         this.position = position
@@ -25,6 +29,13 @@ class BusinessCard (name: String, company: String?, email: String?, address: Str
         this.private = private
         this.note = note
         this.imagePath = imagePath
+        this.isMine = isMine
+    }
+
+    fun hasImage (): Boolean{
+        return this.imagePath != null
+                && (imagePath as String).isNotEmpty()
+                && imagePath != "null"
     }
 
 }

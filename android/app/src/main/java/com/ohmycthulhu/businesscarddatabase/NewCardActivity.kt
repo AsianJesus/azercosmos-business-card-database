@@ -20,7 +20,6 @@ import kotlinx.android.synthetic.main.activity_new_card_photo.*
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
 import java.io.File
-import java.net.URI
 
 class NewCardActivity : AppCompatActivity() {
 
@@ -43,7 +42,7 @@ class NewCardActivity : AppCompatActivity() {
 
         makePhotoFab.setOnClickListener { dispatchTakePhoto() }
         choosePhotoFab.setOnClickListener { dispatchChoosePhoto() }
-        createButton.setOnClickListener { createCard() }
+        saveButton.setOnClickListener { createCard() }
     }
 
     private fun dispatchTakePhoto () {
@@ -87,22 +86,6 @@ class NewCardActivity : AppCompatActivity() {
     }
 
     private fun sendCreateRequest (name: String, company: String, email: String, address: String, phone: String, website: String, position: String, private: Boolean, image: Bitmap?, note: String) {
-        val params = JSONObject()
-        try {
-            params.put("name", name)
-            params.put("company_name", company)
-            params.put("position", position)
-            params.put("email", email)
-            params.put("mobile", phone)
-            params.put("website", website)
-            params.put("private", private)
-            params.put("address", address)
-            params.put("note", note)
-
-        } catch (e: Exception){
-            Toast.makeText(this, e.message, Toast.LENGTH_LONG).show()
-            return
-        }
         val request = SimpleMultiPartRequest(Request.Method.POST,
             "${sharedPreferences.getString("api_address", "http://192.168.1.8")}/business-cards",
             Response.Listener {
@@ -110,8 +93,8 @@ class NewCardActivity : AppCompatActivity() {
             if (fileToDelete != null) {
                 (fileToDelete as File).delete()
             }
-            finish()
             setResult(Activity.RESULT_OK)
+            finish()
         }, Response.ErrorListener {
             Toast.makeText(this, "Error occurred: ${it.message}", Toast.LENGTH_LONG).show()
             if (fileToDelete != null) {
