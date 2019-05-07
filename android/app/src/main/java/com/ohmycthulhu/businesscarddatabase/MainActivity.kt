@@ -29,8 +29,9 @@ class MainActivity : AppCompatActivity() {
     val REQUEST_PERMISSIONS = 1
     val REQUEST_CONFIG = 2
     val REQUEST_NEW_CARD = 3
+    val REQUEST_SHOW_CARD = 4
     lateinit var requestQueue: RequestQueue
-    var cards: Array<BusinessCard> = arrayOf()
+    var cards: ArrayList<BusinessCard> = arrayListOf()
     lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,7 +59,7 @@ class MainActivity : AppCompatActivity() {
                 extras.putString("name", cards[position].name)
                 intent.putExtras(extras)
                 intent.putExtra("card", cards[position])
-                startActivity(intent)
+                startActivityForResult(intent, REQUEST_SHOW_CARD)
             }
 
         }
@@ -77,16 +78,17 @@ class MainActivity : AppCompatActivity() {
             null,
             Response.Listener {
                 val userID = sharedPreferences.getInt("user_id", 1)
-                cards = Array(it.length(), fun (index): BusinessCard {
-                    val obj = it[index] as JSONObject
+                cards = ArrayList(it.length())
+                for (i in 0..it.length()-1) {
+                    val obj = it[i] as JSONObject
                     val note = if(obj.has("note")) obj.getString("note") else ""
                     val imagePath = obj.getString("image_path")
 
-                    return BusinessCard(obj.getInt("id"), obj.getString("name"), obj.getString("company_name"),
+                    cards.add(BusinessCard(obj.getInt("id"), obj.getString("name"), obj.getString("company_name"),
                         obj.getString("email"), obj.getString("address"), obj.getString("mobile"),
                         obj.getString("website"), obj.getString("position"),
-                        obj.getInt("private") == 1, note, imagePath, obj.getInt("created_by") == userID)
-                })
+                        obj.getInt("private") == 1, note, imagePath, obj.getInt("created_by") == userID))
+                }
                 showCards()
             },
             Response.ErrorListener {
@@ -105,7 +107,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showCards () {
-        val elements = ArrayList<HashMap<String, String>>()
+        val adapter = BusinessCardsAdapter(cards, this)
+        cardsList.adapter = adapter
+        /*cardsList.setOnItemClickListener { parent, view, position, id ->
+            val cardModel = cards[position]
+
+
+        }*/
+        /*val elements = ArrayList<HashMap<String, String>>()
 
         for (card in cards) {
             val hash = HashMap<String, String>()
@@ -116,7 +125,7 @@ class MainActivity : AppCompatActivity() {
 
         val to = intArrayOf(R.id.listItemName, R.id.listItemCompany)
         val adapter = SimpleAdapter(this, elements, R.layout.list_item, arrayOf("name", "company"), to)
-        cardsList.adapter = adapter
+        cardsList.adapter = adapter*/
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -129,6 +138,21 @@ class MainActivity : AppCompatActivity() {
         if (requestCode == REQUEST_NEW_CARD) {
             if (resultCode == Activity.RESULT_OK) {
                 loadCards()
+            }
+        }
+        if (requestCode == REQUEST_SHOW_CARD) {
+            if (resultCode == Activity.RESULT_OK) {
+                if (data != null) {
+                    if(data.hasExtra("cardToEdit")) {
+                        val adapter = cardsList.adapter as BusinessCardsAdapter
+                        adapter.editCard(data.getSerializableExtra("cardToEdit") as BusinessCard)
+                    }
+                    if(data.hasExtra("cardToDelete")) {
+                        val adapter = cardsList.adapter as BusinessCardsAdapter
+                        adapter.deleteCard(data.getIntExtra("cardToDelete", 0))
+                    }
+
+                }
             }
         }
     }
