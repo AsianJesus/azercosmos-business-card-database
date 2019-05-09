@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                           android:layout_width="fill_parent"
+                                           android:layout_height="wrap_content"
+                                           android:padding="10dp">
+    <LinearLayout
+            android:id="@+id/listItemInfo"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <TextView
+                android:text="ID"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/listItemID"/>
+        <TextView
+                android:text="Phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/listItemPhone"/>
+        <TextView android:id="@+id/listItemAddress"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="Address"/>
+        <TextView
+                android:text="Email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/listItemEmail"/>
+        <TextView
+                android:text="Note"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/listItemNote"/>
+    </LinearLayout>
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/listItemInfo"
+    >
+        <TextView
+                android:text="Image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/listItemImage" android:layout_weight="1"
+                android:foregroundTint="#00FF5050" android:textColor="@color/design_default_color_primary_dark"/>
+        <TextView
+                android:text="Edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/listItemEdit" android:layout_weight="1"
+                android:foregroundTint="#00FF5050" android:textColor="@color/design_default_color_primary_dark"/>
+        <TextView
+                android:text="Delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/listItemDelete" android:layout_weight="1"
+                android:foregroundTint="#00FF5050" android:textColor="@color/design_default_color_primary_dark"/>
+    </LinearLayout>
+
+</RelativeLayout>

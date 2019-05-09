@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.SimpleAdapter
@@ -18,21 +19,31 @@ import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.android.volley.request.JsonArrayRequest
+import com.android.volley.request.StringRequest
 import com.android.volley.toolbox.Volley
 
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import org.json.JSONObject
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), BusinessCardController {
 
+    /*
+        Codes for activity results
+     */
     val REQUEST_PERMISSIONS = 1
     val REQUEST_CONFIG = 2
     val REQUEST_NEW_CARD = 3
-    val REQUEST_SHOW_CARD = 4
+    val REQUEST_EDIT_CARD = 4
+
     lateinit var requestQueue: RequestQueue
-    var cards: ArrayList<BusinessCard> = arrayListOf()
     lateinit var sharedPreferences: SharedPreferences
+
+    /*
+        These variables needed for editing cards
+        afterEditCallback is called after EditCard activity ends up with Result OK
+     */
+    var afterCardEditCallback: AfterCardEditCallback? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
@@ -52,7 +63,7 @@ class MainActivity : AppCompatActivity() {
 
 
         loadCards()
-        cardsList.setOnItemClickListener { parent, view, position, id ->
+        /*cardsList.setOnItemClickListener { parent, view, position, id ->
             Toast.makeText(this, "It works! You selected ${cards[position].name}", Toast.LENGTH_SHORT).show()
             Intent(this, ShowCardActivity::class.java).also { intent ->
                 val extras = Bundle()
@@ -61,8 +72,7 @@ class MainActivity : AppCompatActivity() {
                 intent.putExtra("card", cards[position])
                 startActivityForResult(intent, REQUEST_SHOW_CARD)
             }
-
-        }
+        }*/
         requestPermissions()
     }
 
@@ -78,8 +88,8 @@ class MainActivity : AppCompatActivity() {
             null,
             Response.Listener {
                 val userID = sharedPreferences.getInt("user_id", 1)
-                cards = ArrayList(it.length())
-                for (i in 0..it.length()-1) {
+                val cards: ArrayList<BusinessCard> = ArrayList(it.length())
+                for (i in 0 until it.length()) {
                     val obj = it[i] as JSONObject
                     val note = if(obj.has("note")) obj.getString("note") else ""
                     val imagePath = obj.getString("image_path")
@@ -89,7 +99,7 @@ class MainActivity : AppCompatActivity() {
                         obj.getString("website"), obj.getString("position"),
                         obj.getInt("private") == 1, note, imagePath, obj.getInt("created_by") == userID))
                 }
-                showCards()
+                showCards(cards)
             },
             Response.ErrorListener {
                 Toast.makeText(this, "Error occurred on loading cards: ${it.message}", Toast.LENGTH_LONG).show()
@@ -106,9 +116,51 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun showCards () {
-        val adapter = BusinessCardsAdapter(cards, this)
-        cardsList.adapter = adapter
+    override fun deleteCard(id: Int, afterCardDeleteCallback: AfterCardDeleteCallback) {
+        val dialog = DeleteCardDialog()
+        dialog.setCallback {
+            if (it) {
+                Toast.makeText(this, "Card $id is deleted", Toast.LENGTH_SHORT).show()
+                sendDeleteRequest(id) {
+                    afterCardDeleteCallback.afterDelete(id)
+                }
+            }
+        }
+        dialog.show(supportFragmentManager, "delete_card")
+    }
+
+    override fun editCard(card: BusinessCard, afterCardEditCallback: AfterCardEditCallback) {
+        Toast.makeText(this, "Card ${card.id} is edited", Toast.LENGTH_SHORT).show()
+        this.afterCardEditCallback = afterCardEditCallback
+        Intent(this, EditCardActivity::class.java).also {
+            it.putExtra("card", card)
+            startActivityForResult(it, REQUEST_EDIT_CARD)
+        }
+    }
+
+    override fun showImage(card: BusinessCard) {
+        // TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val url = "${sharedPreferences.getString("api_address", "http://192.168.1.8")}/${card.imagePath}"
+        Toast.makeText(this, "Image is at ${url}", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun sendDeleteRequest(id: Int, callback: () -> Unit) {
+        val url = "${sharedPreferences.getString("api_address", "http://192.168.1.8")}/business-cards/$id"
+        val request = StringRequest(Request.Method.DELETE, url, {
+            Toast.makeText(this, "We deleted card #$id!", Toast.LENGTH_SHORT).show()
+            callback()
+        }, {
+            Toast.makeText(this, "Couldn't delete the card", Toast.LENGTH_SHORT).show()
+            Log.e("delete error", it.message)
+        })
+
+        request.tag = "delete_card"
+        requestQueue.add(request)
+    }
+
+    private fun showCards (cards: ArrayList<BusinessCard>) {
+        val adapter = BusinessCardsAdapter(cards, this, this)
+        cardsList.setAdapter(adapter)
         /*cardsList.setOnItemClickListener { parent, view, position, id ->
             val cardModel = cards[position]
 
@@ -140,6 +192,18 @@ class MainActivity : AppCompatActivity() {
                 loadCards()
             }
         }
+        if (requestCode == REQUEST_EDIT_CARD) {
+            if (resultCode == Activity.RESULT_OK && data != null) {
+                val card = data.getSerializableExtra("new_card") as BusinessCard
+                if (afterCardEditCallback == null) {
+                    Log.d("aftercard", "Callback is null")
+                } else {
+                    Log.d("aftercard", "Callback is not null")
+                }
+                afterCardEditCallback?.afterEdit(card)
+            }
+        }
+        /*
         if (requestCode == REQUEST_SHOW_CARD) {
             if (resultCode == Activity.RESULT_OK) {
                 if (data != null) {
@@ -154,7 +218,7 @@ class MainActivity : AppCompatActivity() {
 
                 }
             }
-        }
+        }*/
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

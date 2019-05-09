@@ -4,16 +4,139 @@ import android.app.Activity
 import android.view.View
 import android.widget.ArrayAdapter
 import android.content.Context
+import android.graphics.Typeface
 import android.support.design.widget.Snackbar
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.widget.BaseExpandableListAdapter
 import android.widget.TextView
+import android.widget.Toast
 
 
+class BusinessCardsAdapter(private val dataSet: ArrayList<BusinessCard>, private var context: Activity, private val controller: BusinessCardController) :
+    BaseExpandableListAdapter(), AfterCardDeleteCallback, AfterCardEditCallback {
 
+    override fun getChildView(
+        groupPosition: Int,
+        childPosition: Int,
+        isLastChild: Boolean,
+        convertView: View?,
+        parent: ViewGroup?
+    ): View {
+        var convView = convertView
+        val inflater = context.layoutInflater
+        val card = getChild(groupPosition, childPosition) as BusinessCard
+        if (convView == null) {
+            convView = inflater.inflate(R.layout.list_child_item, null)
+        }
+        if (convView != null) {
+            convView.findViewById<TextView>(R.id.listItemID).text = card.id.toString()
+            convView.findViewById<TextView>(R.id.listItemAddress).text = card.address
+            convView.findViewById<TextView>(R.id.listItemEmail).text = card.email
+            convView.findViewById<TextView>(R.id.listItemNote).text = card.note
+            convView.findViewById<TextView>(R.id.listItemPhone).text = card.phone
+            if (!card.isMine) {
+                convView.findViewById<TextView>(R.id.listItemDelete).visibility = View.GONE
+                convView.findViewById<TextView>(R.id.listItemEdit).visibility = View.GONE
+            } else {
+                convView.findViewById<TextView>(R.id.listItemDelete).setOnClickListener {
+                    controller.deleteCard(card.id, this)
+                }
+                convView.findViewById<TextView>(R.id.listItemEdit).setOnClickListener {
+                    controller.editCard(card, this)
+                }
+            }
+            if (!card.hasImage()) {
+                convView.findViewById<TextView>(R.id.listItemImage).visibility = View.GONE
+            } else {
+                convView.findViewById<TextView>(R.id.listItemImage).setOnClickListener {
+                    controller.showImage(card)
+                }
+            }
+        }
+        return convView as View
+    }
+
+    override fun getGroupView(groupPosition: Int, isExpanded: Boolean, convertView: View?, parent: ViewGroup?): View {
+        var conv: View? = convertView
+        val card = getGroup(groupPosition) as BusinessCard
+        if (conv == null) {
+            val layoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+            conv = layoutInflater.inflate(R.layout.list_item, null)
+        }
+        if (conv != null) {
+            val nameField: TextView = conv.findViewById(R.id.listItemName)
+            val companyField = conv.findViewById<TextView>(R.id.listItemCompany)
+            nameField.typeface = Typeface.DEFAULT_BOLD
+            nameField.text = card.name
+            companyField.text = "${card.company} - ${card.position}"
+        }
+        return conv as View
+    }
+
+    override fun afterDelete(id: Int) {
+        /*
+            For deleting we are checking dataSet from the end. It allows us to not use invalid indexes after deleting card
+            After reversing array, all existing indexes are mapped as i => size - i - 1,
+            so we need to get size and map them back for deleting
+         */
+        val length = dataSet.size
+        for ((index,  card) in dataSet.reversed().withIndex()) {
+            if (card.id == id) {
+                dataSet.removeAt(length - 1 - index)
+            }
+        }
+        notifyDataSetChanged()
+
+    }
+
+    override fun afterEdit(card: BusinessCard) {
+        /*
+            Search for card with needed id and replace if find
+         */
+        for ((index,  c) in dataSet.withIndex()) {
+            if (c.id == card.id) {
+                dataSet[index] = card
+            }
+        }
+        notifyDataSetChanged()
+    }
+
+    override fun getChildrenCount(groupPosition: Int): Int {
+        return 1
+    }
+
+    override fun getGroup(groupPosition: Int): Any {
+        return dataSet[groupPosition]
+    }
+
+    override fun getChild(groupPosition: Int, childPosition: Int): Any {
+        return dataSet[groupPosition]
+    }
+
+    override fun getChildId(groupPosition: Int, childPosition: Int): Long {
+        return childPosition.toLong()
+    }
+
+    override fun getGroupCount(): Int {
+        return dataSet.size
+    }
+
+    override fun getGroupId(groupPosition: Int): Long {
+        return dataSet[groupPosition].id.toLong()
+    }
+
+    override fun isChildSelectable(groupPosition: Int, childPosition: Int): Boolean {
+        return false
+    }
+
+    override fun hasStableIds(): Boolean {
+        return true
+    }
+}/*
 class BusinessCardsAdapter(private val dataSet: ArrayList<BusinessCard>, private var activity: Activity) :
     ArrayAdapter<BusinessCard>(activity, R.layout.list_item, dataSet), View.OnClickListener {
 
@@ -35,7 +158,7 @@ class BusinessCardsAdapter(private val dataSet: ArrayList<BusinessCard>, private
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        /*val view: View = View.inflate(activity, R.layout.list_item, null)
+        *//*val view: View = View.inflate(activity, R.layout.list_item, null)
         val cardName = view.findViewById(R.id.listItemName) as TextView
         val cardCompany = view.findViewById(R.id.listItemCompany) as TextView
         Log.d("adapter_name", dataSet[position].id.toString())
@@ -43,7 +166,7 @@ class BusinessCardsAdapter(private val dataSet: ArrayList<BusinessCard>, private
         cardCompany.text = "Text"
         // cardCompany.text = "${dataSet[position].company} - ${dataSet[position].position}"
 
-        return view*/
+        return view*//*
 
         val card = getItem(position)
 
@@ -81,24 +204,24 @@ class BusinessCardsAdapter(private val dataSet: ArrayList<BusinessCard>, private
     }
 
     fun deleteCard (id: Int) {
-        /*val cardsToDelete = arrayListOf<Int>()
+        *//*val cardsToDelete = arrayListOf<Int>()
         for ((index, c) in dataSet.withIndex()) {
             if (c.id == id) {
                 Log.d("cardToDelete", "${c.id} - ${c.name}")
                 remove(c)
                 cardsToDelete.add(index)
             }
-        }*/
-/*
+        }*//*
+*//*
         for (index in cardsToDelete.reversed()) {
             dataSet.removeAt(index)
-        }*/
+        }*//*
     }
 
     fun editCard (card: BusinessCard) {
 
     }
-}
+}*/
 /*
 
 

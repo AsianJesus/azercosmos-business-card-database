@@ -15,7 +15,7 @@ import com.android.volley.request.StringRequest
 import com.android.volley.toolbox.Volley
 import kotlinx.android.synthetic.main.activity_show_card.*
 
-class ShowCardActivity : AppCompatActivity(), DeletesCard {
+class ShowCardActivity : AppCompatActivity() {
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var card: BusinessCard
     private var wasEdited: Boolean = false
@@ -48,7 +48,7 @@ class ShowCardActivity : AppCompatActivity(), DeletesCard {
 
         if (card.hasImage()) {
 
-            val url = "${sharedPreferences.getString("api_address", "http://192.168.1.8")}/images/1556898701.jpeg"
+            val url = "${sharedPreferences.getString("api_address", "http://192.168.1.8")}/${card.imagePath}"
             Toast.makeText(this, "Loading image from $url", Toast.LENGTH_SHORT).show()
 
             LoadImage(showCardImage, this).execute(url)
@@ -65,13 +65,15 @@ class ShowCardActivity : AppCompatActivity(), DeletesCard {
 
             showCardDeleteButton.setOnClickListener {
                 val dialog = DeleteCardDialog()
-                dialog.setActivity(this)
+                dialog.setCallback {
+                    deleteCard()
+                }
                 dialog.show(supportFragmentManager, "delete_card")
             }
         }
     }
 
-    override fun deleteCard () {
+    private fun deleteCard () {
         Toast.makeText(this, "Deleting card #${card.id}", Toast.LENGTH_SHORT).show()
         val url = "${sharedPreferences.getString("api_address", "http://192.168.1.8")}/business-cards/${card.id}"
         val request = StringRequest(Request.Method.DELETE, url, {
