@@ -473,6 +473,9 @@
                     email: true,
                     website: false
                 },
+                customNames: {
+                  mobile: 'Phone'
+                },
                 privacyOptions: [
                     {
                         text: 'Public',
@@ -547,7 +550,8 @@
         },
         methods: {
             formatFilterName(name) {
-                return name.replace(/[-_]/g, ' ')
+                // return name.replace(/[-_]/g, ' ')
+                return (this.customNames[name] || name).replace(/[-_]/g, ' ')
             },
             exportedExcel() {
                 this.axios.get('business-cards-excel', {
@@ -767,7 +771,8 @@
                 return this.businessCardsAll.filter(card => {
                     for (let param in this.filters) {
                         if (this.filters.hasOwnProperty(param) && this.filters[param]) {
-                            if (!card[param].toString().toLowerCase().includes(this.filters[param].toString().toLowerCase())) {
+                            if (!card[param]
+                                    || !card[param].toString().toLowerCase().includes(this.filters[param].toString().toLowerCase())) {
                                 return false
                             }
                         }

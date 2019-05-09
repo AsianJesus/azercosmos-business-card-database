@@ -34,31 +34,38 @@
                         <b-form-input class="new-bcard-info-cell"
                                       v-model="form.name"
                                       id="name"
-                                      placeholder="Name"
+                                      placeholder="Name*"
+                                      :state="showErrors && validationErrors.name ? false : null"
                                       type="text"/>
                         <b-form-input class="new-bcard-info-cell"
                                       type="text"
-                                      placeholder="Company"
+                                      placeholder="Company*"
+                                      :state="showErrors && validationErrors.company_name ? false : null"
                                       v-model="form.company_name"/>
                         <b-form-input class="new-bcard-info-cell"
                                       type="text"
-                                      placeholder="Position"
+                                      placeholder="Position*"
+                                      :state="showErrors && validationErrors.position ? false : null"
                                       v-model="form.position"/>
                         <b-form-input class="new-bcard-info-cell"
                                       type="text"
-                                      placeholder="Address"
+                                      placeholder="Address*"
+                                      :state="showErrors && validationErrors.address ? false : null"
                                       v-model="form.address"/>
                         <b-form-input class="new-bcard-info-cell"
                                       type="tel"
-                                      placeholder="Phone"
+                                      placeholder="Phone*"
+                                      :state="showErrors && validationErrors.mobile ? false : null"
                                       v-model="form.mobile"/>
                         <b-form-input class="new-bcard-info-cell"
                                       type="email"
-                                      placeholder="Email"
+                                      placeholder="Email*"
+                                      :state="showErrors && validationErrors.email ? false : null"
                                       v-model="form.email"/>
                         <b-form-input class="new-bcard-info-cell"
                                       type="text"
-                                      placeholder="Website"
+                                      placeholder="Website*"
+                                      :state="showErrors && validationErrors.website ? false : null"
                                       v-model="form.website"/>
                         <b-form-select class="new-bcard-info-cell"
                                        v-model="form.private"
@@ -279,254 +286,267 @@
         </div>
 </template>
 <script>
-    import Webcam from '@/components/Webcam/Webcam.vue'
-    import VueImageCrop from 'vue-image-crop-upload'
-    import Tesseract from 'tesseract.js'
-    import {recognize} from '@/assets/js/parsingFunctions.js'
-    import {faCamera, faFileImage, faImage, faPlus, faTrashAlt} from '@fortawesome/free-solid-svg-icons'
-    import {clipperBasic, clipperPreview} from 'vuejs-clipper'
-    import PictureInput from 'vue-picture-input'
-    import Multiselect from 'vue-multiselect'
+import Webcam from '@/components/Webcam/Webcam.vue'
+import VueImageCrop from 'vue-image-crop-upload'
+import Tesseract from 'tesseract.js'
+import {recognize} from '@/assets/js/parsingFunctions.js'
+import {faCamera, faFileImage, faImage, faPlus, faTrashAlt} from '@fortawesome/free-solid-svg-icons'
+import {clipperBasic, clipperPreview} from 'vuejs-clipper'
+import PictureInput from 'vue-picture-input'
+import Multiselect from 'vue-multiselect'
 
-    export default {
-        components: {
-            Webcam,
-            VueImageCrop,
-            clipperBasic,
-            clipperPreview,
-            Multiselect: Multiselect,
-            'picture-input': PictureInput
+export default {
+    components: {
+        Webcam,
+        VueImageCrop,
+        clipperBasic,
+        clipperPreview,
+        Multiselect: Multiselect,
+        'picture-input': PictureInput
 
-        },
-        data() {
-            return {
-                form: {
-                    name: '',
-                    company_name: '',
-                    position: '',
-                    mobile: '',
-                    email: '',
-                    note: '',
-                    webste: '',
-                    address: '',
-                    photo: null,
-                    private: 1,
-                    permissions: []
-                },
-                $Tesseract: null,
-                privacyOptions: [
-                    {
-                        text: 'Please, select privacy level',
-                        value: 1
-                    },
-                    {
-                        text: 'Private',
-                        value: 1
-                    },
-                    {
-                        text: 'Public',
-                        value: 0
-                    }
-                ],
-                imageUrl: '',
-                cropUrl: '',
-                isAdding: false,
-                streaming: false,
-                showCrop: false,
-                recognizing: {
-                    progress: null,
-                    recognizedText: null
-                },
-                langOptions: [
-                    {
-                        text: 'Language',
-                        value: null
-                    },
-                    {
-                        text: 'English',
-                        value: 'eng'
-                    },
-                    {
-                        text: 'Русский',
-                        value: 'rus'
-                    },
-                    {
-                        text: 'Azərbaycan',
-                        value: 'aze'
-                    }
-                ],
-                selectedLang: null,
-                $keyListener: null,
-                isUpdatingPermissions: false,
-                userOptions: [],
-                users: {},
-                userPermissions: {},
-                permissionUsers: []
-            }
-        },
-        computed: {
-            isMain() {
-                return this.$route.name === 'NewBusinessCard'
+    },
+    data() {
+        return {
+            form: {
+                name: '',
+                company_name: '',
+                position: '',
+                mobile: '',
+                email: '',
+                note: '',
+                website: '',
+                address: '',
+                photo: null,
+                private: 1
             },
-            cameraIcon: () => faCamera,
-            fileImageIcon: () => faFileImage,
-            imageIcon: () => faImage,
-            plusIcon: () => faPlus,
-            trashIcon: () => faTrashAlt,
-
+            $Tesseract: null,
+            privacyOptions: [
+                {
+                    text: 'Please, select privacy level',
+                    value: 1
+                },
+                {
+                    text: 'Private',
+                    value: 1
+                },
+                {
+                    text: 'Public',
+                    value: 0
+                }
+            ],
+            imageUrl: '',
+            cropUrl: '',
+            isAdding: false,
+            streaming: false,
+            showCrop: false,
+            recognizing: {
+                progress: null,
+                recognizedText: null
+            },
+            langOptions: [
+                {
+                    text: 'Language',
+                    value: null
+                },
+                {
+                    text: 'English',
+                    value: 'eng'
+                },
+                {
+                    text: 'Русский',
+                    value: 'rus'
+                },
+                {
+                    text: 'Azərbaycan',
+                    value: 'aze'
+                }
+            ],
+            selectedLang: null,
+            $keyListener: null,
+            isUpdatingPermissions: false,
+            userOptions: [],
+            users: {},
+            userPermissions: {},
+            permissionUsers: [],
+            showErrors: false
+        }
+    },
+    computed: {
+        validationErrors () {
+          return {
+            name: !this.form.name,
+            company_name: !this.form.company_name,
+            position: !this.form.position,
+            mobile: this.form.mobile === '',
+            email: !this.form.email,
+            website: !this.form.website,
+            address: !this.form.address
+          }
         },
-        mounted() {
-            // this.startWebcam()
-            this.$Tesseract = Tesseract.create({
-                workerPath: this.$store.state.serverURL + 'tesseract/worker.js',
-                langPath: this.$store.state.serverURL + 'tesseract/langs/',
-                corePath: this.$store.state.serverURL + 'tesseract/index.js'
+        isMain() {
+          return this.$route.name === 'NewBusinessCard'
+        },
+        cameraIcon: () => faCamera,
+        fileImageIcon: () => faFileImage,
+        imageIcon: () => faImage,
+        plusIcon: () => faPlus,
+        trashIcon: () => faTrashAlt
+
+    },
+    mounted() {
+        // this.startWebcam()
+        this.$Tesseract = Tesseract.create({
+            workerPath: this.$store.state.serverURL + 'tesseract/worker.js',
+            langPath: this.$store.state.serverURL + 'tesseract/langs/',
+            corePath: this.$store.state.serverURL + 'tesseract/index.js'
+        })
+        this.loadUsers()
+    },
+    methods: {
+        getResult: function () {
+            const canvas = this.$refs.clipper.clip();//call component's clip method
+            this.imageUrl = canvas.toDataURL("image/jpg", 1);//canvas->image
+            fetch(this.imageUrl).then(photo => photo.blob()).then(file => {
+                this.form.photo = file
+                this.recognizeImage(file)
             })
-            this.loadUsers()
+
         },
-        methods: {
-            getResult: function () {
-                const canvas = this.$refs.clipper.clip();//call component's clip method
-                this.imageUrl = canvas.toDataURL("image/jpg", 1);//canvas->image
-                fetch(this.imageUrl).then(photo => photo.blob()).then(file => {
-                    this.form.photo = file
-                    this.recognizeImage(file)
-                })
-
-            },
-            upload: function (e) {
-                if (e.target.files.length !== 0) {
-                    if (this.cropUrl) URL.revokeObjectURL(this.cropUrl)
-                    this.cropUrl = window.URL.createObjectURL(e.target.files[0]);
-                }
-            },
-
-            loadUsers () {
-                this.axios.get('/users').then(response => {
-                    this.userOptions = response.data
-                    this.userOptions.forEach(u => {
-                      this.users[u.ID] = u
-                    })
-                })
-            },
-            removeTag (user) {
-              delete this.userPermissions[user.ID]
-            },
-            addTag (user) {
-              this.userPermissions[user.ID] = []
-            },
-            addPermission (userID, permissionID) {
-              this.userPermissions[userID] = this.userPermissions[userID] || []
-              this.userPermissions[userID].push(permissionID)
-            },
-            deletePermission(userID, permissionID) {
-              this.userPermissions[userID] = this.userPermissions[userID] || []
-              this.userPermissions[userID] = this.userPermissions[userID].filter(p => p !== permissionID)
-            },
-            deleteUserPermission (userID) {
-              delete this.userPermissions[userID]
-              this.permissionUsers = this.permissionUsers.filter(p => p && p.ID !== userID)
-            },
-            hasPermission: (permissions, permissionID) => permissions.some(p => p === permissionID),
-            onChange(image) {
-                console.log('New picture selected!')
-                if (image) {
-                    console.log('Picture loaded.')
-                    this.cropUrl = image
-                } else {
-                    console.log('FileReader API not supported: use the <form>, Luke!')
-                }
-            },
-            selectWebcam() {
-                let image = this.$refs.webcam.takePicture()
-                fetch(image).then(photo => photo.blob()).then(photo => {
-                    console.log(photo)
-                    this.$refs.imageCrop.setSourceImg(photo)
-
-                })
-                this.cropUrl = image
-                // this.stopWebcam()
-            },
-            startWebcam() {
-                this.streaming = true
-                this.$refs.webcam.startVideo(stream => {
-                    this.$refs.webcam_video.srcObject = stream
-                    this.$refs.webcam_video.play()
-                })
-                if (!this.$keyListener) {
-                    document.addEventListener('keydown', this.takePhotoAtSpacebar)
-                }
-            },
-            stopWebcam() {
-                this.$refs.webcam.stopVideo()
-                document.removeEventListener('keydown', this.$keyListener)
-                this.$keyListener = null
-            },
-            takePhotoAtSpacebar(event) {
-                if (this.streaming && event.keyCode === 32) {
-                    this.selectWebcam()
-                }
-            },
-            uploadFile(url) {
-                this.imageUrl = url
-                this.stopWebcam()
-                fetch(this.imageUrl).then(photo => photo.blob()).then(file => {
-                    this.form.photo = file
-                    this.recognizeImage(file)
-                })
-            },
-            rerunRecognizing() {
-                if (this.form.photo) {
-                    this.recognizeImage(this.form.photo)
-                }
-            },
-            send() {
-                if (this.isAdding) return
-                this.isAdding = true
-                let form = new FormData()
-                for (let key in this.form) {
-                    form.set(key, this.form[key])
-                }
-                Object.keys(this.userPermissions).forEach(userID => {
-                  this.userPermissions[userID].forEach(perID => {
-                    form.set(`permissions[${userID}][]`, perID)
-                  })
-                })
-                form.append('photo', this.form.photo)
-                this.axios.post('/business-cards', form).then(response => {
-                    console.log(response.data)
-                    this.isAdding = false
-                    if (this.isMain) {
-                        this.$router.push({name: 'BusinessCardsWithOption', params: {option: 'mycards'}})
-                    }
-                    this.$emit('newCard', response.data)
-                }).catch(err => {
-                    console.log(err)
-                    this.isAdding = false
-                    alert('Error!')
-                })
-                console.log(this.form)
-            },
-            recognizeImage(image) {
-                this.$Tesseract.recognize(image, {
-                    lang: this.selectedLang
-                }).progress(p => {
-                    this.recognizing.progress = p
-                }).then(result => {
-                    this.recognizing.recognizedText = result.text
-                    this.autoFillFields()
-                }).catch(err => {
-                    console.log(err)
-                })
-            },
-            autoFillFields() {
-                this.form.name = recognize(this.recognizing.recognizedText, 'name', this.selectedLang)
-                this.form.mobile = recognize(this.recognizing.recognizedText, 'phone', this.selectedLang)
-                this.form.email = recognize(this.recognizing.recognizedText, 'email', this.selectedLang)
-                this.form.website = recognize(this.recognizing.recognizedText, 'website', this.selectedLang)
+        upload: function (e) {
+            if (e.target.files.length !== 0) {
+                if (this.cropUrl) URL.revokeObjectURL(this.cropUrl)
+                this.cropUrl = window.URL.createObjectURL(e.target.files[0]);
             }
+        },
+        loadUsers () {
+            this.axios.get('/users').then(response => {
+                this.userOptions = response.data
+                this.userOptions.forEach(u => {
+                  this.users[u.ID] = u
+                })
+            })
+        },
+        removeTag (user) {
+          delete this.userPermissions[user.ID]
+        },
+        addTag (user) {
+          this.userPermissions[user.ID] = []
+        },
+        addPermission (userID, permissionID) {
+          this.userPermissions[userID] = this.userPermissions[userID] || []
+          this.userPermissions[userID].push(permissionID)
+        },
+        deletePermission(userID, permissionID) {
+          this.userPermissions[userID] = this.userPermissions[userID] || []
+          this.userPermissions[userID] = this.userPermissions[userID].filter(p => p !== permissionID)
+        },
+        deleteUserPermission (userID) {
+          delete this.userPermissions[userID]
+          this.permissionUsers = this.permissionUsers.filter(p => p && p.ID !== userID)
+        },
+        hasPermission: (permissions, permissionID) => permissions.some(p => p === permissionID),
+        onChange(image) {
+            console.log('New picture selected!')
+            if (image) {
+                console.log('Picture loaded.')
+                this.cropUrl = image
+            } else {
+                console.log('FileReader API not supported: use the <form>, Luke!')
+            }
+        },
+        selectWebcam() {
+            let image = this.$refs.webcam.takePicture()
+            fetch(image).then(photo => photo.blob()).then(photo => {
+                console.log(photo)
+                this.$refs.imageCrop.setSourceImg(photo)
+
+            })
+            this.cropUrl = image
+            // this.stopWebcam()
+        },
+        startWebcam() {
+            this.streaming = true
+            this.$refs.webcam.startVideo(stream => {
+                this.$refs.webcam_video.srcObject = stream
+                this.$refs.webcam_video.play()
+            })
+            if (!this.$keyListener) {
+                document.addEventListener('keydown', this.takePhotoAtSpacebar)
+            }
+        },
+        stopWebcam() {
+            this.$refs.webcam.stopVideo()
+            document.removeEventListener('keydown', this.$keyListener)
+            this.$keyListener = null
+        },
+        takePhotoAtSpacebar(event) {
+            if (this.streaming && event.keyCode === 32) {
+                this.selectWebcam()
+            }
+        },
+        uploadFile(url) {
+            this.imageUrl = url
+            this.stopWebcam()
+            fetch(this.imageUrl).then(photo => photo.blob()).then(file => {
+                this.form.photo = file
+                this.recognizeImage(file)
+            })
+        },
+        rerunRecognizing() {
+            if (this.form.photo) {
+                this.recognizeImage(this.form.photo)
+            }
+        },
+        send() {
+            if (this.isAdding) return
+            if (Object.values(this.validationErrors).some(x => x)) {
+                this.showErrors = true
+                return
+            }
+            this.showErrors = false
+            this.isAdding = true
+            let form = new FormData()
+            for (let key in this.form) {
+                form.set(key, this.form[key])
+            }
+            Object.keys(this.userPermissions).forEach(userID => {
+              form.set(`permissions[${userID}][]`, perID)
+            })
+            form.append('photo', this.form.photo)
+            this.axios.post('/business-cards', form).then(response => {
+                console.log(response.data)
+                this.isAdding = false
+                if (this.isMain) {
+                    this.$router.push({name: 'BusinessCardsWithOption', params: {option: 'mycards'}})
+                }
+                this.$emit('newCard', response.data)
+            }).catch(err => {
+                console.log(err)
+                this.isAdding = false
+                alert('Error!')
+            })
+            console.log(this.form)
+        },
+        recognizeImage(image) {
+            this.$Tesseract.recognize(image, {
+                lang: this.selectedLang
+            }).progress(p => {
+                this.recognizing.progress = p
+            }).then(result => {
+                this.recognizing.recognizedText = result.text
+                this.autoFillFields()
+            }).catch(err => {
+                console.log(err)
+            })
+        },
+        autoFillFields() {
+            this.form.name = recognize(this.recognizing.recognizedText, 'name', this.selectedLang)
+            this.form.mobile = recognize(this.recognizing.recognizedText, 'phone', this.selectedLang)
+            this.form.email = recognize(this.recognizing.recognizedText, 'email', this.selectedLang)
+            this.form.website = recognize(this.recognizing.recognizedText, 'website', this.selectedLang)
         }
     }
+}
 </script>
 <style>
     .placeholder {
