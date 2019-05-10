@@ -2,10 +2,16 @@ package com.ohmycthulhu.businesscarddatabase
 
 import android.app.AlertDialog
 import android.app.Dialog
+import android.app.DownloadManager
 import android.content.Context
+import android.content.Context.DOWNLOAD_SERVICE
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.support.v4.app.DialogFragment
-import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
+import java.io.File
 import java.lang.IllegalStateException
 
 class ShowImageModal : DialogFragment() {
@@ -17,6 +23,26 @@ class ShowImageModal : DialogFragment() {
             val inflater = requireActivity().layoutInflater
             val view = inflater.inflate(R.layout.show_image_modal, null)
             LoadImage(view.findViewById(R.id.showImageModalImage), context as Context).execute(url)
+            view.findViewById<TextView>(R.id.showImageModalSave).setOnClickListener {
+                if (context != null) {
+                    Toast.makeText(context, "It was clicked", Toast.LENGTH_SHORT).show()
+                    val directoryPath = "${Environment.getExternalStorageDirectory()}/${Environment.DIRECTORY_DCIM}/BCD"
+                    if (!File(directoryPath).exists()) {
+                        File(directoryPath).mkdirs()
+                    }
+                    val file = File(directoryPath, "business-card")
+                    val request = DownloadManager.Request(Uri.parse(url))
+                        .setTitle("Downloading card")
+                        .setDescription("Downloading")
+                        .setDestinationUri(Uri.fromFile(file))
+                        .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                        .setAllowedOverMetered(true)
+                        .setAllowedOverRoaming(true)
+                    val downloadManager = (context as Context).getSystemService(DOWNLOAD_SERVICE) as DownloadManager
+                    val downloadID = downloadManager.enqueue(request)
+                    Toast.makeText(context, "It was ended. Id is $downloadID", Toast.LENGTH_SHORT).show()
+                }
+            }
             builder.setView(view)
 
             builder.create()
