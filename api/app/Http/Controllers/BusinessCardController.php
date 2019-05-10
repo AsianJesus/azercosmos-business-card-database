@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use App\BusinessCard;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class BusinessCardController extends Controller
 {
@@ -20,6 +21,9 @@ class BusinessCardController extends Controller
 
     public function add(Request $request)
     {
+        Log::debug(json_encode($request->all()));
+        Log::debug(json_encode($request->file('photo')));
+        Log::debug(date('Y-m-d H:i:s'));
         if ($request->file('photo')) {
             $photo = $request->file('photo');
             $name = time() . '.' . $photo->extension();
@@ -31,7 +35,7 @@ class BusinessCardController extends Controller
         if ($request->input('note')) {
             $card->notes()->create(['note' => $request->input('note')]);
         }
-        foreach($request->input('permissions', []) as $user_id => $permissions) {
+        foreach($request->input('permissions', []) ?? [] as $user_id => $permissions) {
             foreach($permissions as $permission) {
                 $card->permissions()->create([
                     'user_id' => $user_id,
@@ -104,6 +108,9 @@ class BusinessCardController extends Controller
     {
 //        $this->validate($request, $this->rules);
 //        return $request->all();
+        Log::debug(json_encode($request->all()));
+        Log::debug($request->file('photo'));
+
         if ($request->file('photo')) {
             $photo = $request->file('photo');
             $name = time() . '.' . $photo->extension();
@@ -113,6 +120,7 @@ class BusinessCardController extends Controller
 
         $update = $this->business_card::findOrFail($id);
         $result = $update->fill($request->all())->save();
+        Log::debug(json_encode($update));
         $note = DB::table("bcard_notes")->where("business_card_id", $id)->first();
         if ($note != null) {
             DB::table("bcard_notes")->where("business_card_id", $id)->update([

@@ -1,6 +1,7 @@
 package com.ohmycthulhu.businesscarddatabase
 
 import android.app.Activity
+import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -29,6 +30,7 @@ class NewCardActivity : AppCompatActivity() {
     var image: Bitmap? = null
     lateinit var requestQueue: RequestQueue
     var fileToDelete: File? = null
+    var imageUri: Uri? = null
     lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,10 +48,12 @@ class NewCardActivity : AppCompatActivity() {
     }
 
     private fun dispatchTakePhoto () {
+        val values = ContentValues()
+        values.put(MediaStore.Images.Media.TITLE, "New Picture")
+        imageUri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
         Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
-            takePictureIntent.resolveActivity(packageManager)?.also {
-                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
-            }
+            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
         }
     }
 
@@ -128,12 +132,9 @@ class NewCardActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_IMAGE_CAPTURE && data != null) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE) {
             Toast.makeText(this, "You took photo!", Toast.LENGTH_SHORT).show()
-            val bundle = data.extras
-            if (bundle != null) {
-                image = bundle.get("data") as Bitmap
-            }
+            image = MediaStore.Images.Media.getBitmap(contentResolver, imageUri)
         }
         if (requestCode == REQUEST_PICK_IMAGE && data != null) {
             Toast.makeText(this, "You picked image", Toast.LENGTH_SHORT).show()

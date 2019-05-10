@@ -1,6 +1,7 @@
 package com.ohmycthulhu.businesscarddatabase
 
 import android.app.Activity
+import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -31,6 +32,7 @@ class EditCardActivity : AppCompatActivity() {
     private var isSaving: Boolean = false
     private var fileToDelete: File? = null
 
+    private var imageUri: Uri? = null // It's where camera picture is stored when photo is captured
     private val REQUEST_IMAGE_CAPTURE = 2
     private val REQUEST_PICK_IMAGE = 3
 
@@ -72,10 +74,12 @@ class EditCardActivity : AppCompatActivity() {
         }
 
         editCardMakePhotoFab.setOnClickListener {
+            val values = ContentValues()
+            values.put(MediaStore.Images.Media.TITLE, "New Picture")
+            imageUri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
             Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
-                takePictureIntent.resolveActivity(packageManager)?.also {
-                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
-                }
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
+                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
             }
         }
 
@@ -172,12 +176,9 @@ class EditCardActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_IMAGE_CAPTURE && data != null) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE) {
             Toast.makeText(this, "You took photo!", Toast.LENGTH_SHORT).show()
-            val bundle = data.extras
-            if (bundle != null) {
-                image = bundle.get("data") as Bitmap
-            }
+            image = MediaStore.Images.Media.getBitmap(contentResolver, imageUri)
         }
         if (requestCode == REQUEST_PICK_IMAGE && data != null) {
             Toast.makeText(this, "You picked image", Toast.LENGTH_SHORT).show()
