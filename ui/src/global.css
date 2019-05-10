@@ -1,3 +1,7 @@
+.icon {
+    cursor: pointer;
+}
+
 .g-standard-button, .g-edit-button {
     padding: 3px 7px;
 }

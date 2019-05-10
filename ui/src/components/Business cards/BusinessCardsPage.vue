@@ -9,8 +9,18 @@
         <div>
             <transition name="bcard-show">
                 <div class="bcard-show-holder" v-if="cardToShow" @click="hideCard">
-                    <div class="bcard-show-info-holder">
-                        <div class="bcard-show-form" @click="$event.stopPropagation()">
+                    <div class="bcard-show-info-holder"
+                         @click="$event.stopPropagation()">
+                        <div class="bcard-show-form-save">
+                            <span class="icon"
+                                  @click="saveAsForm"
+                            >
+                                Save
+                            </span>
+                        </div>
+                        <div class="bcard-show-form"
+                             ref="showForm"
+                        >
                             <div class="row bcard-show-name-holder"
                                  style="margin: auto 0 !important;"
                             >
@@ -178,8 +188,15 @@
                 <div class="bcard-show-holder"
                      v-if="cardToShowSourceImage"
                      @click="cardToShowSourceImage = null">
-                    <div class="bcard-source-image-holder">
-                        <div class="bcard-show-info-holder">
+                    <div class="bcard-source-image-holder" >
+                        <div class="bcard-show-info-holder" @click="$event.stopPropagation()">
+                            <div class="bcard-show-form-save">
+                            <span class="icon"
+                                  @click="saveImage($store.state.serverURL + '/' + cardToShowSourceImage.image_path)"
+                            >
+                                Save
+                            </span>
+                            </div>
                             <img :src="$store.state.serverURL + '/' + cardToShowSourceImage.image_path"
                                  class="bcard-source-image">
                             <div class="bcard-note-header"
@@ -412,7 +429,13 @@
                    style="display: block;border-radius:0 !important;float: right;margin-top: 10px;">
                 Excel
             </b-btn>
-
+            <!-- This link is required to download images and dom objects as jpeg files -->
+            <a ref="imageToDownload"
+               href="#"
+               style="display: none;"
+               target="_blank"
+               download="true"
+            />
         </div>
     </div>
 </template>
@@ -421,6 +444,7 @@
     import NewBusinessCard from '@/components/Business cards/NewBusinessCard.vue'
     import UserSelector from '@/components/Tools/UserSelector.vue'
     import lodash from 'lodash'
+    import domToImage from 'dom-to-image'
     import exportFromJSON from 'export-from-json'
 
     import {
@@ -552,6 +576,18 @@
             formatFilterName(name) {
                 // return name.replace(/[-_]/g, ' ')
                 return (this.customNames[name] || name).replace(/[-_]/g, ' ')
+            },
+            saveAsForm () {
+                console.log(this.$refs.showForm)
+                domToImage.toJpeg(this.$refs.showForm, {
+                    quality: .96
+                }).then(dataUrl => {
+                    this.saveImage(dataUrl)
+                })
+            },
+            saveImage (url) {
+                this.$refs.imageToDownload.href = url
+                this.$refs.imageToDownload.click()
             },
             exportedExcel() {
                 this.axios.get('business-cards-excel', {
@@ -916,6 +952,11 @@
         border-radius: 3px;
         text-align: center;
     }
+    .bcard-show-form-save {
+        text-align: right;
+        font-style: italic;
+        color: #000000aa;
+    }
 
     .bcard-show-name {
         font-weight: bold;
@@ -1170,4 +1211,5 @@
     .columns-leave-active {
         animation: growup .2s ease reverse;
     }
+
 </style>
