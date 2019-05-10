@@ -141,7 +141,8 @@ class MainActivity : AppCompatActivity(), BusinessCardController {
     override fun showImage(card: BusinessCard) {
         // TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
         val url = "${sharedPreferences.getString("api_address", "http://192.168.1.8")}/${card.imagePath}"
-        Toast.makeText(this, "Image is at ${url}", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "Image is at $url", Toast.LENGTH_SHORT).show()
+        ShowImageModal().setImageURL(url).show(supportFragmentManager, "show_image")
     }
 
     private fun sendDeleteRequest(id: Int, callback: () -> Unit) {
