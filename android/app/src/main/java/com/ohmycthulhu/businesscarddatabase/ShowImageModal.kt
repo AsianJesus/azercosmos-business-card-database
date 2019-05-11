@@ -5,10 +5,13 @@ import android.app.Dialog
 import android.app.DownloadManager
 import android.content.Context
 import android.content.Context.DOWNLOAD_SERVICE
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.support.v4.app.DialogFragment
+import android.view.Window
 import android.widget.TextView
 import android.widget.Toast
 import java.io.File
@@ -23,6 +26,7 @@ class ShowImageModal : DialogFragment() {
             val inflater = requireActivity().layoutInflater
             val view = inflater.inflate(R.layout.show_image_modal, null)
             LoadImage(view.findViewById(R.id.showImageModalImage), context as Context).execute(url)
+
             view.findViewById<TextView>(R.id.showImageModalSave).setOnClickListener {
                 if (context != null) {
                     Toast.makeText(context, "It was clicked", Toast.LENGTH_SHORT).show()
@@ -43,6 +47,7 @@ class ShowImageModal : DialogFragment() {
                     Toast.makeText(context, "It was ended. Id is $downloadID", Toast.LENGTH_SHORT).show()
                 }
             }
+            // (dialog.window as Window).setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             builder.setView(view)
 
             builder.create()

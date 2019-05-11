@@ -6,6 +6,8 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.ActivityInfo
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.app.ActivityCompat
@@ -31,10 +33,10 @@ class MainActivity : AppCompatActivity(), BusinessCardController {
     /*
         Codes for activity results
      */
-    val REQUEST_PERMISSIONS = 1
-    val REQUEST_CONFIG = 2
-    val REQUEST_NEW_CARD = 3
-    val REQUEST_EDIT_CARD = 4
+    private val REQUEST_PERMISSIONS = 1
+    private val REQUEST_CONFIG = 2
+    private val REQUEST_NEW_CARD = 3
+    private val REQUEST_EDIT_CARD = 4
 
     lateinit var requestQueue: RequestQueue
     lateinit var sharedPreferences: SharedPreferences
@@ -146,7 +148,10 @@ class MainActivity : AppCompatActivity(), BusinessCardController {
          */
         val url = "${sharedPreferences.getString("api_address", "http://192.168.1.8")}/${card.imagePath}"
         Toast.makeText(this, "Image is at $url", Toast.LENGTH_SHORT).show()
-        ShowImageModal().setImageURL(url).show(supportFragmentManager, "show_image")
+        val modal = ShowImageModal()
+        modal.setImageURL(url)
+        modal.dialog// .window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        modal.show(supportFragmentManager, "show_image")
     }
 
     private fun sendDeleteRequest(id: Int, callback: () -> Unit) {

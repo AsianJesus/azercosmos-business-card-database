@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<FrameLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
         android:orientation="vertical"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent" android:alpha="1" android:background="#1AFFFFFF"
-        android:paddingLeft="8dp" android:paddingTop="8dp" android:paddingEnd="8dp" android:paddingRight="8dp">
-    <TextView
-            android:text="Save"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:id="@+id/showImageModalSave" android:textAlignment="textEnd"/>
-    <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" tools:srcCompat="@tools:sample/backgrounds/scenic"
-            android:id="@+id/showImageModalImage"/>
-</LinearLayout>
+        android:layout_height="wrap_content" android:background="#00FFFFFF" android:backgroundTint="#00FFFFFF"
+        android:padding="8dp">
+        <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" tools:srcCompat="@tools:sample/backgrounds/scenic"
+                android:id="@+id/showImageModalImage" android:background="#00FFFFFF" android:visibility="visible"/>
+        <TextView
+                android:text="Save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/showImageModalSave"
+                android:textAlignment="textEnd"
+                android:background="#00FFFFFF" android:visibility="visible"/>
+
+</FrameLayout>
