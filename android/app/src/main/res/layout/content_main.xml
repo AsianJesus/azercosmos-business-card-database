@@ -19,6 +19,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" android:divider="@android:drawable/divider_horizontal_textfield"
-            android:stateListAnimator="@anim/top_from_bottom"/>
+            android:stateListAnimator="@anim/top_from_bottom" android:indicatorLeft="0dip"
+            android:indicatorRight="0dip" app:layout_constraintHorizontal_bias="0.0"/>
 
 </android.support.constraint.ConstraintLayout>

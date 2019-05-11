@@ -50,6 +50,8 @@ class MainActivity : AppCompatActivity(), BusinessCardController {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayShowCustomEnabled(true)
+        supportActionBar?.setTitle("")
 
         sharedPreferences = getSharedPreferences("com.ohmycthulhu.businesscarddatabase", Context.MODE_PRIVATE)
 
@@ -139,7 +141,9 @@ class MainActivity : AppCompatActivity(), BusinessCardController {
     }
 
     override fun showImage(card: BusinessCard) {
-        // TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        /*
+            Open modal window with current image
+         */
         val url = "${sharedPreferences.getString("api_address", "http://192.168.1.8")}/${card.imagePath}"
         Toast.makeText(this, "Image is at $url", Toast.LENGTH_SHORT).show()
         ShowImageModal().setImageURL(url).show(supportFragmentManager, "show_image")
@@ -162,23 +166,6 @@ class MainActivity : AppCompatActivity(), BusinessCardController {
     private fun showCards (cards: ArrayList<BusinessCard>) {
         val adapter = BusinessCardsAdapter(cards, this, this)
         cardsList.setAdapter(adapter)
-        /*cardsList.setOnItemClickListener { parent, view, position, id ->
-            val cardModel = cards[position]
-
-
-        }*/
-        /*val elements = ArrayList<HashMap<String, String>>()
-
-        for (card in cards) {
-            val hash = HashMap<String, String>()
-            hash.put("name", card.name)
-            hash.put("company", "${card.company ?: ""} - ${card.position ?: ""}")
-            elements.add(hash)
-        }
-
-        val to = intArrayOf(R.id.listItemName, R.id.listItemCompany)
-        val adapter = SimpleAdapter(this, elements, R.layout.list_item, arrayOf("name", "company"), to)
-        cardsList.adapter = adapter*/
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -204,22 +191,11 @@ class MainActivity : AppCompatActivity(), BusinessCardController {
                 afterCardEditCallback?.afterEdit(card)
             }
         }
-        /*
-        if (requestCode == REQUEST_SHOW_CARD) {
-            if (resultCode == Activity.RESULT_OK) {
-                if (data != null) {
-                    if(data.hasExtra("cardToEdit")) {
-                        val adapter = cardsList.adapter as BusinessCardsAdapter
-                        adapter.editCard(data.getSerializableExtra("cardToEdit") as BusinessCard)
-                    }
-                    if(data.hasExtra("cardToDelete")) {
-                        val adapter = cardsList.adapter as BusinessCardsAdapter
-                        adapter.deleteCard(data.getIntExtra("cardToDelete", 0))
-                    }
+    }
 
-                }
-            }
-        }*/
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        cardsList.setIndicatorBounds(cardsList.right - 200, cardsList.width)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
