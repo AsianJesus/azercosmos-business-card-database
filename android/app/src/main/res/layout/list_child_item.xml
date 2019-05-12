@@ -2,38 +2,43 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:paddingRight="10dp"
-                android:paddingLeft="10dp">
+>
     <LinearLayout
             android:id="@+id/listItemInfo"
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:layout_marginEnd="0dp"
+            android:layout_alignParentStart="true" android:layout_marginStart="0dp"
+    >
         <TextView
                 android:text="ID"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:id="@+id/listItemID"/>
+                android:layout_height="wrap_content" android:id="@+id/listItemID" android:paddingLeft="10dp"
+                android:paddingRight="10dp"/>
         <TextView
                 android:text="Phone"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:id="@+id/listItemPhone"/>
+                android:layout_height="wrap_content" android:id="@+id/listItemPhone" android:paddingLeft="10dp"
+                android:paddingRight="10dp"/>
         <TextView android:id="@+id/listItemAddress"
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
-                  android:text="Address"/>
+                  android:text="Address" android:paddingLeft="10dp" android:paddingRight="10dp"/>
         <TextView
                 android:text="Email"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:id="@+id/listItemEmail"/>
+                android:layout_height="wrap_content" android:id="@+id/listItemEmail" android:paddingLeft="10dp"
+                android:paddingRight="10dp"/>
         <TextView
                 android:text="Note"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:id="@+id/listItemNote"/>
+                android:layout_height="wrap_content" android:id="@+id/listItemNote" android:paddingLeft="10dp"
+                android:paddingRight="10dp"/>
         <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="10dp" android:paddingLeft="10dp" android:paddingRight="10dp">
 
             <ImageView
                     android:layout_width="66dp"
@@ -76,8 +81,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
                 app:srcCompat="@android:color/background_dark"
-                android:id="@+id/imageView2" android:layout_marginTop="10dp"
-                android:alpha=".1"/>
+                android:layout_marginTop="10dp"
+                android:alpha=".1"
+        />
     </LinearLayout>
 
 </RelativeLayout>

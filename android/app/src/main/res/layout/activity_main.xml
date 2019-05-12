@@ -24,9 +24,9 @@
                     android:background="@android:color/transparent"
                     app:popupTheme="@style/AppTheme.PopupOverlay" app:titleMarginBottom="4dp" app:titleMarginTop="4dp"/>
             <ImageView
-                    android:layout_width="139dp"
+                    android:layout_width="106dp"
                     android:layout_height="wrap_content" app:srcCompat="@drawable/g28" android:id="@+id/imageView"
-                    android:textAlignment="textStart"/>
+                    android:textAlignment="textStart" android:paddingTop="10dp" android:paddingBottom="10dp"/>
         </FrameLayout>
         <!--<LinearLayout
         android:orientation="horizontal"
