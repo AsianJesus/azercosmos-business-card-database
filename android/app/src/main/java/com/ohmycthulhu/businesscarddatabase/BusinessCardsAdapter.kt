@@ -2,8 +2,8 @@ package com.ohmycthulhu.businesscarddatabase
 
 import android.app.Activity
 import android.view.View
-import android.widget.ArrayAdapter
 import android.content.Context
+import android.graphics.Color
 import android.graphics.Typeface
 import android.support.design.widget.Snackbar
 import android.util.Log
@@ -11,9 +11,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import android.widget.BaseExpandableListAdapter
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 
 
 class BusinessCardsAdapter(private val dataSet: ArrayList<BusinessCard>, private var context: Activity, private val controller: BusinessCardController) :
@@ -39,23 +37,24 @@ class BusinessCardsAdapter(private val dataSet: ArrayList<BusinessCard>, private
             convView.findViewById<TextView>(R.id.listItemNote).text = card.note
             convView.findViewById<TextView>(R.id.listItemPhone).text = card.phone
             if (!card.isMine) {
-                convView.findViewById<TextView>(R.id.listItemDelete).visibility = View.GONE
-                convView.findViewById<TextView>(R.id.listItemEdit).visibility = View.GONE
+                convView.findViewById<ImageView>(R.id.listItemDelete).visibility = View.GONE
+                convView.findViewById<ImageView>(R.id.listItemEdit).visibility = View.GONE
             } else {
-                convView.findViewById<TextView>(R.id.listItemDelete).setOnClickListener {
+                convView.findViewById<ImageView>(R.id.listItemDelete).setOnClickListener {
                     controller.deleteCard(card.id, this)
                 }
-                convView.findViewById<TextView>(R.id.listItemEdit).setOnClickListener {
+                convView.findViewById<ImageView>(R.id.listItemEdit).setOnClickListener {
                     controller.editCard(card, this)
                 }
             }
             if (!card.hasImage()) {
-                convView.findViewById<TextView>(R.id.listItemImage).visibility = View.GONE
+                convView.findViewById<ImageView>(R.id.listItemImage).visibility = View.GONE
             } else {
-                convView.findViewById<TextView>(R.id.listItemImage).setOnClickListener {
+                convView.findViewById<ImageView>(R.id.listItemImage).setOnClickListener {
                     controller.showImage(card)
                 }
             }
+            convView.setBackgroundColor(Color.argb(1.0f, .88f, .88f, .88f))
         }
         return convView as View
     }
@@ -73,6 +72,8 @@ class BusinessCardsAdapter(private val dataSet: ArrayList<BusinessCard>, private
             nameField.typeface = Typeface.DEFAULT_BOLD
             nameField.text = card.name
             companyField.text = "${card.company} - ${card.position}"
+            conv.setBackgroundColor(Color.argb(if (isExpanded) 1.0f else 0.0f, 0.88f, 0.88f, 0.88f))
+            // conv.findViewById<RelativeLayout>(R.id.listItemLayout).setBackgroundColor(Color.MAGENTA)
         }
         return conv as View
     }

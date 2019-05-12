@@ -3,7 +3,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:padding="6dip">
+                android:id="@+id/listItemLayout" android:padding="6dip">
     <TextView android:id="@+id/listItemName"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"

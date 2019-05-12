@@ -8,16 +8,31 @@
     tools:context=".MainActivity">
 
     <android.support.design.widget.AppBarLayout
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:theme="@style/AppTheme.AppBarOverlay">
+            android:layout_height="61dp"
+            android:layout_width="match_parent"
+            android:theme="@style/AppTheme.AppBarOverlay" android:background="@drawable/header_01_01">
 
 
-        <LinearLayout
-                android:orientation="horizontal"
+        <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" android:layout_marginTop="8dp" android:layout_marginBottom="8dp"
-                android:layout_marginLeft="8dp">
+                android:layout_height="match_parent">
+
+            <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent"
+                    app:popupTheme="@style/AppTheme.PopupOverlay" app:titleMarginBottom="4dp" app:titleMarginTop="4dp"/>
+            <ImageView
+                    android:layout_width="139dp"
+                    android:layout_height="wrap_content" app:srcCompat="@drawable/g28" android:id="@+id/imageView"
+                    android:textAlignment="textStart"/>
+        </FrameLayout>
+        <!--<LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" android:layout_marginTop="8dp" android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp">
             <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" app:srcCompat="@drawable/g28" android:id="@+id/imageView"
@@ -28,10 +43,10 @@
                     android:layout_height="match_parent"
                     android:background="?attr/colorPrimary"
                     app:popupTheme="@style/AppTheme.PopupOverlay"/>
-        </LinearLayout>
+        </LinearLayout> -->
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_main"/>
+    <include layout="@layout/content_main" android:paddingLeft="0dp" android:paddingRight="0dp"/>
 
     <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab"

@@ -11,18 +11,15 @@
 
     <ExpandableListView
             android:id="@+id/cardsList"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:divider="@android:drawable/divider_horizontal_textfield"
             android:stateListAnimator="@anim/top_from_bottom" android:indicatorLeft="0dip"
-            android:indicatorRight="0dip" app:layout_constraintHorizontal_bias="0.0"
-            android:footerDividersEnabled="false" android:headerDividersEnabled="false" android:dividerHeight="1dp"
-            android:childDivider="#000000"/>
+            android:indicatorRight="0dip"
+            android:footerDividersEnabled="false" android:dividerHeight="1dp"
+            android:childDivider="#000000" android:headerDividersEnabled="false"
+            app:layout_constraintStart_toStartOf="parent"/>
 
 </android.support.constraint.ConstraintLayout>
