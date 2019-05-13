@@ -69,6 +69,7 @@
                                       v-model="form.website"/>
                         <b-form-select class="new-bcard-info-cell"
                                        v-model="form.private"
+                                       :state="showErrors && validationErrors.private ? false : null"
                                        :options="privacyOptions"/>
                     </div>
                     <div>
@@ -317,13 +318,13 @@ export default {
                 website: '',
                 address: '',
                 photo: null,
-                private: 1
+                private: null
             },
             $Tesseract: null,
             privacyOptions: [
                 {
                     text: 'Please, select privacy level',
-                    value: 1
+                    value: null
                 },
                 {
                     text: 'Private',
@@ -380,7 +381,8 @@ export default {
             mobile: this.form.mobile === '',
             email: !this.form.email,
             website: !this.form.website,
-            address: !this.form.address
+            address: !this.form.address,
+            private: this.form.private === null
           }
         },
         isMain() {
