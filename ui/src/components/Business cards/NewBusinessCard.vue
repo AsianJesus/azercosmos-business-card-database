@@ -55,7 +55,9 @@
                         <b-form-input class="new-bcard-info-cell"
                                       type="tel"
                                       placeholder="Phone*"
+                                      :formatter="phoneFormatter"
                                       :state="showErrors && validationErrors.mobile ? false : null"
+                                      aria-describedby="input-formatter-help"
                                       v-model="form.mobile"/>
                         <b-form-input class="new-bcard-info-cell"
                                       type="email"
@@ -378,8 +380,8 @@ export default {
             name: !this.form.name,
             company_name: !this.form.company_name,
             position: !this.form.position,
-            mobile: this.form.mobile === '',
-            email: !this.form.email,
+            mobile: this.form.mobile.length < 6,
+            email: !this.form.email.match(/.+@.+/),
             website: !this.form.website,
             address: !this.form.address,
             private: this.form.private === null
@@ -413,6 +415,10 @@ export default {
                 this.recognizeImage(file)
             })
 
+        },
+        phoneFormatter (value) {
+          // return value.replace(/^(\d{3})(\d{3})(\d)+$/, "($1)$2-$3")
+          return value.replace(/^\+?(\d{3})\s?\(?(\d{2})\)?(\d{3})(\d)+$/, "+$1 ($2)$3-$4")
         },
         upload: function (e) {
             if (e.target.files.length !== 0) {
