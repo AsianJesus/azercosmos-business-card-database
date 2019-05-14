@@ -1,0 +1,14 @@
+[
+    {
+        "merged": "/home/junior/Projects/azercosmos-business-card-database/android/tess-two-test/build/intermediates/res/merged/debug/drawable-hdpi_icon.png.flat",
+        "source": "/home/junior/Projects/azercosmos-business-card-database/android/tess-two-test/res/drawable-hdpi/icon.png"
+    },
+    {
+        "merged": "/home/junior/Projects/azercosmos-business-card-database/android/tess-two-test/build/intermediates/res/merged/debug/drawable-mdpi_icon.png.flat",
+        "source": "/home/junior/Projects/azercosmos-business-card-database/android/tess-two-test/res/drawable-mdpi/icon.png"
+    },
+    {
+        "merged": "/home/junior/Projects/azercosmos-business-card-database/android/tess-two-test/build/intermediates/res/merged/debug/drawable-ldpi_icon.png.flat",
+        "source": "/home/junior/Projects/azercosmos-business-card-database/android/tess-two-test/res/drawable-ldpi/icon.png"
+    }
+]

@@ -1,0 +1,51 @@
+Android NDK: WARNING:/home/junior/Projects/azercosmos-business-card-database/android/tess-two/jni/com_googlecode_tesseract_android/Android.mk:tess: non-system libraries in linker flags: -latomic    
+Android NDK:     This is likely to result in incorrect builds. Try using LOCAL_STATIC_LIBRARIES    
+Android NDK:     or LOCAL_SHARED_LIBRARIES instead to list the library dependencies of the    
+Android NDK:     current module    
+[x86_64] Compile        : jpgt <= jaricom.c
+[x86_64] Compile        : jpgt <= jcapimin.c
+[x86_64] Compile        : jpgt <= jcapistd.c
+[x86_64] Compile        : jpgt <= jcarith.c
+[x86_64] Compile        : jpgt <= jccoefct.c
+[x86_64] Compile        : jpgt <= jccolor.c
+[x86_64] Compile        : jpgt <= jcdctmgr.c
+[x86_64] Compile        : jpgt <= jchuff.c
+[x86_64] Compile        : jpgt <= jcinit.c
+[x86_64] Compile        : jpgt <= jcmainct.c
+[x86_64] Compile        : jpgt <= jcmarker.c
+[x86_64] Compile        : jpgt <= jcmaster.c
+[x86_64] Compile        : jpgt <= jcomapi.c
+[x86_64] Compile        : jpgt <= jcparam.c
+[x86_64] Compile        : jpgt <= jcprepct.c
+[x86_64] Compile        : jpgt <= jcsample.c
+[x86_64] Compile        : jpgt <= jctrans.c
+[x86_64] Compile        : jpgt <= jdapimin.c
+[x86_64] Compile        : jpgt <= jdapistd.c
+[x86_64] Compile        : jpgt <= jdarith.c
+[x86_64] Compile        : jpgt <= jdatadst.c
+[x86_64] Compile        : jpgt <= jdatasrc.c
+[x86_64] Compile        : jpgt <= jdcoefct.c
+[x86_64] Compile        : jpgt <= jdcolor.c
+[x86_64] Compile        : jpgt <= jddctmgr.c
+[x86_64] Compile        : jpgt <= jdhuff.c
+[x86_64] Compile        : jpgt <= jdinput.c
+[x86_64] Compile        : jpgt <= jdmainct.c
+[x86_64] Compile        : jpgt <= jdmarker.c
+[x86_64] Compile        : jpgt <= jdmaster.c
+[x86_64] Compile        : jpgt <= jdmerge.c
+[x86_64] Compile        : jpgt <= jdpostct.c
+[x86_64] Compile        : jpgt <= jdsample.c
+[x86_64] Compile        : jpgt <= jdtrans.c
+[x86_64] Compile        : jpgt <= jerror.c
+[x86_64] Compile        : jpgt <= jfdctflt.c
+[x86_64] Compile        : jpgt <= jfdctfst.c
+[x86_64] Compile        : jpgt <= jfdctint.c
+[x86_64] Compile        : jpgt <= jidctflt.c
+[x86_64] Compile        : jpgt <= jidctfst.c
+[x86_64] Compile        : jpgt <= jidctint.c
+[x86_64] Compile        : jpgt <= jquant1.c
+[x86_64] Compile        : jpgt <= jquant2.c
+[x86_64] Compile        : jpgt <= jutils.c
+[x86_64] Compile        : jpgt <= jmemmgr.c
+[x86_64] Compile        : jpgt <= jmemname.c
+[x86_64] SharedLibrary  : libjpgt.so

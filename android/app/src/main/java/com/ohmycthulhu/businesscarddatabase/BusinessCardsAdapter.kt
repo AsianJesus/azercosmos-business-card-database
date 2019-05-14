@@ -54,6 +54,9 @@ class BusinessCardsAdapter(private val dataSet: ArrayList<BusinessCard>, private
                     controller.showImage(card)
                 }
             }
+            if (!(card.hasImage() || card.isMine)) {
+                convView.findViewById<LinearLayout>(R.id.listItemToolbar).visibility = View.GONE
+            }
             convView.setBackgroundColor(Color.argb(1.0f, .88f, .88f, .88f))
         }
         return convView as View

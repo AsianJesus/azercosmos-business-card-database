@@ -102,6 +102,10 @@
                     android:layout_marginStart="8dp"
                     android:hint="Note" android:layout_marginTop="12dp"
             />
+            <CheckBox
+                    android:text="Use Recognition?"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:id="@+id/newCardRecognition" android:checked="true"/>
         </LinearLayout>
     </ScrollView>
     <android.support.design.widget.FloatingActionButton

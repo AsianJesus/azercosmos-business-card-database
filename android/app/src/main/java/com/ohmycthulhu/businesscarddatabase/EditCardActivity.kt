@@ -31,7 +31,7 @@ class EditCardActivity : AppCompatActivity() {
     lateinit var requestQueue: RequestQueue
     private var isSaving: Boolean = false
     private var fileToDelete: File? = null
-
+    private val recognizer: Recognizer = Recognizer()
     private var imageUri: Uri? = null // It's where camera picture is stored when photo is captured
     private val REQUEST_IMAGE_CAPTURE = 2
     private val REQUEST_PICK_IMAGE = 3
@@ -90,7 +90,7 @@ class EditCardActivity : AppCompatActivity() {
         if (isSaving) {
             Toast.makeText(this, "Already saving card", Toast.LENGTH_SHORT).show()
         } else {
-            Toast.makeText(this, "Creating card", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Editing card", Toast.LENGTH_SHORT).show()
         }
 
         val name = editCardName.text.toString()
@@ -175,15 +175,33 @@ class EditCardActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        super.onActivityResult(requestCode, resultCode, data)
+
         if (requestCode == REQUEST_IMAGE_CAPTURE) {
             Toast.makeText(this, "You took photo!", Toast.LENGTH_SHORT).show()
             image = MediaStore.Images.Media.getBitmap(contentResolver, imageUri)
+            if (image != null && editCardRecognition.isChecked) {
+                fillFields(recognizer.recognize(image as Bitmap))
+            }
         }
         if (requestCode == REQUEST_PICK_IMAGE && data != null) {
             Toast.makeText(this, "You picked image", Toast.LENGTH_SHORT).show()
             val pickUri = data.data
             image = if(pickUri != null) MediaStore.Images.Media.getBitmap(contentResolver, pickUri) else null
+            if (image != null && editCardRecognition.isChecked) {
+                fillFields(recognizer.recognize(image as Bitmap))
+            }
+        }
+
+    }
+    private fun fillFields (fields: Map<RecognizePatterns, String>) {
+        if (fields.containsKey(RecognizePatterns.NAME)) {
+            editCardName.setText(fields[RecognizePatterns.NAME])
+        }
+        if (fields.containsKey(RecognizePatterns.PHONE)) {
+            editCardPhone.setText(fields[RecognizePatterns.PHONE])
+        }
+        if (fields.containsKey(RecognizePatterns.EMAIL)) {
+            editCardEmail.setText(fields[RecognizePatterns.EMAIL])
         }
     }
 

@@ -9,6 +9,7 @@ import android.content.pm.ActivityInfo
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.os.Environment
 import android.support.design.widget.Snackbar
 import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AppCompatActivity;
@@ -27,6 +28,7 @@ import com.android.volley.toolbox.Volley
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import org.json.JSONObject
+import java.io.File
 
 class MainActivity : AppCompatActivity(), BusinessCardController {
 
@@ -46,6 +48,15 @@ class MainActivity : AppCompatActivity(), BusinessCardController {
         afterEditCallback is called after EditCard activity ends up with Result OK
      */
     var afterCardEditCallback: AfterCardEditCallback? = null
+
+/*    companion object {
+        init {
+            System.loadLibrary("native-lib")
+            System.loadLibrary("jpgt")
+            System.loadLibrary("lept")
+            System.loadLibrary("tess")
+        }
+    }*/
 
     override fun onCreate(savedInstanceState: Bundle?) {
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
@@ -82,7 +93,8 @@ class MainActivity : AppCompatActivity(), BusinessCardController {
 
     private fun requestPermissions() {
         ActivityCompat.requestPermissions(this,
-            arrayOf(Manifest.permission.CAMERA, Manifest.permission.INTERNET, Manifest.permission.WRITE_EXTERNAL_STORAGE), REQUEST_PERMISSIONS)
+            arrayOf(Manifest.permission.CAMERA, Manifest.permission.INTERNET,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE), REQUEST_PERMISSIONS)
     }
 
     private fun loadCards () {
@@ -152,6 +164,15 @@ class MainActivity : AppCompatActivity(), BusinessCardController {
         modal.setImageURL(url)
         modal.dialog// .window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         modal.show(supportFragmentManager, "show_image")
+    }
+
+    private fun unpackAssets() {
+        val file = File(Environment.getExternalStorageDirectory(), "")
+        if (!file.exists()) {
+            // file.mkdirs()
+            for (l in baseContext.assets.list("/") ?: arrayOf())
+            Log.d("assets", l)
+        }
     }
 
     private fun sendDeleteRequest(id: Int, callback: () -> Unit) {

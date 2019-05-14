@@ -8,6 +8,7 @@ import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
 import android.support.v4.content.CursorLoader
 import android.support.v7.app.AppCompatActivity
@@ -32,6 +33,8 @@ class NewCardActivity : AppCompatActivity() {
     var fileToDelete: File? = null
     var imageUri: Uri? = null
     lateinit var sharedPreferences: SharedPreferences
+
+    val recognizer: Recognizer = Recognizer()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -135,11 +138,29 @@ class NewCardActivity : AppCompatActivity() {
         if (requestCode == REQUEST_IMAGE_CAPTURE) {
             Toast.makeText(this, "You took photo!", Toast.LENGTH_SHORT).show()
             image = MediaStore.Images.Media.getBitmap(contentResolver, imageUri)
+            if (image != null && newCardRecognition.isChecked) {
+                fillFields(recognizer.recognize(image as Bitmap))
+            }
         }
         if (requestCode == REQUEST_PICK_IMAGE && data != null) {
             Toast.makeText(this, "You picked image", Toast.LENGTH_SHORT).show()
             val pickUri = data.data
             image = if(pickUri != null) MediaStore.Images.Media.getBitmap(contentResolver, pickUri) else null
+            if (image != null && newCardRecognition.isChecked) {
+                fillFields(recognizer.recognize(image as Bitmap))
+            }
+        }
+    }
+
+    private fun fillFields (fields: Map<RecognizePatterns, String>) {
+        if (fields.containsKey(RecognizePatterns.NAME)) {
+            newCardName.setText(fields[RecognizePatterns.NAME])
+        }
+        if (fields.containsKey(RecognizePatterns.PHONE)) {
+            newCardPhone.setText(fields[RecognizePatterns.PHONE])
+        }
+        if (fields.containsKey(RecognizePatterns.EMAIL)) {
+            newCardEmail.setText(fields[RecognizePatterns.EMAIL])
         }
     }
 

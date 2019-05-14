@@ -1,0 +1,35 @@
+{
+  "buildFiles": [
+    "/home/junior/Projects/azercosmos-business-card-database/android/tess-two/jni/Android.mk",
+    "/home/junior/Projects/azercosmos-business-card-database/android/tess-two/jni/Application.mk"
+  ],
+  "cleanCommands": [
+    "/home/junior/Android/Sdk/ndk-bundle/ndk-build NDK_PROJECT_PATH\u003dnull APP_BUILD_SCRIPT\u003d/home/junior/Projects/azercosmos-business-card-database/android/tess-two/jni/Android.mk NDK_APPLICATION_MK\u003d/home/junior/Projects/azercosmos-business-card-database/android/tess-two/jni/Application.mk APP_ABI\u003dx86 NDK_ALL_ABIS\u003dx86 NDK_DEBUG\u003d0 APP_PLATFORM\u003dandroid-16 NDK_OUT\u003d/home/junior/Projects/azercosmos-business-card-database/android/tess-two/build/intermediates/ndkBuild/release/obj NDK_LIBS_OUT\u003d/home/junior/Projects/azercosmos-business-card-database/android/tess-two/build/intermediates/ndkBuild/release/lib clean"
+  ],
+  "libraries": {
+    "lept-release-x86": {
+      "artifactName": "lept",
+      "buildCommand": "/home/junior/Android/Sdk/ndk-bundle/ndk-build NDK_PROJECT_PATH\u003dnull APP_BUILD_SCRIPT\u003d/home/junior/Projects/azercosmos-business-card-database/android/tess-two/jni/Android.mk NDK_APPLICATION_MK\u003d/home/junior/Projects/azercosmos-business-card-database/android/tess-two/jni/Application.mk APP_ABI\u003dx86 NDK_ALL_ABIS\u003dx86 NDK_DEBUG\u003d0 APP_PLATFORM\u003dandroid-16 NDK_OUT\u003d/home/junior/Projects/azercosmos-business-card-database/android/tess-two/build/intermediates/ndkBuild/release/obj NDK_LIBS_OUT\u003d/home/junior/Projects/azercosmos-business-card-database/android/tess-two/build/intermediates/ndkBuild/release/lib /home/junior/Projects/azercosmos-business-card-database/android/tess-two/build/intermediates/ndkBuild/release/obj/local/x86/liblept.so",
+      "abi": "x86",
+      "output": "/home/junior/Projects/azercosmos-business-card-database/android/tess-two/build/intermediates/ndkBuild/release/obj/local/x86/liblept.so"
+    },
+    "tess-release-x86": {
+      "artifactName": "tess",
+      "buildCommand": "/home/junior/Android/Sdk/ndk-bundle/ndk-build NDK_PROJECT_PATH\u003dnull APP_BUILD_SCRIPT\u003d/home/junior/Projects/azercosmos-business-card-database/android/tess-two/jni/Android.mk NDK_APPLICATION_MK\u003d/home/junior/Projects/azercosmos-business-card-database/android/tess-two/jni/Application.mk APP_ABI\u003dx86 NDK_ALL_ABIS\u003dx86 NDK_DEBUG\u003d0 APP_PLATFORM\u003dandroid-16 NDK_OUT\u003d/home/junior/Projects/azercosmos-business-card-database/android/tess-two/build/intermediates/ndkBuild/release/obj NDK_LIBS_OUT\u003d/home/junior/Projects/azercosmos-business-card-database/android/tess-two/build/intermediates/ndkBuild/release/lib /home/junior/Projects/azercosmos-business-card-database/android/tess-two/build/intermediates/ndkBuild/release/obj/local/x86/libtess.so",
+      "abi": "x86",
+      "output": "/home/junior/Projects/azercosmos-business-card-database/android/tess-two/build/intermediates/ndkBuild/release/obj/local/x86/libtess.so"
+    },
+    "jpgt-release-x86": {
+      "artifactName": "jpgt",
+      "buildCommand": "/home/junior/Android/Sdk/ndk-bundle/ndk-build NDK_PROJECT_PATH\u003dnull APP_BUILD_SCRIPT\u003d/home/junior/Projects/azercosmos-business-card-database/android/tess-two/jni/Android.mk NDK_APPLICATION_MK\u003d/home/junior/Projects/azercosmos-business-card-database/android/tess-two/jni/Application.mk APP_ABI\u003dx86 NDK_ALL_ABIS\u003dx86 NDK_DEBUG\u003d0 APP_PLATFORM\u003dandroid-16 NDK_OUT\u003d/home/junior/Projects/azercosmos-business-card-database/android/tess-two/build/intermediates/ndkBuild/release/obj NDK_LIBS_OUT\u003d/home/junior/Projects/azercosmos-business-card-database/android/tess-two/build/intermediates/ndkBuild/release/lib /home/junior/Projects/azercosmos-business-card-database/android/tess-two/build/intermediates/ndkBuild/release/obj/local/x86/libjpgt.so",
+      "abi": "x86",
+      "output": "/home/junior/Projects/azercosmos-business-card-database/android/tess-two/build/intermediates/ndkBuild/release/obj/local/x86/libjpgt.so"
+    },
+    "pngt-release-x86": {
+      "artifactName": "pngt",
+      "buildCommand": "/home/junior/Android/Sdk/ndk-bundle/ndk-build NDK_PROJECT_PATH\u003dnull APP_BUILD_SCRIPT\u003d/home/junior/Projects/azercosmos-business-card-database/android/tess-two/jni/Android.mk NDK_APPLICATION_MK\u003d/home/junior/Projects/azercosmos-business-card-database/android/tess-two/jni/Application.mk APP_ABI\u003dx86 NDK_ALL_ABIS\u003dx86 NDK_DEBUG\u003d0 APP_PLATFORM\u003dandroid-16 NDK_OUT\u003d/home/junior/Projects/azercosmos-business-card-database/android/tess-two/build/intermediates/ndkBuild/release/obj NDK_LIBS_OUT\u003d/home/junior/Projects/azercosmos-business-card-database/android/tess-two/build/intermediates/ndkBuild/release/lib /home/junior/Projects/azercosmos-business-card-database/android/tess-two/build/intermediates/ndkBuild/release/obj/local/x86/libpngt.so",
+      "abi": "x86",
+      "output": "/home/junior/Projects/azercosmos-business-card-database/android/tess-two/build/intermediates/ndkBuild/release/obj/local/x86/libpngt.so"
+    }
+  }
+}
