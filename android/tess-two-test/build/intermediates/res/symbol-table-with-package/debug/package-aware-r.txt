@@ -1,3 +1,0 @@
-com.googlecode.tesseract.android.test
-drawable icon
-string app_name

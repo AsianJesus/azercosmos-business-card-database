@@ -1,4 +1,0 @@
-#Mon May 13 21:40:15 AZT 2019
-base.0=/home/junior/Projects/azercosmos-business-card-database/android/tess-two-test/build/intermediates/dex/debug/mergeDexDebug/out
-path.0=classes.dex
-renamed.0=classes.dex

@@ -6,8 +6,6 @@
       <module fileurl="file://$PROJECT_DIR$/android-tess-two/android-android-tess-two.iml" filepath="$PROJECT_DIR$/android-tess-two/android-android-tess-two.iml" />
       <module fileurl="file://$PROJECT_DIR$/tess-two/android-tess-two.iml" filepath="$PROJECT_DIR$/tess-two/android-tess-two.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/eyes-two/eyes-two.iml" filepath="$PROJECT_DIR$/eyes-two/eyes-two.iml" />
-      <module fileurl="file://$PROJECT_DIR$/tess-two-test/tess-two-test.iml" filepath="$PROJECT_DIR$/tess-two-test/tess-two-test.iml" />
     </modules>
   </component>
 </project>
