@@ -6,11 +6,13 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Bitmap
+import android.media.ExifInterface
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.support.v4.content.CursorLoader
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.widget.Toast
 import com.android.volley.Request
 import com.android.volley.RequestQueue
@@ -18,6 +20,7 @@ import com.android.volley.Response
 import com.android.volley.request.SimpleMultiPartRequest
 import com.android.volley.toolbox.Volley
 import com.ohmycthulhu.businesscarddatabase.R
+import com.ohmycthulhu.businesscarddatabase.utils.ImageUtils
 import com.ohmycthulhu.businesscarddatabase.utils.recognizer.RecognizePatterns
 import com.ohmycthulhu.businesscarddatabase.utils.recognizer.Recognizer
 import kotlinx.android.synthetic.main.activity_new_card_photo.*
@@ -139,16 +142,24 @@ class NewCardActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_IMAGE_CAPTURE) {
             Toast.makeText(this, "You took photo!", Toast.LENGTH_SHORT).show()
-            image = MediaStore.Images.Media.getBitmap(contentResolver, imageUri)
-            if (image != null && newCardRecognition.isChecked) {
-                fillFields(recognizer.recognize(image as Bitmap))
+            if (imageUri != null) {
+                // val exif = ExifInterface(imageUri?.path)
+                image = MediaStore.Images.Media.getBitmap(contentResolver, imageUri)
+                if (image != null) {
+                    image = ImageUtils.limitImageSize(image as Bitmap, 2000, 2000)
+                    if (image != null && newCardRecognition.isChecked) {
+                        fillFields(recognizer.recognize(image as Bitmap))
+                    }
+                }
             }
         }
         if (requestCode == REQUEST_PICK_IMAGE && data != null) {
             Toast.makeText(this, "You picked image", Toast.LENGTH_SHORT).show()
             val pickUri = data.data
+
             image = if(pickUri != null) MediaStore.Images.Media.getBitmap(contentResolver, pickUri) else null
             if (image != null && newCardRecognition.isChecked) {
+                image = ImageUtils.limitImageSize(image as Bitmap, 2000, 2000)
                 fillFields(recognizer.recognize(image as Bitmap))
             }
         }

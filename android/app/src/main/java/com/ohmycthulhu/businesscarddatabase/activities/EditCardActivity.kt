@@ -19,6 +19,7 @@ import com.android.volley.request.SimpleMultiPartRequest
 import com.android.volley.toolbox.Volley
 import com.ohmycthulhu.businesscarddatabase.R
 import com.ohmycthulhu.businesscarddatabase.utils.BusinessCard
+import com.ohmycthulhu.businesscarddatabase.utils.ImageUtils
 import com.ohmycthulhu.businesscarddatabase.utils.recognizer.RecognizePatterns
 import com.ohmycthulhu.businesscarddatabase.utils.recognizer.Recognizer
 import kotlinx.android.synthetic.main.activity_edit_card.*
@@ -34,8 +35,7 @@ class EditCardActivity : AppCompatActivity() {
     lateinit var requestQueue: RequestQueue
     private var isSaving: Boolean = false
     private var fileToDelete: File? = null
-    private val recognizer: Recognizer =
-        Recognizer()
+    private val recognizer: Recognizer = Recognizer()
     private var imageUri: Uri? = null // It's where camera picture is stored when photo is captured
     private val REQUEST_IMAGE_CAPTURE = 2
     private val REQUEST_PICK_IMAGE = 3
@@ -184,6 +184,7 @@ class EditCardActivity : AppCompatActivity() {
             Toast.makeText(this, "You took photo!", Toast.LENGTH_SHORT).show()
             image = MediaStore.Images.Media.getBitmap(contentResolver, imageUri)
             if (image != null && editCardRecognition.isChecked) {
+                image = ImageUtils.limitImageSize(image as Bitmap, 2000, 2000)
                 fillFields(recognizer.recognize(image as Bitmap))
             }
         }
@@ -192,6 +193,7 @@ class EditCardActivity : AppCompatActivity() {
             val pickUri = data.data
             image = if(pickUri != null) MediaStore.Images.Media.getBitmap(contentResolver, pickUri) else null
             if (image != null && editCardRecognition.isChecked) {
+                image = ImageUtils.limitImageSize(image as Bitmap, 2000, 2000)
                 fillFields(recognizer.recognize(image as Bitmap))
             }
         }

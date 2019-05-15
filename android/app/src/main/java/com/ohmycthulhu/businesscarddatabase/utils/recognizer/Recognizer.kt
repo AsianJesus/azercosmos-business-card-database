@@ -18,7 +18,7 @@ class Recognizer (private val LANG_PATH: String = "${Environment.getExternalStor
     fun setLanguage (lang: String) {
         if (LANG != lang) {
             LANG = lang
-
+            initialize()
         }
     }
 
@@ -31,8 +31,8 @@ class Recognizer (private val LANG_PATH: String = "${Environment.getExternalStor
         baseApi.setImage(image)
         val text = baseApi.utF8Text
         val matches: MutableMap<RecognizePatterns, String> = mutableMapOf()
-        Log.d("recognized", text)
-        var hasMatched = false
+        Log.d("recognized_text", "\n$text")
+        var hasMatched: Boolean
         for (line in text.split('\n')) {
             hasMatched = false
             for (pattern in RecognizePatterns.values()) {
@@ -41,6 +41,7 @@ class Recognizer (private val LANG_PATH: String = "${Environment.getExternalStor
                     if (match.matches()) {
                         hasMatched = true
                         matches[pattern] = line
+                        Log.d("recognized_value", "$pattern - $line")
                     }
                 }
             }
