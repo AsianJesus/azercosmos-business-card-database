@@ -11,6 +11,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.support.v4.content.CursorLoader
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.widget.Toast
 import com.android.volley.Request
 import com.android.volley.RequestQueue
@@ -22,6 +23,7 @@ import com.ohmycthulhu.businesscarddatabase.utils.BusinessCard
 import com.ohmycthulhu.businesscarddatabase.utils.ImageUtils
 import com.ohmycthulhu.businesscarddatabase.utils.recognizer.RecognizePatterns
 import com.ohmycthulhu.businesscarddatabase.utils.recognizer.Recognizer
+import com.yalantis.ucrop.UCrop
 import kotlinx.android.synthetic.main.activity_edit_card.*
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
@@ -179,8 +181,37 @@ class EditCardActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-
         if (requestCode == REQUEST_IMAGE_CAPTURE) {
+            Toast.makeText(this, "You took photo!", Toast.LENGTH_SHORT).show()
+            if (imageUri != null) {
+                val cropImageUri = Uri.fromFile(File(cacheDir, "sample"))
+                UCrop.of(imageUri as Uri, cropImageUri).withAspectRatio(17.0f, 10.0f).start(this)
+            }
+        }
+        if (requestCode == REQUEST_PICK_IMAGE && data != null) {
+            Toast.makeText(this, "You picked image", Toast.LENGTH_SHORT).show()
+            val pickUri = data.data
+            if (pickUri != null) {
+                val cropImageUri = Uri.fromFile(File(cacheDir, "sample"))
+                UCrop.of(pickUri as Uri, cropImageUri as Uri).withAspectRatio(17.0f, 10.0f).start(this)
+            }
+        }
+        if (requestCode == UCrop.REQUEST_CROP) {
+            if (resultCode == UCrop.RESULT_ERROR) {
+                Toast.makeText(this, "Error on crop", Toast.LENGTH_SHORT).show()
+                Log.e("crop_error", UCrop.getError(data as Intent)?.message)
+            } else {
+                Toast.makeText(this, "Crop is successful!", Toast.LENGTH_SHORT).show()
+                val uri = UCrop.getOutput(data as Intent)
+                image = MediaStore.Images.Media.getBitmap(contentResolver, uri)
+                if (image != null) {
+                    if (image != null && editCardRecognition.isChecked) {
+                        fillFields(recognizer.recognize(image as Bitmap))
+                    }
+                }
+            }
+        }
+        /*if (requestCode == REQUEST_IMAGE_CAPTURE) {
             Toast.makeText(this, "You took photo!", Toast.LENGTH_SHORT).show()
             image = MediaStore.Images.Media.getBitmap(contentResolver, imageUri)
             if (image != null && editCardRecognition.isChecked) {
@@ -196,7 +227,7 @@ class EditCardActivity : AppCompatActivity() {
                 image = ImageUtils.limitImageSize(image as Bitmap, 2000, 2000)
                 fillFields(recognizer.recognize(image as Bitmap))
             }
-        }
+        }*/
 
     }
     private fun fillFields (fields: Map<RecognizePatterns, String>) {

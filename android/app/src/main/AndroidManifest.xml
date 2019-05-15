@@ -32,6 +32,9 @@
         <activity android:name=".activities.ConfigActivity" />
         <activity android:name=".activities.ShowCardActivity" />
         <activity android:name=".activities.EditCardActivity" />
+        <activity android:name="com.yalantis.ucrop.UCropActivity"
+                  android:theme="@style/AppTheme.NoActionBar"
+        />
     </application>
 
 </manifest>
