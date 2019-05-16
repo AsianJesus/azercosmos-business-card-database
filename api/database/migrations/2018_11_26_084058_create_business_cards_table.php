@@ -14,7 +14,7 @@ class CreateBusinessCardsTable extends Migration
     public function up()
     {
         Schema::create('business_cards', function (Blueprint $table) {
-            $table->increments('id');
+            $table->uuid('id')->primary();
             $table->string('name');
             $table->string('company_name')->nullable();
             $table->string('position')->nullable();

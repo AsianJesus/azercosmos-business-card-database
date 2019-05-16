@@ -14,8 +14,8 @@ class CreateBcardNotesTable extends Migration
     public function up()
     {
         Schema::create('bcard_notes', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('business_card_id');
+            $table->uuid('id')->unique();
+            $table->uuid('business_card_id');
             $table->text('note');
             $table->timestamps();
         });

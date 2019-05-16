@@ -587,9 +587,11 @@
             send() {
                 if (this.isAdding) return
                 this.isAdding = true
-                let form = new FormData(this)
+                let form = new FormData()
                 for (let key in this.form) {
-                    form.set(key, this.form[key])
+                    if (this.form.hasOwnProperty(key) && this.form[key] !== null) {
+                        form.set(key, this.form[key])
+                    }
                 }
                 form.append('photo', this.form.photo)
                 console.log(form)

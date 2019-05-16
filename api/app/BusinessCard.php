@@ -5,6 +5,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 
 class BusinessCard extends Model
 {
@@ -32,6 +33,30 @@ class BusinessCard extends Model
 
     public function notes() {
         return $this->hasMany(Note::class);
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        self::creating(function ($post) {
+            $post->{$post->getKeyName()} = Str::uuid();
+        });
+    }
+
+    public function getKeyName()
+    {
+        return 'id';
+    }
+
+    public function getKeyType()
+    {
+        return 'string';
+    }
+
+    public function getIncrementing()
+    {
+        return false;
     }
 
 }

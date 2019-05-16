@@ -4,6 +4,7 @@ namespace App;
 
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class PermissionUser extends Model
 {
@@ -28,5 +29,29 @@ class PermissionUser extends Model
     public function permission()
     {
         return $this->belongsTo(Permission::class, 'permission_id');
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        self::creating(function ($pu) {
+            $pu->{$pu->getKeyName} = Str::uuid();
+        });
+    }
+
+    public function getKeyName()
+    {
+        return 'id';
+    }
+
+    public function getKeyType()
+    {
+        return 'string';
+    }
+
+    public function getIncrementing()
+    {
+        return false;
     }
 }

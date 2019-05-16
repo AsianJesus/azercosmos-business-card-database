@@ -7,6 +7,7 @@ use App\BusinessCard;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class BusinessCardController extends Controller
 {
@@ -43,7 +44,7 @@ class BusinessCardController extends Controller
                 ]);
             }
         }
-        return $card->load(['permissions', 'notes']);
+        return $this->getById($card->id);
     }
 
     public function getAll(Request $request)
@@ -129,7 +130,8 @@ class BusinessCardController extends Controller
         } else {
             DB::table("bcard_notes")->where("business_card_id", $id)->insert([
                 "note" => $request->note,
-                "business_card_id" => $id
+                "business_card_id" => $id,
+                'id' => Str::uuid()
             ]);
 
         }
