@@ -82,7 +82,7 @@ class BusinessCardsAdapter(private val dataSet: ArrayList<BusinessCard>, private
         return conv as View
     }
 
-    override fun afterDelete(id: Int) {
+    override fun afterDelete(id: String) {
         /*
             For deleting we are checking dataSet from the end. It allows us to not use invalid indexes after deleting card
             After reversing array, all existing indexes are mapped as i => size - i - 1,
@@ -131,7 +131,7 @@ class BusinessCardsAdapter(private val dataSet: ArrayList<BusinessCard>, private
     }
 
     override fun getGroupId(groupPosition: Int): Long {
-        return dataSet[groupPosition].id.toLong()
+        return groupPosition.toLong()
     }
 
     override fun isChildSelectable(groupPosition: Int, childPosition: Int): Boolean {

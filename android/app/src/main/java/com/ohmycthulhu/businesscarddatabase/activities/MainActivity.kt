@@ -111,7 +111,7 @@ class MainActivity : AppCompatActivity(), BusinessCardController {
 
                     cards.add(
                         BusinessCard(
-                            obj.getInt("id"), obj.getString("name"), obj.getString("company_name"),
+                            obj.getString("id"), obj.getString("name"), obj.getString("company_name"),
                             obj.getString("email"), obj.getString("address"), obj.getString("mobile"),
                             obj.getString("website"), obj.getString("position"),
                             obj.getInt("private") == 1, note, imagePath, obj.getInt("created_by") == userID
@@ -135,7 +135,7 @@ class MainActivity : AppCompatActivity(), BusinessCardController {
         }
     }
 
-    override fun deleteCard(id: Int, afterCardDeleteCallback: AfterCardDeleteCallback) {
+    override fun deleteCard(id: String, afterCardDeleteCallback: AfterCardDeleteCallback) {
         val dialog = DeleteCardDialog()
         dialog.setCallback {
             if (it) {
@@ -169,7 +169,7 @@ class MainActivity : AppCompatActivity(), BusinessCardController {
         modal.show(supportFragmentManager, "show_image")
     }
 
-    private fun sendDeleteRequest(id: Int, callback: () -> Unit) {
+    private fun sendDeleteRequest(id: String, callback: () -> Unit) {
         val url = "${sharedPreferences.getString("api_address", "http://192.168.1.8")}/business-cards/$id"
         val request = StringRequest(Request.Method.DELETE, url, {
             Toast.makeText(this, "We deleted card #$id!", Toast.LENGTH_SHORT).show()

@@ -249,7 +249,7 @@ class EditCardActivity : AppCompatActivity() {
         val imagePath = obj.getString("image_path")
 
         val card = BusinessCard(
-            obj.getInt("id"), obj.getString("name"), obj.getString("company_name"),
+            obj.getString("id"), obj.getString("name"), obj.getString("company_name"),
             obj.getString("email"), obj.getString("address"), obj.getString("mobile"),
             obj.getString("website"), obj.getString("position"),
             obj.getInt("private") == 1, note, imagePath, obj.getInt("created_by") == userID

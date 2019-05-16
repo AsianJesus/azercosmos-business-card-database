@@ -1,5 +1,5 @@
 package com.ohmycthulhu.businesscarddatabase.callbacks
 
 interface AfterCardDeleteCallback {
-    fun afterDelete(id: Int)
+    fun afterDelete(id: String)
 }

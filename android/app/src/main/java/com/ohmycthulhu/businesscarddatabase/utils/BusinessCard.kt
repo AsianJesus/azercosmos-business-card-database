@@ -2,8 +2,8 @@ package com.ohmycthulhu.businesscarddatabase.utils
 
 import java.io.Serializable
 
-class BusinessCard (id: Int, name: String, company: String?, email: String?, address: String?, phone: String?, website: String?, position: String?, private: Boolean, note: String?, imagePath: String?, isMine: Boolean) : Serializable {
-    var id: Int
+class BusinessCard (id: String, name: String, company: String?, email: String?, address: String?, phone: String?, website: String?, position: String?, private: Boolean, note: String?, imagePath: String?, isMine: Boolean) : Serializable {
+    var id: String
     var name: String
     var company: String?
     var position: String?
