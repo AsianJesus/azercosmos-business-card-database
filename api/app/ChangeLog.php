@@ -7,24 +7,18 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
-class Note extends Model
+class ChangeLog extends Model
 {
-    protected $table = 'bcard_notes';
-
     protected $fillable = [
-        'business_card_id', 'note'
+        'type', 'data'
     ];
-
-    public function business_card() {
-        return $this->belongsTo(BusinessCard::class);
-    }
 
     protected static function boot()
     {
         parent::boot();
 
-        self::creating(function ($note) {
-            $note->{$note->getKeyName()} = Str::uuid();
+        self::creating(function ($log) {
+            $log->{$log->getKeyName()} = Str::uuid();
         });
     }
 
@@ -42,5 +36,4 @@ class Note extends Model
     {
         return false;
     }
-
 }

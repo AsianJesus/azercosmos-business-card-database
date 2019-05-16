@@ -69,6 +69,9 @@ $app->singleton(
  $app->routeMiddleware([
      'business_cards_filter' => App\Http\Middleware\BusinessCardFilterMiddleware::class,
      'check_permission' => App\Http\Middleware\CheckPermissionMiddleware::class,
+     'register_add' => \App\Http\Middleware\Changelogger\RegisterCreate::class,
+     'register_update' => \App\Http\Middleware\Changelogger\RegisterUpdate::class,
+     'register_delete' => \App\Http\Middleware\Changelogger\RegisterDelete::class
  ]);
 
 /*

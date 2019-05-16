@@ -19,10 +19,10 @@ $router->get('/', function () use ($router) {
 $router->get('/business-cards', ['middleware' => 'business_cards_filter', 'uses' => 'BusinessCardController@getAll']);
 $router->get('/business-cards-one/{id}', ['middleware' => 'business_cards_filter', 'uses' => 'BusinessCardController@getOne']);
 $router->get('/business-cards/{id}', 'BusinessCardController@getById');
-$router->post('/business-cards/', 'BusinessCardController@add');
-$router->put('/business-cards/{id}', ['uses'=>'BusinessCardController@update', 'middleware' => 'check_permission']);
+$router->post('/business-cards/', ['middleware' => 'register_add', 'uses' => 'BusinessCardController@add']);
+$router->put('/business-cards/{id}', ['uses'=>'BusinessCardController@update', 'middleware' => [ 'check_permission', 'register_update'] ]);
 $router->post('/business-cards/{id}', ['uses'=>'BusinessCardController@update', 'middleware' => 'check_permission']);
-$router->delete('/business-cards/{id}', ['uses'=>'BusinessCardController@delete', 'middleware' => 'check_permission']);
+$router->delete('/business-cards/{id}', ['uses'=>'BusinessCardController@delete', 'middleware' => ['check_permission', 'register_delete'] ]);
 $router->delete('/business-cards/{id}/permissions', ['uses'=>'BusinessCardController@deletePermissionOfUser',
                                                     'middleware' => 'check_permission']);
 $router->get('/business-cards-excel', ['middleware' => 'business_cards_filter', 'uses' => 'BusinessCardController@exportExcel']);
@@ -42,3 +42,13 @@ $router->get('/user-permissions/{id}', 'PermissionUserController@getById');
 $router->post('/user-permissions', 'PermissionUserController@add');
 $router->put('/user-permissions/{id}', 'PermissionUserController@update');
 $router->delete('/user-permissions/{id}', 'PermissionUserController@delete');
+
+// Synchronization routes
+$router->get('/synchronize', 'ChangeLogController@getChanges');
+$router->post('/synchronize', 'ChangeLogController@synchronize');
+
+// Test routes! Needs to be deleted
+$router->get('/test/synchronize', ['uses' => 'ChangeLogController@launchSynchronization']);
+$router->get('/test/load-image', function () {
+    dispatch(new \App\Jobs\LoadImage('images/1543582655.jpeg'));
+});
