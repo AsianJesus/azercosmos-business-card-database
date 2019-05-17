@@ -23,6 +23,9 @@ class Helper
     }
 
     static public function checkHash($hash) {
+        if (!$hash) {
+            return null;
+        }
         $parts = explode('/', $hash);
         $user_id = $parts[0];
         $hash = $parts[1];

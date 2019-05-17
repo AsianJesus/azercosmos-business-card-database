@@ -23,6 +23,7 @@ import com.android.volley.request.SimpleMultiPartRequest
 import com.android.volley.toolbox.Volley
 import com.ohmycthulhu.businesscarddatabase.R
 import com.ohmycthulhu.businesscarddatabase.utils.ImageUtils
+import com.ohmycthulhu.businesscarddatabase.utils.RequestManager
 import com.ohmycthulhu.businesscarddatabase.utils.recognizer.RecognizePatterns
 import com.ohmycthulhu.businesscarddatabase.utils.recognizer.Recognizer
 import com.yalantis.ucrop.UCrop
@@ -37,7 +38,6 @@ class NewCardActivity : AppCompatActivity() {
     val REQUEST_PICK_IMAGE = 2
 
     var image: Bitmap? = null
-    lateinit var requestQueue: RequestQueue
     var fileToDelete: File? = null
     var cameraImageUri: Uri? = null
     lateinit var sharedPreferences: SharedPreferences
@@ -49,8 +49,6 @@ class NewCardActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_card_photo)
         setResult(Activity.RESULT_CANCELED)
-
-        requestQueue = Volley.newRequestQueue(this)
 
         sharedPreferences = getSharedPreferences("com.ohmycthulhu.businesscarddatabase", Context.MODE_PRIVATE)
 
@@ -140,7 +138,8 @@ class NewCardActivity : AppCompatActivity() {
             request.addFile("photo", getPath(Uri.parse(path)))
         }
         request.tag = "new_card"
-        requestQueue.add(request)
+        // requestQueue.add(request)
+        RequestManager.sendRequest(request)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

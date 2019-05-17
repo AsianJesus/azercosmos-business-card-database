@@ -40,7 +40,7 @@ class PasswordsController extends Controller
         if ($password == null) {
             return response('You hasn\'t generated password', 402);
         }
-        if ($password->password != hash('sha256', $request->input('password'))) {
+        if ($password->password != $request->input('password')) {
             return response('Passwords doesn\'t match', 403);
         }
         return [

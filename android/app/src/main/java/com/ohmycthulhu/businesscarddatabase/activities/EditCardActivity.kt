@@ -21,6 +21,7 @@ import com.android.volley.toolbox.Volley
 import com.ohmycthulhu.businesscarddatabase.R
 import com.ohmycthulhu.businesscarddatabase.utils.BusinessCard
 import com.ohmycthulhu.businesscarddatabase.utils.ImageUtils
+import com.ohmycthulhu.businesscarddatabase.utils.RequestManager
 import com.ohmycthulhu.businesscarddatabase.utils.recognizer.RecognizePatterns
 import com.ohmycthulhu.businesscarddatabase.utils.recognizer.Recognizer
 import com.yalantis.ucrop.UCrop
@@ -34,7 +35,6 @@ class EditCardActivity : AppCompatActivity() {
     private var image: Bitmap? = null
     lateinit var card: BusinessCard
     lateinit var sharedPreferences: SharedPreferences
-    lateinit var requestQueue: RequestQueue
     private var isSaving: Boolean = false
     private var fileToDelete: File? = null
     private val recognizer: Recognizer = Recognizer()
@@ -47,7 +47,6 @@ class EditCardActivity : AppCompatActivity() {
         setContentView(R.layout.activity_edit_card)
 
         sharedPreferences = getSharedPreferences("com.ohmycthulhu.businesscarddatabase", Context.MODE_PRIVATE)
-        requestQueue = Volley.newRequestQueue(this)
 
         setResult(Activity.RESULT_CANCELED)
 
@@ -164,7 +163,7 @@ class EditCardActivity : AppCompatActivity() {
             }
             request.addFile("photo", getPath(Uri.parse(path)))
         }
-        requestQueue.add(request)
+        RequestManager.sendRequest(request)
     }
 
     private fun getPath(uri: Uri): String {

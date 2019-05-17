@@ -27,6 +27,7 @@ import com.ohmycthulhu.businesscarddatabase.callbacks.BusinessCardController
 import com.ohmycthulhu.businesscarddatabase.utils.AssetsDecompressor
 import com.ohmycthulhu.businesscarddatabase.utils.BusinessCard
 import com.ohmycthulhu.businesscarddatabase.utils.BusinessCardsAdapter
+import com.ohmycthulhu.businesscarddatabase.utils.RequestManager
 import com.ohmycthulhu.businesscarddatabase.utils.modals.DeleteCardDialog
 import com.ohmycthulhu.businesscarddatabase.utils.modals.ShowImageModal
 
@@ -44,7 +45,6 @@ class MainActivity : AppCompatActivity(), BusinessCardController {
     private val REQUEST_NEW_CARD = 3
     private val REQUEST_EDIT_CARD = 4
 
-    lateinit var requestQueue: RequestQueue
     lateinit var sharedPreferences: SharedPreferences
 
     /*
@@ -61,9 +61,9 @@ class MainActivity : AppCompatActivity(), BusinessCardController {
         supportActionBar?.setDisplayShowCustomEnabled(true)
         supportActionBar?.setTitle("")
 
-        sharedPreferences = getSharedPreferences("com.ohmycthulhu.businesscarddatabase", Context.MODE_PRIVATE)
+        setResult(LoginActivity.ACTION.ACTION_FINISH.getCode())
 
-        requestQueue = Volley.newRequestQueue(this)
+        sharedPreferences = getSharedPreferences("com.ohmycthulhu.businesscarddatabase", Context.MODE_PRIVATE)
 
         fab.setOnClickListener { view ->
             Intent(this, NewCardActivity::class.java).also {
@@ -77,16 +77,6 @@ class MainActivity : AppCompatActivity(), BusinessCardController {
         AssetsDecompressor.unpack(baseContext.assets, assetsPath, "tessdata")
 
         loadCards()
-        /*cardsList.setOnItemClickListener { parent, view, position, id ->
-            Toast.makeText(this, "It works! You selected ${cards[position].name}", Toast.LENGTH_SHORT).show()
-            Intent(this, ShowCardActivity::class.java).also { intent ->
-                val extras = Bundle()
-                extras.putString("name", cards[position].name)
-                intent.putExtras(extras)
-                intent.putExtra("card", cards[position])
-                startActivityForResult(intent, REQUEST_SHOW_CARD)
-            }
-        }*/
         requestPermissions()
     }
 
@@ -97,7 +87,6 @@ class MainActivity : AppCompatActivity(), BusinessCardController {
     }
 
     private fun loadCards () {
-        requestQueue.cancelAll("load_cards")
         val request = JsonArrayRequest(Request.Method.GET,
             "${sharedPreferences.getString("api_address", "http://192.168.1.8")}/business-cards",
             null,
@@ -121,11 +110,14 @@ class MainActivity : AppCompatActivity(), BusinessCardController {
                 showCards(cards)
             },
             Response.ErrorListener {
+                if (it.networkResponse.statusCode == 500) {
+                    logout()
+                }
                 Toast.makeText(this, "Error occurred on loading cards: ${it.message}", Toast.LENGTH_LONG).show()
             })
         request.tag = "load_cards"
         request.setShouldCache(false)
-        requestQueue.add(request)
+        RequestManager.sendRequest(request)
     }
 
     private fun openSettings () {
@@ -180,12 +172,18 @@ class MainActivity : AppCompatActivity(), BusinessCardController {
         })
 
         request.tag = "delete_card"
-        requestQueue.add(request)
+        RequestManager.sendRequest(request)
+        // requestQueue.add(request)
     }
 
     private fun showCards (cards: ArrayList<BusinessCard>) {
         val adapter = BusinessCardsAdapter(cards, this, this)
         cardsList.setAdapter(adapter)
+    }
+
+    private fun logout () {
+        setResult(LoginActivity.ACTION.ACTION_LOGOUT.getCode())
+        finish()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -235,6 +233,10 @@ class MainActivity : AppCompatActivity(), BusinessCardController {
             }
             R.id.action_refresh -> {
                 loadCards()
+                return true
+            }
+            R.id.action_logout -> {
+                logout()
                 return true
             }
             else -> super.onOptionsItemSelected(item)
