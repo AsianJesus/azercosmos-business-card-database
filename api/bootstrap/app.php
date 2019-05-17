@@ -23,11 +23,11 @@ $app = new Laravel\Lumen\Application(
     realpath(__DIR__.'/../')
 );
 
-$app->id = require_once __DIR__.'/../config/getSession.php';
 
 $app->withFacades();
 
 $app->withEloquent();
+$app->id = require_once __DIR__.'/../config/getSession.php';
 
 /*
 |--------------------------------------------------------------------------
@@ -61,12 +61,12 @@ $app->singleton(
 |
 */
 
- $app->middleware([
+$app->middleware([
      \palanik\lumen\Middleware\LumenCors::class
 //    App\Http\Middleware\ExampleMiddleware::class
 ]);
 
- $app->routeMiddleware([
+$app->routeMiddleware([
      'business_cards_filter' => App\Http\Middleware\BusinessCardFilterMiddleware::class,
      'check_permission' => App\Http\Middleware\CheckPermissionMiddleware::class,
      'register_add' => \App\Http\Middleware\Changelogger\RegisterCreate::class,

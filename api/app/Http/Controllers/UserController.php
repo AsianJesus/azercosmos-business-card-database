@@ -9,6 +9,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Helper\Helper;
 use App\User;
 use Illuminate\Http\Request;
 

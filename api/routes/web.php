@@ -46,6 +46,12 @@ $router->delete('/user-permissions/{id}', 'PermissionUserController@delete');
 // Synchronization routes
 $router->get('/synchronize', 'ChangeLogController@getChanges');
 $router->post('/synchronize', 'ChangeLogController@synchronize');
+$router->post('/synchronize/passwords', 'PasswordsController@syncSetPassword');
+
+// Password routes
+$router->post('/passwords', 'PasswordsController@setPassword');
+$router->post('/users', 'PasswordsController@login');
+$router->get('/passwords', 'PasswordsController@checkHash');
 
 // Test routes! Needs to be deleted
 $router->get('/test/synchronize', ['uses' => 'ChangeLogController@launchSynchronization']);
