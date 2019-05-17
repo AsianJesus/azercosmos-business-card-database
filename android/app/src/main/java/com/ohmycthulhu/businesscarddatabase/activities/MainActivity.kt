@@ -74,10 +74,10 @@ class MainActivity : AppCompatActivity(), BusinessCardController {
         if (!AssetsDecompressor.isUnpacked(assetsPath)) {
             Toast.makeText(this, assetsPath, Toast.LENGTH_SHORT).show()
         }
+        requestPermissions()
         AssetsDecompressor.unpack(baseContext.assets, assetsPath, "tessdata")
 
         loadCards()
-        requestPermissions()
     }
 
     private fun requestPermissions() {

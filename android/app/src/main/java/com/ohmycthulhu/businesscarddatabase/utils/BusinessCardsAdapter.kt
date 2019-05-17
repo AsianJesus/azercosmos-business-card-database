@@ -58,7 +58,7 @@ class BusinessCardsAdapter(private val dataSet: ArrayList<BusinessCard>, private
             if (!(card.hasImage() || card.isMine)) {
                 convView.findViewById<LinearLayout>(R.id.listItemToolbar).visibility = View.GONE
             }
-            convView.setBackgroundColor(Color.argb(1.0f, .88f, .88f, .88f))
+            convView.setBackgroundColor(Color.parseColor("#ffe3e3e3"))
         }
         return convView as View
     }
@@ -76,7 +76,7 @@ class BusinessCardsAdapter(private val dataSet: ArrayList<BusinessCard>, private
             nameField.typeface = Typeface.DEFAULT_BOLD
             nameField.text = card.name
             companyField.text = "${card.company} - ${card.position}"
-            conv.setBackgroundColor(Color.argb(if (isExpanded) 1.0f else 0.0f, 0.88f, 0.88f, 0.88f))
+            conv.setBackgroundColor(Color.parseColor(if (isExpanded) "#ffe3e3e3" else "#00ffffff"))
             // conv.findViewById<RelativeLayout>(R.id.listItemLayout).setBackgroundColor(Color.MAGENTA)
         }
         return conv as View

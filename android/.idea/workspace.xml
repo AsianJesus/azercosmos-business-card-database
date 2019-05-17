@@ -46,15 +46,6 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ohmycthulhu/businesscarddatabase/utils/BusinessCard.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="286">
-              <caret line="28" column="24" selection-start-line="28" selection-start-column="24" selection-end-line="28" selection-end-column="24" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ohmycthulhu/businesscarddatabase/activities/NewCardActivity.kt">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="315">
@@ -67,7 +58,7 @@
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ohmycthulhu/businesscarddatabase/activities/EditCardActivity.kt">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="630">
-              <caret line="181" lean-forward="true" selection-start-line="181" selection-end-line="181" />
+              <caret line="181" selection-start-line="181" selection-end-line="181" />
             </state>
           </provider>
         </entry>
@@ -78,13 +69,22 @@
           <provider selected="true" editor-type-id="android-designer2" />
         </entry>
       </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ohmycthulhu/businesscarddatabase/utils/BusinessCardsAdapter.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="315">
+              <caret line="78" column="96" selection-start-line="78" selection-start-column="96" selection-end-line="78" selection-end-column="96" />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ohmycthulhu/businesscarddatabase/activities/LoginActivity.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="360">
-              <caret line="55" selection-start-line="55" selection-end-line="55" />
+            <state relative-caret-position="555">
+              <caret line="37" column="47" selection-start-line="37" selection-start-column="47" selection-end-line="37" selection-end-column="47" />
               <folding>
-                <element signature="e#57#647#0" expanded="true" />
+                <element signature="e#57#715#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -130,11 +130,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ohmycthulhu/businesscarddatabase/activities/MainActivity.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="361">
-              <caret line="106" column="25" lean-forward="true" selection-start-line="106" selection-start-column="25" selection-end-line="106" selection-end-column="25" />
+            <state relative-caret-position="390">
+              <caret line="77" column="8" selection-start-line="77" selection-start-column="8" selection-end-line="77" selection-end-column="8" />
             </state>
           </provider>
         </entry>
@@ -240,16 +240,16 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/ohmycthulhu/businesscarddatabase/utils/recognizer/RecognizePatterns.kt" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/ohmycthulhu/businesscarddatabase/callbacks/AfterCardDeleteCallback.kt" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/ohmycthulhu/businesscarddatabase/callbacks/BusinessCardController.kt" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/ohmycthulhu/businesscarddatabase/utils/BusinessCardsAdapter.kt" />
         <option value="$PROJECT_DIR$/app/src/main/res/menu/menu_main.xml" />
         <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/ohmycthulhu/businesscarddatabase/utils/RequestManager.kt" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_login.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_settings.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/ohmycthulhu/businesscarddatabase/activities/LoginActivity.kt" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/ohmycthulhu/businesscarddatabase/activities/NewCardActivity.kt" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/ohmycthulhu/businesscarddatabase/activities/EditCardActivity.kt" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/ohmycthulhu/businesscarddatabase/activities/LoginActivity.kt" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/ohmycthulhu/businesscarddatabase/activities/MainActivity.kt" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/ohmycthulhu/businesscarddatabase/utils/BusinessCardsAdapter.kt" />
       </list>
     </option>
   </component>
@@ -506,7 +506,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="27" width="1366" height="741" extended-state="7" />
+    <frame x="0" y="27" width="1366" height="741" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Captures" order="0" sideWeight="0.19787234" side_tool="true" weight="0.2931818" />
@@ -788,13 +788,6 @@
       </provider>
       <provider editor-type-id="android-designer2" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ohmycthulhu/businesscarddatabase/utils/BusinessCardsAdapter.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="133" column="37" selection-start-line="133" selection-start-column="37" selection-end-line="133" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ohmycthulhu/businesscarddatabase/utils/LoadImage.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="150">
@@ -868,16 +861,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ohmycthulhu/businesscarddatabase/activities/LoginActivity.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="55" selection-start-line="55" selection-end-line="55" />
-          <folding>
-            <element signature="e#57#647#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ohmycthulhu/businesscarddatabase/activities/NewCardActivity.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="315">
@@ -888,14 +871,31 @@
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ohmycthulhu/businesscarddatabase/activities/EditCardActivity.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="630">
-          <caret line="181" lean-forward="true" selection-start-line="181" selection-end-line="181" />
+          <caret line="181" selection-start-line="181" selection-end-line="181" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ohmycthulhu/businesscarddatabase/activities/LoginActivity.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="555">
+          <caret line="37" column="47" selection-start-line="37" selection-start-column="47" selection-end-line="37" selection-end-column="47" />
+          <folding>
+            <element signature="e#57#715#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ohmycthulhu/businesscarddatabase/activities/MainActivity.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="361">
-          <caret line="106" column="25" lean-forward="true" selection-start-line="106" selection-start-column="25" selection-end-line="106" selection-end-column="25" />
+        <state relative-caret-position="390">
+          <caret line="77" column="8" selection-start-line="77" selection-start-column="8" selection-end-line="77" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ohmycthulhu/businesscarddatabase/utils/BusinessCardsAdapter.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="78" column="96" selection-start-line="78" selection-start-column="96" selection-end-line="78" selection-end-column="96" />
         </state>
       </provider>
     </entry>
