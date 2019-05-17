@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
 import BusinessCardsPage from '@/components/Business cards/BusinessCardsPage'
 import NewBusinessCard from '@/components/Business cards/NewBusinessCard.vue'
 import EditBusinessCard from '@/components/Business cards/EditBusinessCard.vue'

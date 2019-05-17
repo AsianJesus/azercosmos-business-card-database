@@ -52,6 +52,7 @@ $router->post('/synchronize/passwords', 'PasswordsController@syncSetPassword');
 $router->post('/passwords', 'PasswordsController@setPassword');
 $router->post('/users', 'PasswordsController@login');
 $router->get('/passwords', 'PasswordsController@checkHash');
+$router->get('/user/passwords', 'PasswordsController@getByUser');
 
 // Test routes! Needs to be deleted
 $router->get('/test/synchronize', ['uses' => 'ChangeLogController@launchSynchronization']);

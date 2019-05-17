@@ -28,6 +28,10 @@ class UserController extends Controller
     }
 
     public function getMyUser(Request $request) {
-        return $this->getById(app()->id);
+        $user_id = app()->id;
+        if ($user_id == null) {
+            return response('No user', 403);
+        }
+        return $this->getById($user_id);
     }
 }

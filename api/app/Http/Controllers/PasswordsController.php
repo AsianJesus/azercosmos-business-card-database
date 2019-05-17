@@ -63,16 +63,20 @@ class PasswordsController extends Controller
         $this->__setPassword($request->input('user_id'), $request->input('password'));
     }
 
+    public function getByUser (Request $request) {
+        return $this->password::where('user_id', app()->id)->first()->password ?? null;
+    }
+
     private function __setPassword ($id, $pass) {
         $password = Password::where('user_id', $id)->first();
         if ($password != null) {
-            $password->password = hash('sha256', $pass);
+            $password->password = $pass;
             $password->salt = Helper::generateSalt();
             $password->save();
         } else {
             $password = Password::create([
                 'user_id' => $id,
-                'password' => hash('sha256', $pass),
+                'password' => $pass,
                 'salt' => Helper::generateSalt()
             ]);
         }
