@@ -59,7 +59,9 @@ class BusinessCardController extends Controller
                 $query->where($key, $filters[$key]);
             }
         }
-        return $query->with('permissions.permission', 'permissions.user')->orderBy('created_at', 'desc')->get();
+        $query->with('permissions.permission', 'permissions.user')->orderBy('created_at', 'desc');
+        return $request->input('paginate', false) ? $query->paginate($request->input('amount', 10))
+            : $query->get();
     }
 
     public function getOne(Request $request, $id)

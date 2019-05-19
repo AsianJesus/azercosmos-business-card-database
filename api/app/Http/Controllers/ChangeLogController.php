@@ -23,14 +23,17 @@ class ChangeLogController extends Controller
     }
 
     public function synchronize(Request $request) {
-        $changes = $request->input('changes');
+        $changes = $request->input('changes', []);
+        $changes = array_map(function ($x) { return (array)json_decode($x); }, $changes);
+        $changes = array_sort($changes, function ($a, $b) {
+            return strcmp($a['created_at'], $b['created_at']);
+        });
         Log::debug("Got message - ".json_encode($request->all()));
         Log::debug("Files - ".json_encode($request->allFiles()));
         foreach ($request->allFiles() as $file_name => $file) {
             $file->move('public/'.$file_name);
         }
         foreach ($changes as $change) {
-            $change = (array)json_decode($change);
             Log::debug("Change array is ".json_encode($change));
             switch ($change['type']) {
                 case 'add':
@@ -73,6 +76,9 @@ class ChangeLogController extends Controller
         if(array_has($data, 'note')) {
             $note = $data['note'];
             unset($data['note']);
+            unset($data['notes']);
+            unset($data['permissions']);
+            unset($data['photo']);
             $noteRecord = Note::where('business_card_id', $id)->count();
             if ($noteRecord > 0) {
                 Note::where('business_card_id', $id)->update(['note' => $note]);

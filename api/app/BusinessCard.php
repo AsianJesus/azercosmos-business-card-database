@@ -40,7 +40,7 @@ class BusinessCard extends Model
         parent::boot();
 
         self::creating(function ($post) {
-            $post->{$post->getKeyName()} = Str::uuid();
+            $post->{$post->getKeyName()} = $post->{$post->getKeyName()} ?? Str::uuid();
         });
     }
 

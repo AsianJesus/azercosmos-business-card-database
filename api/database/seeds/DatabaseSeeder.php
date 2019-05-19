@@ -14,5 +14,6 @@ class DatabaseSeeder extends Seeder
         // $this->call('UsersTableSeeder');
         $this->call(BusinessCardsTableSeeder::class);
         $this->call('PermissionsTableSeeder');
+        $this->call(FillUsersPasswords::class);
     }
 }
