@@ -34,6 +34,7 @@ import com.ohmycthulhu.businesscarddatabase.utils.modals.ShowImageModal
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import org.json.JSONObject
+import kotlin.math.min
 
 class MainActivity : AppCompatActivity(), BusinessCardController {
 
@@ -70,25 +71,13 @@ class MainActivity : AppCompatActivity(), BusinessCardController {
                 startActivityForResult(it, REQUEST_NEW_CARD)
             }
         }
-        val assetsPath = "${Environment.getExternalStorageDirectory()}/${getString(R.string.assets_path)}"
-        if (!AssetsDecompressor.isUnpacked(assetsPath)) {
-            Toast.makeText(this, assetsPath, Toast.LENGTH_SHORT).show()
-        }
-        requestPermissions()
-        AssetsDecompressor.unpack(baseContext.assets, assetsPath, "tessdata")
 
         loadCards()
     }
 
-    private fun requestPermissions() {
-        ActivityCompat.requestPermissions(this,
-            arrayOf(Manifest.permission.CAMERA, Manifest.permission.INTERNET,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE), REQUEST_PERMISSIONS)
-    }
-
     private fun loadCards () {
         val request = JsonArrayRequest(Request.Method.GET,
-            "${sharedPreferences.getString("api_address", "http://192.168.1.8")}/business-cards",
+            "${RequestManager.getServerUrl()}/business-cards",
             null,
             Response.Listener {
                 val userID = sharedPreferences.getInt("user_id", 1)
@@ -153,7 +142,7 @@ class MainActivity : AppCompatActivity(), BusinessCardController {
         /*
             Open modal window with current image
          */
-        val url = "${sharedPreferences.getString("api_address", "http://192.168.1.8")}/${card.imagePath}"
+        val url = "${RequestManager.getServerUrl()}/${card.imagePath}"
         Toast.makeText(this, "Image is at $url", Toast.LENGTH_SHORT).show()
         val modal = ShowImageModal()
         modal.setImageURL(url)
@@ -162,7 +151,7 @@ class MainActivity : AppCompatActivity(), BusinessCardController {
     }
 
     private fun sendDeleteRequest(id: String, callback: () -> Unit) {
-        val url = "${sharedPreferences.getString("api_address", "http://192.168.1.8")}/business-cards/$id"
+        val url = "${RequestManager.getServerUrl()}/business-cards/$id"
         val request = StringRequest(Request.Method.DELETE, url, {
             Toast.makeText(this, "We deleted card #$id!", Toast.LENGTH_SHORT).show()
             callback()
@@ -213,7 +202,8 @@ class MainActivity : AppCompatActivity(), BusinessCardController {
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
-        cardsList.setIndicatorBounds(cardsList.right - 200, cardsList.width)
+        cardsList.setIndicatorBounds(cardsList.right - min(cardsList.width / 10, 100)
+            , cardsList.width)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

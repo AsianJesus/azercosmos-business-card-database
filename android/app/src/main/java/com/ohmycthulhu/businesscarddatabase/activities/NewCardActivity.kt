@@ -102,7 +102,7 @@ class NewCardActivity : AppCompatActivity() {
 
     private fun sendCreateRequest (name: String, company: String, email: String, address: String, phone: String, website: String, position: String, private: Boolean, image: Bitmap?, note: String) {
         val request = SimpleMultiPartRequest(Request.Method.POST,
-            "${sharedPreferences.getString("api_address", "http://192.168.1.8")}/business-cards",
+            "${RequestManager.getServerUrl()}/business-cards",
             Response.Listener {
             Toast.makeText(this, "It worked!", Toast.LENGTH_SHORT).show()
             if (fileToDelete != null) {

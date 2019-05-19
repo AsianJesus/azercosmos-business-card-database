@@ -2,4 +2,6 @@
     <string name="app_name">BCD</string>
     <string name="action_settings">Settings</string>
     <string name="assets_path">BCD/assets/</string>
+    <string name="default_username">tarlan.mammadzada</string>
+    <string name="default_password">password</string>
 </resources>

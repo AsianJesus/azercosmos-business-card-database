@@ -1,12 +1,10 @@
 package com.ohmycthulhu.businesscarddatabase.activities
 
-import android.Manifest
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.support.v4.app.ActivityCompat
+import android.os.Environment
 import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
 import com.android.volley.Request
@@ -16,10 +14,12 @@ import com.ohmycthulhu.businesscarddatabase.utils.RequestManager
 import kotlinx.android.synthetic.main.activity_login.*
 import org.json.JSONObject
 import com.ohmycthulhu.businesscarddatabase.R
+import com.ohmycthulhu.businesscarddatabase.utils.AssetsDecompressor
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var sharedPreferences: SharedPreferences
-    private val REQUEST_MAIN_ACTIVITY = 1512;
+    private val REQUEST_MAIN_ACTIVITY = 1512
+    private val REQUEST_PERMISSIONS = 1215
 
     enum class ACTION(private val code: Int) {
         ACTION_FINISH(1),
@@ -36,6 +36,10 @@ class LoginActivity : AppCompatActivity() {
         val requestQueue = Volley.newRequestQueue(this)
 
         setContentView(R.layout.activity_login)
+
+        AssetsDecompressor.requestPermissions(this, REQUEST_PERMISSIONS)
+        val assetsPath = "${Environment.getExternalStorageDirectory()}/${getString(R.string.assets_path)}"
+        AssetsDecompressor.unpack(baseContext.assets, assetsPath, "tessdata")
 
         RequestManager.setSharedPreferences(sharedPreferences)
         RequestManager.setRequestQueue(requestQueue)
@@ -65,7 +69,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun tryLogin (username: String, password: String,  callback: (id: Int, token: String) -> Unit) {
-        val url = "${sharedPreferences.getString("api_address", "http://192.168.1.8")}/users"
+        val url = "${RequestManager.getServerUrl()}/users"
         val params = JSONObject()
         try {
             params.put("login", username)

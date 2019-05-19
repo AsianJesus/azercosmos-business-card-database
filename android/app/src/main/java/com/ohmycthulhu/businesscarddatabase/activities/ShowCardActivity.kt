@@ -17,6 +17,7 @@ import com.ohmycthulhu.businesscarddatabase.utils.modals.DeleteCardDialog
 import com.ohmycthulhu.businesscarddatabase.R
 import com.ohmycthulhu.businesscarddatabase.utils.BusinessCard
 import com.ohmycthulhu.businesscarddatabase.utils.LoadImage
+import com.ohmycthulhu.businesscarddatabase.utils.RequestManager
 import kotlinx.android.synthetic.main.activity_show_card.*
 
 class ShowCardActivity : AppCompatActivity() {
@@ -52,7 +53,7 @@ class ShowCardActivity : AppCompatActivity() {
 
         if (card.hasImage()) {
 
-            val url = "${sharedPreferences.getString("api_address", "http://192.168.1.8")}/${card.imagePath}"
+            val url = "${RequestManager.getServerUrl()}/${card.imagePath}"
             Toast.makeText(this, "Loading image from $url", Toast.LENGTH_SHORT).show()
 
             LoadImage(showCardImage, this).execute(url)
@@ -79,7 +80,7 @@ class ShowCardActivity : AppCompatActivity() {
 
     private fun deleteCard () {
         Toast.makeText(this, "Deleting card #${card.id}", Toast.LENGTH_SHORT).show()
-        val url = "${sharedPreferences.getString("api_address", "http://192.168.1.8")}/business-cards/${card.id}"
+        val url = "${RequestManager.getServerUrl()}/business-cards/${card.id}"
         val request = StringRequest(Request.Method.DELETE, url, {
             Toast.makeText(this, "We deleted card #${card.id}!", Toast.LENGTH_SHORT).show()
             setResult(true)

@@ -1,6 +1,7 @@
 package com.ohmycthulhu.businesscarddatabase.utils
 
 import java.io.Serializable
+import kotlin.math.min
 
 class BusinessCard (id: String, name: String, company: String?, email: String?, address: String?, phone: String?, website: String?, position: String?, private: Boolean, note: String?, imagePath: String?, isMine: Boolean) : Serializable {
     var id: String
@@ -35,6 +36,14 @@ class BusinessCard (id: String, name: String, company: String?, email: String?, 
         return this.imagePath != null
                 && (imagePath as String).isNotEmpty()
                 && imagePath != "null"
+    }
+
+    fun getNumericID(): Long {
+        var result: Long = 0
+        for (i in 0 until min(6, id.length)) {
+            result += (Math.pow(10.0, i.toDouble()) * this.id[i].toInt()).toLong()
+        }
+        return result
     }
 
 }

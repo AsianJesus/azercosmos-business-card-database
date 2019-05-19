@@ -32,7 +32,7 @@ class BusinessCardsAdapter(private val dataSet: ArrayList<BusinessCard>, private
             convView = inflater.inflate(R.layout.list_child_item, null)
         }
         if (convView != null) {
-            convView.findViewById<TextView>(R.id.listItemID).text = card.id.toString()
+            convView.findViewById<TextView>(R.id.listItemID).text = card.id
             convView.findViewById<TextView>(R.id.listItemAddress).text = card.address
             convView.findViewById<TextView>(R.id.listItemEmail).text = card.email
             convView.findViewById<TextView>(R.id.listItemNote).text = card.note
@@ -131,7 +131,8 @@ class BusinessCardsAdapter(private val dataSet: ArrayList<BusinessCard>, private
     }
 
     override fun getGroupId(groupPosition: Int): Long {
-        return groupPosition.toLong()
+        return dataSet[groupPosition].getNumericID()
+        // return groupPosition.toLong()
     }
 
     override fun isChildSelectable(groupPosition: Int, childPosition: Int): Boolean {
