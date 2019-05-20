@@ -496,7 +496,7 @@
                 filters: {},
                 selectedFilter: 1,
                 columnsToShow: {
-                    id: true,
+                    id: false,
                     name: true,
                     company_name: true,
                     position: true,
