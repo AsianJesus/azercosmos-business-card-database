@@ -18,6 +18,9 @@ class SynchronizePassword extends Job
 
     public function handle() {
         $client = new Client();
+        if (env('OTHER_SERVER_URL', null) == null) {
+            return;
+        }
         $url = env('OTHER_SERVER_URL', '').'/synchronize/passwords';
         $client->request('POST', $url, [
             'form_params' => [

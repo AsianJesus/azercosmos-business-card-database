@@ -96,6 +96,9 @@ class ChangeLogController extends Controller
     }
 
     public function launchSynchronization () {
+        if (env('OTHER_SERVER_URL', null) == null) {
+            return;
+        }
         $changes =  ChangeLog::all()->toArray();
         $client = new Client();
         $form = array_map(function ($change) {

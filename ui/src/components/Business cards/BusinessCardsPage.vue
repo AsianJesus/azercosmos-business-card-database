@@ -423,12 +423,20 @@
                    class="bcards-show-more-button g-wide-button" variant="outline-primary">
                 <v-icon name="arrow-down"/>
             </b-btn>
-            <b-btn @click="exportedExcel"
-                   class=" g-wide-button"
-                   variant="success"
-                   style="display: block;border-radius:0 !important;float: right;margin-top: 10px;">
-                Excel
-            </b-btn>
+            <div style="display: block;border-radius:0 !important;float: right;margin-top: 10px; text-align:right;">
+
+                <b-btn  variant="primary"
+                        class=" g-wide-button"
+                        @click="openPasswordPrompt">
+                    App password
+                </b-btn>
+                <b-btn @click="exportedExcel"
+                       class=" g-wide-button"
+                       variant="success"
+                >
+                    Excel
+                </b-btn>
+            </div>
             <!-- This link is required to download images and dom objects as jpeg files -->
             <a ref="imageToDownload"
                href="#"
@@ -436,12 +444,6 @@
                target="_blank"
                download="true"
             />
-            <div    style="text-align: right;">
-                <b-button   variant="outline-primary"
-                            @click="openPasswordPrompt">
-                    App password
-                </b-button>
-            </div>
         </div>
     </div>
 </template>
