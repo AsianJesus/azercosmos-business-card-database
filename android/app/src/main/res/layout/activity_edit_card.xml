@@ -36,7 +36,7 @@
                     android:ems="10"
                     android:text="Some Company"
                     android:id="@+id/editCardCompany"
-                    android:hint="Company name" android:layout_marginEnd="8dp"
+                    android:hint="Company name*" android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"/>
             <EditText
@@ -47,7 +47,7 @@
                     android:text="Position"
                     android:id="@+id/editCardPosition" android:layout_marginEnd="8dp"
                     android:layout_marginTop="8dp"
-                    android:hint="Position" android:layout_marginStart="8dp"/>
+                    android:hint="Position*" android:layout_marginStart="8dp"/>
             <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

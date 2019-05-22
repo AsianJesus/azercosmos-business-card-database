@@ -33,7 +33,7 @@ class LoadImage() : AsyncTask<String, Void, Drawable>() {
         if (result != null) {
             imageView.setImageDrawable(result)
         } else {
-            Toast.makeText(mContext, "It returned null", Toast.LENGTH_SHORT).show()
+            // Toast.makeText(mContext, "It returned null", Toast.LENGTH_SHORT).show()
         }
     }
 }

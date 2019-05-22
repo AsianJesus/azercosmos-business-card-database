@@ -1,6 +1,7 @@
 package com.ohmycthulhu.businesscarddatabase.activities
 
 import android.app.Activity
+import android.app.ProgressDialog
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
@@ -76,20 +77,29 @@ class NewCardActivity : AppCompatActivity() {
     }
 
     private fun createCard (): Boolean {
-        Toast.makeText(this, "Creating card", Toast.LENGTH_SHORT).show()
+        // Toast.makeText(this, "Creating card", Toast.LENGTH_SHORT).show()
         val name = newCardName.text.toString()
         if (name.isEmpty()) {
             Toast.makeText(this, "Name is empty", Toast.LENGTH_SHORT).show()
             return false
         }
-
         val company = newCardCompany.text.toString()
+        val position = newCardPosition.text.toString()
+
+        if (company.isEmpty()) {
+            Toast.makeText(this, "Company name is empty", Toast.LENGTH_SHORT).show()
+            return false
+        }
+
+        if (position.isEmpty()) {
+            Toast.makeText(this, "Position is empty", Toast.LENGTH_SHORT).show()
+            return false
+        }
 
         val email = newCardEmail.text.toString()
 
         val phone = newCardPhone.text.toString()
 
-        val position = newCardPosition.text.toString()
 
         val website = newCardWebsite.text.toString()
 
@@ -104,14 +114,14 @@ class NewCardActivity : AppCompatActivity() {
         val request = SimpleMultiPartRequest(Request.Method.POST,
             "${RequestManager.getServerUrl()}/business-cards",
             Response.Listener {
-            Toast.makeText(this, "It worked!", Toast.LENGTH_SHORT).show()
+            // Toast.makeText(this, "It worked!", Toast.LENGTH_SHORT).show()
             if (fileToDelete != null) {
                 (fileToDelete as File).delete()
             }
             setResult(Activity.RESULT_OK)
             finish()
         }, Response.ErrorListener {
-            Toast.makeText(this, "Error occurred: ${it.message}", Toast.LENGTH_LONG).show()
+            // Toast.makeText(this, "Error occurred: ${it.message}", Toast.LENGTH_LONG).show()
             if (fileToDelete != null) {
                 (fileToDelete as File).delete()
             }
@@ -129,11 +139,11 @@ class NewCardActivity : AppCompatActivity() {
             val bytes = ByteArrayOutputStream()
             image.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
             val path = MediaStore.Images.Media.insertImage(contentResolver, image, "Title", null)
-            Toast.makeText(this, "Path is $path", Toast.LENGTH_SHORT).show()
+            // Toast.makeText(this, "Path is $path", Toast.LENGTH_SHORT).show()
             try {
                 fileToDelete = File(path)
             } catch (e: Exception) {
-                Toast.makeText(this, "Error while opened file: ${e.message}", Toast.LENGTH_SHORT).show()
+                // Toast.makeText(this, "Error while opened file: ${e.message}", Toast.LENGTH_SHORT).show()
             }
             request.addFile("photo", getPath(Uri.parse(path)))
         }
@@ -145,14 +155,14 @@ class NewCardActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_IMAGE_CAPTURE) {
-            Toast.makeText(this, "You took photo!", Toast.LENGTH_SHORT).show()
+            // Toast.makeText(this, "You took photo!", Toast.LENGTH_SHORT).show()
             if (cameraImageUri != null) {
                 val cropImageUri = Uri.fromFile(File(cacheDir, "sample"))
                 UCrop.of(cameraImageUri as Uri, cropImageUri).withAspectRatio(17.0f, 10.0f).start(this)
             }
         }
         if (requestCode == REQUEST_PICK_IMAGE && data != null) {
-            Toast.makeText(this, "You picked image", Toast.LENGTH_SHORT).show()
+            // Toast.makeText(this, "You picked image", Toast.LENGTH_SHORT).show()
             val pickUri = data.data
             if (pickUri != null) {
                 val cropImageUri = Uri.fromFile(File(cacheDir, "sample"))
@@ -161,15 +171,17 @@ class NewCardActivity : AppCompatActivity() {
         }
         if (requestCode == UCrop.REQUEST_CROP) {
             if (resultCode == UCrop.RESULT_ERROR) {
-                Toast.makeText(this, "Error on crop", Toast.LENGTH_SHORT).show()
+                // Toast.makeText(this, "Error on crop", Toast.LENGTH_SHORT).show()
                 Log.e("crop_error", UCrop.getError(data as Intent)?.message)
             } else {
-                Toast.makeText(this, "Crop is successful!", Toast.LENGTH_SHORT).show()
-                val uri = UCrop.getOutput(data as Intent)
-                image = MediaStore.Images.Media.getBitmap(contentResolver, uri)
-                if (image != null) {
-                    if (image != null && newCardRecognition.isChecked) {
-                        fillFields(recognizer.recognize(image as Bitmap))
+                // Toast.makeText(this, "Crop is successful!", Toast.LENGTH_SHORT).show()
+                if (data != null) {
+                    val uri = UCrop.getOutput(data as Intent)
+                    image = MediaStore.Images.Media.getBitmap(contentResolver, uri)
+                    if (image != null) {
+                        if (image != null && newCardRecognition.isChecked) {
+                            fillFields(recognizer.recognize(image as Bitmap))
+                        }
                     }
                 }
             }

@@ -31,7 +31,7 @@ class ShowImageModal : DialogFragment() {
 
             view.findViewById<TextView>(R.id.showImageModalSave).setOnClickListener {
                 if (context != null) {
-                    Toast.makeText(context, "It was clicked", Toast.LENGTH_SHORT).show()
+                    // Toast.makeText(context, "It was clicked", Toast.LENGTH_SHORT).show()
                     val directoryPath = "${Environment.getExternalStorageDirectory()}/${Environment.DIRECTORY_DCIM}/BCD"
                     if (!File(directoryPath).exists()) {
                         File(directoryPath).mkdirs()
@@ -46,7 +46,7 @@ class ShowImageModal : DialogFragment() {
                         .setAllowedOverRoaming(true)
                     val downloadManager = (context as Context).getSystemService(DOWNLOAD_SERVICE) as DownloadManager
                     val downloadID = downloadManager.enqueue(request)
-                    Toast.makeText(context, "It was ended. Id is $downloadID", Toast.LENGTH_SHORT).show()
+                    // Toast.makeText(context, "It was ended. Id is $downloadID", Toast.LENGTH_SHORT).show()
                 }
             }
             // (dialog.window as Window).setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))

@@ -15,7 +15,7 @@ import com.android.volley.request.StringRequest
 import com.android.volley.toolbox.Volley
 import com.ohmycthulhu.businesscarddatabase.utils.modals.DeleteCardDialog
 import com.ohmycthulhu.businesscarddatabase.R
-import com.ohmycthulhu.businesscarddatabase.utils.BusinessCard
+import com.ohmycthulhu.businesscarddatabase.data.BusinessCard
 import com.ohmycthulhu.businesscarddatabase.utils.LoadImage
 import com.ohmycthulhu.businesscarddatabase.utils.RequestManager
 import kotlinx.android.synthetic.main.activity_show_card.*
@@ -36,7 +36,7 @@ class ShowCardActivity : AppCompatActivity() {
         val card = intent.getSerializableExtra("card") as BusinessCard?
 
         if (card == null) {
-            Toast.makeText(this, "Card is null", Toast.LENGTH_SHORT).show()
+            // Toast.makeText(this, "Card is null", Toast.LENGTH_SHORT).show()
         } else {
             setFields(card)
         }
@@ -54,7 +54,7 @@ class ShowCardActivity : AppCompatActivity() {
         if (card.hasImage()) {
 
             val url = "${RequestManager.getServerUrl()}/${card.imagePath}"
-            Toast.makeText(this, "Loading image from $url", Toast.LENGTH_SHORT).show()
+            // Toast.makeText(this, "Loading image from $url", Toast.LENGTH_SHORT).show()
 
             LoadImage(showCardImage, this).execute(url)
         }
@@ -79,14 +79,14 @@ class ShowCardActivity : AppCompatActivity() {
     }
 
     private fun deleteCard () {
-        Toast.makeText(this, "Deleting card #${card.id}", Toast.LENGTH_SHORT).show()
+        // Toast.makeText(this, "Deleting card #${card.id}", Toast.LENGTH_SHORT).show()
         val url = "${RequestManager.getServerUrl()}/business-cards/${card.id}"
         val request = StringRequest(Request.Method.DELETE, url, {
-            Toast.makeText(this, "We deleted card #${card.id}!", Toast.LENGTH_SHORT).show()
+            // Toast.makeText(this, "We deleted card #${card.id}!", Toast.LENGTH_SHORT).show()
             setResult(true)
             finish()
         }, {
-            Toast.makeText(this, "Couldn't delete the card", Toast.LENGTH_SHORT).show()
+            // Toast.makeText(this, "Couldn't delete the card", Toast.LENGTH_SHORT).show()
             Log.e("delete error", it.message)
         })
 

@@ -1,31 +1,25 @@
 package com.ohmycthulhu.businesscarddatabase.activities
 
-import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.ActivityInfo
 import android.os.Bundle
-import android.os.Environment
-import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import com.android.volley.Request
-import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.android.volley.request.JsonArrayRequest
 import com.android.volley.request.StringRequest
-import com.android.volley.toolbox.Volley
 import com.ohmycthulhu.businesscarddatabase.*
 import com.ohmycthulhu.businesscarddatabase.callbacks.AfterCardDeleteCallback
 import com.ohmycthulhu.businesscarddatabase.callbacks.AfterCardEditCallback
 import com.ohmycthulhu.businesscarddatabase.callbacks.BusinessCardController
-import com.ohmycthulhu.businesscarddatabase.utils.AssetsDecompressor
-import com.ohmycthulhu.businesscarddatabase.utils.BusinessCard
+import com.ohmycthulhu.businesscarddatabase.data.BusinessCard
 import com.ohmycthulhu.businesscarddatabase.utils.BusinessCardsAdapter
 import com.ohmycthulhu.businesscarddatabase.utils.RequestManager
 import com.ohmycthulhu.businesscarddatabase.utils.modals.DeleteCardDialog
@@ -77,7 +71,7 @@ class MainActivity : AppCompatActivity(), BusinessCardController {
 
     private fun loadCards () {
         val request = JsonArrayRequest(Request.Method.GET,
-            "${RequestManager.getServerUrl()}/business-cards",
+            "${RequestManager.getServerUrl()}/business-cards?filters=%7B%7D",
             null,
             Response.Listener {
                 val userID = sharedPreferences.getInt("user_id", 1)
@@ -102,7 +96,7 @@ class MainActivity : AppCompatActivity(), BusinessCardController {
                 if (it.networkResponse.statusCode == 500) {
                     logout()
                 }
-                Toast.makeText(this, "Error occurred on loading cards: ${it.message}", Toast.LENGTH_LONG).show()
+                // Toast.makeText(this, "Error occurred on loading cards: ${it.message}", Toast.LENGTH_LONG).show()
             })
         request.tag = "load_cards"
         request.setShouldCache(false)
@@ -110,7 +104,7 @@ class MainActivity : AppCompatActivity(), BusinessCardController {
     }
 
     private fun openSettings () {
-        Toast.makeText(this, "Opening settings", Toast.LENGTH_SHORT).show()
+        // Toast.makeText(this, "Opening settings", Toast.LENGTH_SHORT).show()
         Intent(this, ConfigActivity::class.java).also {
             startActivityForResult(it, REQUEST_CONFIG)
         }
@@ -120,7 +114,7 @@ class MainActivity : AppCompatActivity(), BusinessCardController {
         val dialog = DeleteCardDialog()
         dialog.setCallback {
             if (it) {
-                Toast.makeText(this, "Card $id is deleted", Toast.LENGTH_SHORT).show()
+                // Toast.makeText(this, "Card $id is deleted", Toast.LENGTH_SHORT).show()
                 sendDeleteRequest(id) {
                     afterCardDeleteCallback.afterDelete(id)
                 }
@@ -130,7 +124,7 @@ class MainActivity : AppCompatActivity(), BusinessCardController {
     }
 
     override fun editCard(card: BusinessCard, afterCardEditCallback: AfterCardEditCallback) {
-        Toast.makeText(this, "Card ${card.id} is edited", Toast.LENGTH_SHORT).show()
+        // Toast.makeText(this, "Card ${card.id} is edited", Toast.LENGTH_SHORT).show()
         this.afterCardEditCallback = afterCardEditCallback
         Intent(this, EditCardActivity::class.java).also {
             it.putExtra("card", card)
@@ -143,7 +137,7 @@ class MainActivity : AppCompatActivity(), BusinessCardController {
             Open modal window with current image
          */
         val url = "${RequestManager.getServerUrl()}/${card.imagePath}"
-        Toast.makeText(this, "Image is at $url", Toast.LENGTH_SHORT).show()
+        // Toast.makeText(this, "Image is at $url", Toast.LENGTH_SHORT).show()
         val modal = ShowImageModal()
         modal.setImageURL(url)
         modal.dialog// .window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -153,10 +147,10 @@ class MainActivity : AppCompatActivity(), BusinessCardController {
     private fun sendDeleteRequest(id: String, callback: () -> Unit) {
         val url = "${RequestManager.getServerUrl()}/business-cards/$id"
         val request = StringRequest(Request.Method.DELETE, url, {
-            Toast.makeText(this, "We deleted card #$id!", Toast.LENGTH_SHORT).show()
+            // Toast.makeText(this, "We deleted card #$id!", Toast.LENGTH_SHORT).show()
             callback()
         }, {
-            Toast.makeText(this, "Couldn't delete the card", Toast.LENGTH_SHORT).show()
+            // Toast.makeText(this, "Couldn't delete the card", Toast.LENGTH_SHORT).show()
             Log.e("delete error", it.message)
         })
 

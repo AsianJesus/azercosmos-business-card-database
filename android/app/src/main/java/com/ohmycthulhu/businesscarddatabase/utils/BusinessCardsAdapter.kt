@@ -12,6 +12,7 @@ import com.ohmycthulhu.businesscarddatabase.R
 import com.ohmycthulhu.businesscarddatabase.callbacks.AfterCardDeleteCallback
 import com.ohmycthulhu.businesscarddatabase.callbacks.AfterCardEditCallback
 import com.ohmycthulhu.businesscarddatabase.callbacks.BusinessCardController
+import com.ohmycthulhu.businesscarddatabase.data.BusinessCard
 
 
 class BusinessCardsAdapter(private val dataSet: ArrayList<BusinessCard>, private var context: Activity, private val controller: BusinessCardController) :

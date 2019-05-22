@@ -14,7 +14,7 @@
                 android:text="ID"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:id="@+id/listItemID" android:paddingLeft="10dp"
-                android:paddingRight="10dp"/>
+                android:paddingRight="10dp" android:visibility="gone"/>
         <TextView
                 android:text="Phone"
                 android:layout_width="match_parent"

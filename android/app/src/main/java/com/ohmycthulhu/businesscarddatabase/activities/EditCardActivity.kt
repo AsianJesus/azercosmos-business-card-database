@@ -14,13 +14,10 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.widget.Toast
 import com.android.volley.Request
-import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.android.volley.request.SimpleMultiPartRequest
-import com.android.volley.toolbox.Volley
 import com.ohmycthulhu.businesscarddatabase.R
-import com.ohmycthulhu.businesscarddatabase.utils.BusinessCard
-import com.ohmycthulhu.businesscarddatabase.utils.ImageUtils
+import com.ohmycthulhu.businesscarddatabase.data.BusinessCard
 import com.ohmycthulhu.businesscarddatabase.utils.RequestManager
 import com.ohmycthulhu.businesscarddatabase.utils.recognizer.RecognizePatterns
 import com.ohmycthulhu.businesscarddatabase.utils.recognizer.Recognizer
@@ -93,24 +90,32 @@ class EditCardActivity : AppCompatActivity() {
     private fun saveChanges (): Boolean {
 
         if (isSaving) {
-            Toast.makeText(this, "Already saving card", Toast.LENGTH_SHORT).show()
+            // Toast.makeText(this, "Already saving card", Toast.LENGTH_SHORT).show()
         } else {
-            Toast.makeText(this, "Editing card", Toast.LENGTH_SHORT).show()
+            // Toast.makeText(this, "Editing card", Toast.LENGTH_SHORT).show()
         }
 
         val name = editCardName.text.toString()
         if (name.isEmpty()) {
-            Toast.makeText(this, "Name is empty", Toast.LENGTH_SHORT).show()
+            // Toast.makeText(this, "Name is empty", Toast.LENGTH_SHORT).show()
             return false
         }
 
         val company = editCardCompany.text.toString()
+        val position = editCardPosition.text.toString()
+        if (company.isEmpty()) {
+            Toast.makeText(this, "Company name is empty", Toast.LENGTH_SHORT).show()
+            return false
+        }
 
+        if (position.isEmpty()) {
+            Toast.makeText(this, "Position is empty", Toast.LENGTH_SHORT).show()
+            return false
+        }
         val email = editCardEmail.text.toString()
 
         val phone = editCardPhone.text.toString()
 
-        val position = editCardPosition.text.toString()
 
         val website = editCardWebsite.text.toString()
 
@@ -125,7 +130,7 @@ class EditCardActivity : AppCompatActivity() {
         val request = SimpleMultiPartRequest(Request.Method.PUT,
             "${RequestManager.getServerUrl()}/business-cards/${card.id}",
             Response.Listener {
-                Toast.makeText(this, "It worked!", Toast.LENGTH_SHORT).show()
+                // Toast.makeText(this, "It worked!", Toast.LENGTH_SHORT).show()
                 if (fileToDelete != null) {
                     (fileToDelete as File).delete()
                 }
@@ -133,7 +138,7 @@ class EditCardActivity : AppCompatActivity() {
                 update(it)
                 finish()
             }, Response.ErrorListener {
-                Toast.makeText(this, "Error occurred: ${it.message}", Toast.LENGTH_LONG).show()
+                // Toast.makeText(this, "Error occurred: ${it.message}", Toast.LENGTH_LONG).show()
                 isSaving = false
                 if (fileToDelete != null) {
                     (fileToDelete as File).delete()
@@ -155,11 +160,11 @@ class EditCardActivity : AppCompatActivity() {
             val bytes = ByteArrayOutputStream()
             image.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
             val path = MediaStore.Images.Media.insertImage(contentResolver, image, "Title", null)
-            Toast.makeText(this, "Path is $path", Toast.LENGTH_SHORT).show()
+            // Toast.makeText(this, "Path is $path", Toast.LENGTH_SHORT).show()
             try {
                 fileToDelete = File(path)
             } catch (e: Exception) {
-                Toast.makeText(this, "Error while opened file: ${e.message}", Toast.LENGTH_SHORT).show()
+                // Toast.makeText(this, "Error while opened file: ${e.message}", Toast.LENGTH_SHORT).show()
             }
             request.addFile("photo", getPath(Uri.parse(path)))
         }
@@ -181,14 +186,14 @@ class EditCardActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == REQUEST_IMAGE_CAPTURE) {
-            Toast.makeText(this, "You took photo!", Toast.LENGTH_SHORT).show()
+            // Toast.makeText(this, "You took photo!", Toast.LENGTH_SHORT).show()
             if (imageUri != null) {
                 val cropImageUri = Uri.fromFile(File(cacheDir, "sample"))
                 UCrop.of(imageUri as Uri, cropImageUri).withAspectRatio(17.0f, 10.0f).start(this)
             }
         }
         if (requestCode == REQUEST_PICK_IMAGE && data != null) {
-            Toast.makeText(this, "You picked image", Toast.LENGTH_SHORT).show()
+            // Toast.makeText(this, "You picked image", Toast.LENGTH_SHORT).show()
             val pickUri = data.data
             if (pickUri != null) {
                 val cropImageUri = Uri.fromFile(File(cacheDir, "sample"))
@@ -197,21 +202,23 @@ class EditCardActivity : AppCompatActivity() {
         }
         if (requestCode == UCrop.REQUEST_CROP) {
             if (resultCode == UCrop.RESULT_ERROR) {
-                Toast.makeText(this, "Error on crop", Toast.LENGTH_SHORT).show()
+                // Toast.makeText(this, "Error on crop", Toast.LENGTH_SHORT).show()
                 Log.e("crop_error", UCrop.getError(data as Intent)?.message)
             } else {
-                Toast.makeText(this, "Crop is successful!", Toast.LENGTH_SHORT).show()
-                val uri = UCrop.getOutput(data as Intent)
-                image = MediaStore.Images.Media.getBitmap(contentResolver, uri)
-                if (image != null) {
-                    if (image != null && editCardRecognition.isChecked) {
-                        fillFields(recognizer.recognize(image as Bitmap))
+                // Toast.makeText(this, "Crop is successful!", Toast.LENGTH_SHORT).show()
+                if (data != null) {
+                    val uri = UCrop.getOutput(data as Intent)
+                    image = MediaStore.Images.Media.getBitmap(contentResolver, uri)
+                    if (image != null) {
+                        if (image != null && editCardRecognition.isChecked) {
+                            fillFields(recognizer.recognize(image as Bitmap))
+                        }
                     }
                 }
             }
         }
         /*if (requestCode == REQUEST_IMAGE_CAPTURE) {
-            Toast.makeText(this, "You took photo!", Toast.LENGTH_SHORT).show()
+            // Toast.makeText(this, "You took photo!", Toast.LENGTH_SHORT).show()
             image = MediaStore.Images.Media.getBitmap(contentResolver, imageUri)
             if (image != null && editCardRecognition.isChecked) {
                 image = ImageUtils.limitImageSize(image as Bitmap, 2000, 2000)
@@ -219,7 +226,7 @@ class EditCardActivity : AppCompatActivity() {
             }
         }
         if (requestCode == REQUEST_PICK_IMAGE && data != null) {
-            Toast.makeText(this, "You picked image", Toast.LENGTH_SHORT).show()
+            // Toast.makeText(this, "You picked image", Toast.LENGTH_SHORT).show()
             val pickUri = data.data
             image = if(pickUri != null) MediaStore.Images.Media.getBitmap(contentResolver, pickUri) else null
             if (image != null && editCardRecognition.isChecked) {

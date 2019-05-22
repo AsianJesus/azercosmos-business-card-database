@@ -1,7 +1,0 @@
-/home/junior/Projects/azercosmos-business-card-database/android/tess-two/jni/libjpeg/jdmaster.c:252:16: warning: implicit conversion from 'int' to 'JSAMPLE' (aka 'char') changes value from 255 to -1 [-Wconstant-conversion]
-    table[i] = MAXJSAMPLE;
-             ~ ^~~~~~~~~~
-/home/junior/Projects/azercosmos-business-card-database/android/tess-two/jni/libjpeg/jmorecfg.h:83:20: note: expanded from macro 'MAXJSAMPLE'
-#define MAXJSAMPLE      255
-                        ^~~
-1 warning generated.
