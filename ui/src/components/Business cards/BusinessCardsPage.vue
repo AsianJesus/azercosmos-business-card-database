@@ -281,6 +281,11 @@
                     </select>
                 </div>
                 <div class="col" style="text-align: right;">
+                    <b-btn @click="debouncedLoad"
+                           class="bcards-icon-button g-standard-button"
+                           variant="primary">
+                        <font-awesome-icon :icon="redoIcon"/>
+                    </b-btn>
                     <b-btn @click="showColumns ^= true"
                            class="bcards-icon-button g-standard-button"
                            variant="primary">
@@ -448,432 +453,438 @@
     </div>
 </template>
 <script>
-    import ColumnsList from '@/components/Tools/ColumnsList.vue'
-    import NewBusinessCard from '@/components/Business cards/NewBusinessCard.vue'
-    import UserSelector from '@/components/Tools/UserSelector.vue'
-    import lodash from 'lodash'
-    import domToImage from 'dom-to-image'
-    import exportFromJSON from 'export-from-json'
+import ColumnsList from '@/components/Tools/ColumnsList.vue'
+import NewBusinessCard from '@/components/Business cards/NewBusinessCard.vue'
+import UserSelector from '@/components/Tools/UserSelector.vue'
+import lodash from 'lodash'
+import domToImage from 'dom-to-image'
+import exportFromJSON from 'export-from-json'
 
-    import {
-        faEdit,
-        faTrashAlt,
-        faCaretDown,
-        faCaretUp,
-        faFilter,
-        faPlus,
-        faSearch,
-        faSave,
-        faBan,
-        faFileExcel
-    } from '@fortawesome/free-solid-svg-icons'
+import {
+    faEdit,
+    faTrashAlt,
+    faCaretDown,
+    faCaretUp,
+    faFilter,
+    faPlus,
+    faSearch,
+    faSave,
+    faBan,
+    faFileExcel,
+    faRedo
+} from '@fortawesome/free-solid-svg-icons'
 
-    const cardsOnPage = 15
-    const availableLoadOptions = {
-        'mycards': {
-            'created_by': 'my_id'
-        },
-        'public': {
-            'private': false
-        },
-        'private': {
-            'private': true
-        }
+const cardsOnPage = 15
+const availableLoadOptions = {
+    'mycards': {
+        'created_by': 'my_id'
+    },
+    'public': {
+        'private': false
+    },
+    'private': {
+        'private': true
     }
-    export default {
-        components: {
-            ColumnsList,
-            NewBusinessCard,
-            UserSelector
-        },
-        data() {
-            return {
-                businessCardsAll: [],
-                sorting: {
-                    by: 'id',
-                    asc: false
+}
+export default {
+    components: {
+        ColumnsList,
+        NewBusinessCard,
+        UserSelector
+    },
+    data() {
+        return {
+            businessCardsAll: [],
+            sorting: {
+                by: 'id',
+                asc: false
+            },
+            filters: {},
+            selectedFilter: 1,
+            columnsToShow: {
+                id: false,
+                name: true,
+                company_name: true,
+                position: true,
+                mobile: true,
+                address: false,
+                email: true,
+                website: false
+            },
+            customNames: {
+              mobile: 'Phone'
+            },
+            privacyOptions: [
+                {
+                    text: 'Public',
+                    value: 0
                 },
-                filters: {},
-                selectedFilter: 1,
-                columnsToShow: {
-                    id: false,
-                    name: true,
-                    company_name: true,
-                    position: true,
-                    mobile: true,
-                    address: false,
-                    email: true,
-                    website: false
+                {
+                    text: 'Private',
+                    value: 1
                 },
-                customNames: {
-                  mobile: 'Phone'
-                },
-                privacyOptions: [
-                    {
-                        text: 'Public',
-                        value: 0
-                    },
-                    {
-                        text: 'Private',
-                        value: 1
-                    },
-                ],
-                showCardsCount: cardsOnPage,
-                isLoading: false,
-                isUpdatingPermissions: false,
-                cardToEdit: null,
-                cardToShow: null,
-                showColumns: false,
-                createNewCard: false,
-                cardToShowSourceImage: null,
-                appPassword: {
-                    key: null,
-                    loaded: false
-                }
+            ],
+            showCardsCount: cardsOnPage,
+            isLoading: false,
+            isUpdatingPermissions: false,
+            cardToEdit: null,
+            cardToShow: null,
+            showColumns: false,
+            createNewCard: false,
+            cardToShowSourceImage: null,
+            appPassword: {
+                key: null,
+                loaded: false
             }
+        }
+    },
+    watch: {
+        columnsToShow() {
+            this.saveConfig()
         },
-        watch: {
-            columnsToShow() {
-                this.saveConfig()
-            },
-            option() {
-                this.load()
-            }
-        },
-        computed: {
-            userID() {
-                return this.$store.getters.userId
-            },
-            loadOptions() {
-                let options = availableLoadOptions[this.option] || null
-                if (options && options['created_by'] && options['created_by'] === 'my_id') {
-                    options['created_by'] = this.userId
-                }
-                return options
-            },
-            option() {
-                return this.$route.params.option
-            },
-            businessCardsToShow() {
-                return this.businessCardsFiltered.slice(0, this.showCardsCount)
-            },
-            businessCardsFiltered() {
-                return this.filterCards().sort((a, b) =>
-                    (this.sorting.asc ? 1 : -1) * (a[this.sorting.by] ? ((typeof a[this.sorting.by] === 'string') ?
-                    a[this.sorting.by].localeCompare(b[this.sorting.by]) : a[this.sorting.by] - b[this.sorting.by])
-                    : 0));
-            },
-            editIcon: () => faEdit,
-            trashIcon: () => faTrashAlt,
-            arrowDown: () => faCaretDown,
-            arrowUp: () => faCaretUp,
-            filterIcon: () => faFilter,
-            plusIcon: () => faPlus,
-            searchIcon: () => faSearch,
-            saveIcon: () => faSave,
-            banIcon: () => faBan,
-            excelIcon: () => faFileExcel,
-        },
-        created() {
-            if (!this.$route.params.option) {
-                this.$router.push({name: 'BusinessCardsWithOption', params: {option: 'mycards'}})
-            }
-
-        },
-        mounted() {
+        option() {
             this.load()
-            this.getConfig()
+        }
+    },
+    computed: {
+        userID() {
+            return this.$store.getters.userId
         },
-        methods: {
-            formatFilterName(name) {
-                // return name.replace(/[-_]/g, ' ')
-                return (this.customNames[name] || name).replace(/[-_]/g, ' ')
-            },
-            saveAsForm () {
-                console.log(this.$refs.showForm)
-                domToImage.toJpeg(this.$refs.showForm, {
-                    quality: .96
-                }).then(dataUrl => {
-                    this.saveImage(dataUrl)
-                })
-            },
-            saveImage (url) {
-                this.$refs.imageToDownload.href = url
-                this.$refs.imageToDownload.click()
-            },
-            exportedExcel() {
-                this.axios.get('business-cards-excel', {
-                    params: {
-                        filters: this.loadOptions
-                    }
-                }).then(response => {
-                        let data = response.data;
-                        let fileName = 'download'
-                        let exportType = 'csv'
-                        delete data.notes
-                        data.forEach(function (entry) {
-                            entry.note = entry.notes.length ? entry.notes[0].note : ''
-                            delete entry.notes
-                            delete entry.permissions
-                            delete entry.deleted_by
-                            delete entry.deleted_at
-                            delete entry.updated_at
-                            delete entry.image_path
-                        });
-
-                        for (var f in data) {
-                            let check = this.columnsToShow
-                            Object.keys(data[f]).forEach(function (key) {
-                                if (check.hasOwnProperty(key) === false || check[key] !== true) {
-                                    // console.log(key)
-                                    delete data[f][key]
-                                }
-                            });
-                        }
-
-                        exportFromJSON({data, fileName, exportType})
-
-                        // this.isLoading = false
-                    }
-                ).catch(err => {
-                    console.log(err)
-                    this.isLoading = false
-                })
-
-            },
-            load() {
-                this.isLoading = true
-                this.axios.get('business-cards', {
-                    params: {
-                        filters: this.loadOptions
-                    }
-                }).then(response => {
-                    this.businessCardsAll = response.data.map(b => {
-                        b.note = b.notes.length ? b.notes[0].note : ''
-                        return b
-                    })
-                    this.isLoading = false
-                }).catch(err => {
-                    console.log(err)
-                    this.isLoading = false
-                })
-            },
-            editable(index) {
-                return this.businessCardsToShow[index].created_by.toString() === this.$store.getters.userId.toString() ||
-                    this.businessCardsToShow[index].permissions.filter(x => x.permission_id === 2).length > 0
-            },
-            deletable(index) {
-                return this.businessCardsToShow[index].created_by.toString() === this.$store.getters.userId.toString() ||
-                    this.businessCardsToShow[index].permissions.filter(x => x.permission_id === 3).length > 0
-            },
-            editCard(index) {
-                this.cardToEdit = JSON.parse(JSON.stringify(this.businessCardsToShow[index]))
-            },
-            deleteCard(id) {
-                if (!confirm('Are you sure?')) return
-                this.axios.delete('/business-cards/' + id).then(response => {
-                    if (response.data) {
-                        this.businessCardsAll = this.businessCardsAll.filter(x => x.id !== id)
-                    } else {
-                        alert('Failed to delete')
-                    }
-                }).catch(err => {
-                    console.log(err)
-                    alert('Couldn\'t delete due to server trouble')
-                })
-            },
-            groupPermissions(permissions) {
-                let result = {}
-                for (let i = 0; i < permissions.length; i++) {
-                    if (!result[permissions[i].user_id]) {
-                        result[permissions[i].user_id] = {user: permissions[i].user}
-                    }
-                    result[permissions[i].user_id][permissions[i].permission_id] = permissions[i].id
-                }
-                return result
-            },
-            addUserPermission(user) {
-                this.cardToEdit.permissions.push({
-                    user: user,
-                    permission_id: 0,
-                    business_card_id: this.cardToEdit.id,
-                    user_id: user.ID
-                })
-            },
-            addPermission(cardId, userId, permissionId) {
-                this.isUpdatingPermissions = true
-                this.axios.post('/user-permissions', {
-                    business_card_id: cardId,
-                    user_id: userId,
-                    permission_id: permissionId
-                }).then(response => {
-                    this.isUpdatingPermissions = false
-                    if (this.cardToEdit && this.cardToEdit.id === cardId) {
-                        this.cardToEdit.permissions.push(response.data)
-                    }
-                    for (let i = 0; i < this.businessCardsAll.length; i++) {
-                        if (this.businessCardsAll[i].id === cardId) {
-                            this.businessCardsAll[i].permissions.push(response.data)
-                        }
-                    }
-                }).catch(err => {
-                    this.isUpdatingPermissions = false
-                })
-            },
-            deleteUserPermission(cardId, userID) {
-                this.isUpdatingPermissions = true
-                this.axios.delete(`/business-cards/${cardId}/permissions`, {
-                    params: {
-                        user_id: userID
-                    }
-                }).then(response => {
-                    this.isUpdatingPermissions = false
-                    if (this.cardToEdit && this.cardToEdit.id === cardId) {
-                        this.cardToEdit.permissions = this.cardToEdit.permissions.filter(p => p.user_id !== userID)
-                    }
-                    for (let i = 0; i < this.businessCardsAll.length; i++) {
-                        if (this.businessCardsAll[i].id === cardId) {
-                            this.businessCardsAll[i].permissions = this.businessCardsAll[i].permissions.filter(p => p.user_id !== userID)
-                        }
-                    }
-                })
-            },
-            deletePermission(cardId, permissionId) {
-                this.isUpdatingPermissions = true
-                this.axios.delete('/user-permissions/' + permissionId).then(response => {
-                    for (let i = 0; i < this.businessCardsAll.length; i++) {
-                        if (this.businessCardsAll[i].id === cardId) {
-                            this.businessCardsAll[i].permissions = this.businessCardsAll[i].permissions.filter(x => x.id === permissionId)
-                        }
-                    }
-                    if (this.cardToEdit && this.cardToEdit.id === cardId) {
-                        this.cardToEdit.permissions = this.cardToEdit.permissions.filter(x => x.id !== permissionId)
-                    }
-                    this.isUpdatingPermissions = false
-                }).catch(err => {
-                    console.log(err)
-                    this.isUpdatingPermissions = false
-                })
-            },
-            cancelEditing(force = false) {
-                if (force || confirm('Are you sure?')) {
-                    this.cardToEdit = null
-                }
-            },
-            saveChanges() {
-
-                if (this.cardToEdit.notes.length > 0)
-                    this.cardToEdit.notes[0].note = this.cardToEdit.note;
-                console.log(this.cardToEdit)
-                this.axios.put('/business-cards/' + this.cardToEdit.id, this.cardToEdit).then(response => {
-                    for (let i = 0; i < this.businessCardsAll.length; i++) {
-                        if (this.businessCardsAll[i].id === response.data.id) {
-                            for (let key in response.data) {
-                                this.$set(this.businessCardsAll[i], key, response.data[key])
-                            }
-                        }
-                    }
-                    this.load();
-
-                }).catch(err => {
-                    console.log(err)
-                })
-                this.cardToEdit = null
-            },
-            showCard(index) {
-                if (this.businessCardsToShow[index].image_path) {
-                    this.showSourceImage(index)
-                } else {
-                    this.cardToShow = this.businessCardsToShow[index]
-                }
-            },
-            hideCard() {
-                this.cardToShow = null
-            },
-            sortBy(field) {
-                if (field) {
-                    if (this.sorting.by === field) {
-                        this.sorting.asc ^= true
-                    } else {
-                        this.sorting.by = field
-                        this.sorting.asc = true
-                    }
-                }
-            },
-            filterCards() {
-                return this.businessCardsAll.filter(card => {
-                    for (let param in this.filters) {
-                        if (this.filters.hasOwnProperty(param) && this.filters[param]) {
-                            if (!card[param]
-                                    || !card[param].toString().toLowerCase().includes(this.filters[param].toString().toLowerCase())) {
-                                return false
-                            }
-                        }
-                    }
-                    return true
-                })
-            },
-            delayedFilter: lodash.debounce(function () {
-                this.filterCards()
-            }, 500, 1500),
-            cancelCreating(force = false) {
-                if (force || confirm('Are you sure?')) {
-                    this.createNewCard = false
-                }
-            },
-            addCard(card) {
-                console.log(card)
-                card.permissions = []
-                this.businessCardsAll.push(card)
-                this.filterCards()
-                this.sortBy()
-                this.createNewCard = false
-            },
-            saveConfig() {
-                this.$cookie.set('columns-config', JSON.stringify(this.columnsToShow), 30)
-            },
-            getConfig() {
-                let saved = this.$cookie.get('columns-config')
-                if (saved) {
-                    this.columnsToShow = JSON.parse(saved)
-                }
-            },
-            showSourceImage(index) {
-                this.cardToShowSourceImage = this.businessCardsToShow[index]
-            },
-            showMore() {
-                this.showCardsCount += cardsOnPage
-            },
-            redirectToNewCard() {
-                this.$router.push({name: 'NewBusinessCard'})
-            },
-            openPasswordPrompt () {
-              if (!this.appPassword.loaded) {
-                  this.axios.get('/user/passwords').then(response => {
-                      this.appPassword.loaded = true
-                      this.appPassword.key = response.data || null
-                      this.showPrompt()
-                  })
-              } else {
-                  this.showPrompt()
-              }
-            },
-            showPrompt (){
-                let text = this.appPassword.key !== null ? `Current password: ${this.appPassword.key}` : 'Password is not set'
-                let pass = prompt(text)
-                if (pass) {
-                     this.savePassword(pass)
-                }
-            },
-            savePassword (password) {
-                return this.axios.post('/passwords', {
-                  password: password
-                }).then(response => {
-                  this.appPassword.key = response.data.password
-                })
+        loadOptions() {
+            let options = availableLoadOptions[this.option] || null
+            if (options && options['created_by'] && options['created_by'] === 'my_id') {
+                options['created_by'] = this.userId
             }
+            return options
+        },
+        option() {
+            return this.$route.params.option
+        },
+        businessCardsToShow() {
+            return this.businessCardsFiltered.slice(0, this.showCardsCount)
+        },
+        businessCardsFiltered() {
+            return this.filterCards().sort((a, b) =>
+                (this.sorting.asc ? 1 : -1) * (a[this.sorting.by] ? ((typeof a[this.sorting.by] === 'string') ?
+                a[this.sorting.by].localeCompare(b[this.sorting.by]) : a[this.sorting.by] - b[this.sorting.by])
+                : 0));
+        },
+        editIcon: () => faEdit,
+        trashIcon: () => faTrashAlt,
+        arrowDown: () => faCaretDown,
+        arrowUp: () => faCaretUp,
+        filterIcon: () => faFilter,
+        plusIcon: () => faPlus,
+        searchIcon: () => faSearch,
+        saveIcon: () => faSave,
+        banIcon: () => faBan,
+        excelIcon: () => faFileExcel,
+        redoIcon: () => faRedo
+    },
+    created() {
+        if (!this.$route.params.option) {
+            this.$router.push({name: 'BusinessCardsWithOption', params: {option: 'mycards'}})
+        }
+
+    },
+    mounted() {
+        this.load()
+        this.getConfig()
+    },
+    methods: {
+        formatFilterName(name) {
+            // return name.replace(/[-_]/g, ' ')
+            return (this.customNames[name] || name).replace(/[-_]/g, ' ')
+        },
+        saveAsForm () {
+            console.log(this.$refs.showForm)
+            domToImage.toJpeg(this.$refs.showForm, {
+                quality: .96
+            }).then(dataUrl => {
+                this.saveImage(dataUrl)
+            })
+        },
+        saveImage (url) {
+            this.$refs.imageToDownload.href = url
+            this.$refs.imageToDownload.click()
+        },
+        exportedExcel() {
+            this.axios.get('business-cards-excel', {
+                params: {
+                    filters: this.loadOptions
+                }
+            }).then(response => {
+                    let data = response.data;
+                    let fileName = 'download'
+                    let exportType = 'csv'
+                    delete data.notes
+                    data.forEach(function (entry) {
+                        entry.note = entry.notes.length ? entry.notes[0].note : ''
+                        delete entry.notes
+                        delete entry.permissions
+                        delete entry.deleted_by
+                        delete entry.deleted_at
+                        delete entry.updated_at
+                        delete entry.image_path
+                    });
+
+                    for (var f in data) {
+                        let check = this.columnsToShow
+                        Object.keys(data[f]).forEach(function (key) {
+                            if (check.hasOwnProperty(key) === false || check[key] !== true) {
+                                // console.log(key)
+                                delete data[f][key]
+                            }
+                        });
+                    }
+
+                    exportFromJSON({data, fileName, exportType})
+
+                    // this.isLoading = false
+                }
+            ).catch(err => {
+                console.log(err)
+                this.isLoading = false
+            })
+
+        },
+        load() {
+            if (this.isLoading) {
+                return
+            }
+            this.isLoading = true
+            this.axios.get('business-cards', {
+                params: {
+                    filters: this.loadOptions
+                }
+            }).then(response => {
+                this.businessCardsAll = response.data.map(b => {
+                    b.note = b.notes.length ? b.notes[0].note : ''
+                    return b
+                })
+                this.isLoading = false
+            }).catch(err => {
+                console.log(err)
+                this.isLoading = false
+            })
+        },
+        debouncedLoad: _.debounce(function () { this.load() }, 500),
+        editable(index) {
+            return this.businessCardsToShow[index].created_by.toString() === this.$store.getters.userId.toString() ||
+                this.businessCardsToShow[index].permissions.filter(x => x.permission_id === 2).length > 0
+        },
+        deletable(index) {
+            return this.businessCardsToShow[index].created_by.toString() === this.$store.getters.userId.toString() ||
+                this.businessCardsToShow[index].permissions.filter(x => x.permission_id === 3).length > 0
+        },
+        editCard(index) {
+            this.cardToEdit = JSON.parse(JSON.stringify(this.businessCardsToShow[index]))
+        },
+        deleteCard(id) {
+            if (!confirm('Are you sure?')) return
+            this.axios.delete('/business-cards/' + id).then(response => {
+                if (response.data) {
+                    this.businessCardsAll = this.businessCardsAll.filter(x => x.id !== id)
+                } else {
+                    alert('Failed to delete')
+                }
+            }).catch(err => {
+                console.log(err)
+                alert('Couldn\'t delete due to server trouble')
+            })
+        },
+        groupPermissions(permissions) {
+            let result = {}
+            for (let i = 0; i < permissions.length; i++) {
+                if (!result[permissions[i].user_id]) {
+                    result[permissions[i].user_id] = {user: permissions[i].user}
+                }
+                result[permissions[i].user_id][permissions[i].permission_id] = permissions[i].id
+            }
+            return result
+        },
+        addUserPermission(user) {
+            this.cardToEdit.permissions.push({
+                user: user,
+                permission_id: 0,
+                business_card_id: this.cardToEdit.id,
+                user_id: user.ID
+            })
+        },
+        addPermission(cardId, userId, permissionId) {
+            this.isUpdatingPermissions = true
+            this.axios.post('/user-permissions', {
+                business_card_id: cardId,
+                user_id: userId,
+                permission_id: permissionId
+            }).then(response => {
+                this.isUpdatingPermissions = false
+                if (this.cardToEdit && this.cardToEdit.id === cardId) {
+                    this.cardToEdit.permissions.push(response.data)
+                }
+                for (let i = 0; i < this.businessCardsAll.length; i++) {
+                    if (this.businessCardsAll[i].id === cardId) {
+                        this.businessCardsAll[i].permissions.push(response.data)
+                    }
+                }
+            }).catch(err => {
+                this.isUpdatingPermissions = false
+            })
+        },
+        deleteUserPermission(cardId, userID) {
+            this.isUpdatingPermissions = true
+            this.axios.delete(`/business-cards/${cardId}/permissions`, {
+                params: {
+                    user_id: userID
+                }
+            }).then(response => {
+                this.isUpdatingPermissions = false
+                if (this.cardToEdit && this.cardToEdit.id === cardId) {
+                    this.cardToEdit.permissions = this.cardToEdit.permissions.filter(p => p.user_id !== userID)
+                }
+                for (let i = 0; i < this.businessCardsAll.length; i++) {
+                    if (this.businessCardsAll[i].id === cardId) {
+                        this.businessCardsAll[i].permissions = this.businessCardsAll[i].permissions.filter(p => p.user_id !== userID)
+                    }
+                }
+            })
+        },
+        deletePermission(cardId, permissionId) {
+            this.isUpdatingPermissions = true
+            this.axios.delete('/user-permissions/' + permissionId).then(response => {
+                for (let i = 0; i < this.businessCardsAll.length; i++) {
+                    if (this.businessCardsAll[i].id === cardId) {
+                        this.businessCardsAll[i].permissions = this.businessCardsAll[i].permissions.filter(x => x.id === permissionId)
+                    }
+                }
+                if (this.cardToEdit && this.cardToEdit.id === cardId) {
+                    this.cardToEdit.permissions = this.cardToEdit.permissions.filter(x => x.id !== permissionId)
+                }
+                this.isUpdatingPermissions = false
+            }).catch(err => {
+                console.log(err)
+                this.isUpdatingPermissions = false
+            })
+        },
+        cancelEditing(force = false) {
+            if (force || confirm('Are you sure?')) {
+                this.cardToEdit = null
+            }
+        },
+        saveChanges() {
+
+            if (this.cardToEdit.notes.length > 0)
+                this.cardToEdit.notes[0].note = this.cardToEdit.note;
+            console.log(this.cardToEdit)
+            this.axios.put('/business-cards/' + this.cardToEdit.id, this.cardToEdit).then(response => {
+                for (let i = 0; i < this.businessCardsAll.length; i++) {
+                    if (this.businessCardsAll[i].id === response.data.id) {
+                        for (let key in response.data) {
+                            this.$set(this.businessCardsAll[i], key, response.data[key])
+                        }
+                    }
+                }
+                this.load();
+
+            }).catch(err => {
+                console.log(err)
+            })
+            this.cardToEdit = null
+        },
+        showCard(index) {
+            if (this.businessCardsToShow[index].image_path) {
+                this.showSourceImage(index)
+            } else {
+                this.cardToShow = this.businessCardsToShow[index]
+            }
+        },
+        hideCard() {
+            this.cardToShow = null
+        },
+        sortBy(field) {
+            if (field) {
+                if (this.sorting.by === field) {
+                    this.sorting.asc ^= true
+                } else {
+                    this.sorting.by = field
+                    this.sorting.asc = true
+                }
+            }
+        },
+        filterCards() {
+            return this.businessCardsAll.filter(card => {
+                for (let param in this.filters) {
+                    if (this.filters.hasOwnProperty(param) && this.filters[param]) {
+                        if (!card[param]
+                                || !card[param].toString().toLowerCase().includes(this.filters[param].toString().toLowerCase())) {
+                            return false
+                        }
+                    }
+                }
+                return true
+            })
+        },
+        delayedFilter: lodash.debounce(function () {
+            this.filterCards()
+        }, 500, 1500),
+        cancelCreating(force = false) {
+            if (force || confirm('Are you sure?')) {
+                this.createNewCard = false
+            }
+        },
+        addCard(card) {
+            console.log(card)
+            card.permissions = []
+            this.businessCardsAll.push(card)
+            this.filterCards()
+            this.sortBy()
+            this.createNewCard = false
+        },
+        saveConfig() {
+            this.$cookie.set('columns-config', JSON.stringify(this.columnsToShow), 30)
+        },
+        getConfig() {
+            let saved = this.$cookie.get('columns-config')
+            if (saved) {
+                this.columnsToShow = JSON.parse(saved)
+            }
+        },
+        showSourceImage(index) {
+            this.cardToShowSourceImage = this.businessCardsToShow[index]
+        },
+        showMore() {
+            this.showCardsCount += cardsOnPage
+        },
+        redirectToNewCard() {
+            this.$router.push({name: 'NewBusinessCard'})
+        },
+        openPasswordPrompt () {
+          if (!this.appPassword.loaded) {
+              this.axios.get('/user/passwords').then(response => {
+                  this.appPassword.loaded = true
+                  this.appPassword.key = response.data || null
+                  this.showPrompt()
+              })
+          } else {
+              this.showPrompt()
+          }
+        },
+        showPrompt (){
+            let text = this.appPassword.key !== null ? `Current password: ${this.appPassword.key}` : 'Password is not set'
+            let pass = prompt(text)
+            if (pass) {
+                 this.savePassword(pass)
+            }
+        },
+        savePassword (password) {
+            return this.axios.post('/passwords', {
+              password: password
+            }).then(response => {
+              this.appPassword.key = response.data.password
+            })
         }
     }
+}
 </script>
 <style>
     .business-cards-page {
