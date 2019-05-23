@@ -141,4 +141,18 @@ class BusinessCardController extends Controller
         return response()->json($update);
     }
 
+    function doesExists(Request $request) {
+        $name = $request->input('name');
+        $company_name = $request->input('company_name');
+        $position = $request->input('position');
+        $user_id = app()->id;
+        return json_encode(
+          $this->business_card::where('name', $name)
+              ->where('company_name', $company_name)
+              ->where('position', $position)->where(function ($w) use ($user_id) {
+                  $w->where('private', false)->orWhere('created_by', $user_id);
+              })->first() != null
+        );
+    }
+
 }

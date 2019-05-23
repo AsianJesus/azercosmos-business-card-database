@@ -18,6 +18,7 @@ $router->get('/', function () use ($router) {
 //Business cards
 $router->get('/business-cards', ['middleware' => 'business_cards_filter', 'uses' => 'BusinessCardController@getAll']);
 $router->get('/business-cards-one/{id}', ['middleware' => 'business_cards_filter', 'uses' => 'BusinessCardController@getOne']);
+$router->post('/business-cards-one/exists', 'BusinessCardController@doesExists');
 $router->get('/business-cards/{id}', 'BusinessCardController@getById');
 $router->post('/business-cards/', ['middleware' => 'register_add', 'uses' => 'BusinessCardController@add']);
 $router->put('/business-cards/{id}', ['uses'=>'BusinessCardController@update', 'middleware' => [ 'check_permission', 'register_update'] ]);
