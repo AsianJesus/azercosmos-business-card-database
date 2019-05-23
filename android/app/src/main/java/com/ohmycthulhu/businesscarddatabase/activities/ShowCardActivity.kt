@@ -8,14 +8,13 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.request.StringRequest
 import com.android.volley.toolbox.Volley
-import com.ohmycthulhu.businesscarddatabase.utils.modals.DeleteCardDialog
 import com.ohmycthulhu.businesscarddatabase.R
 import com.ohmycthulhu.businesscarddatabase.data.BusinessCard
+import com.ohmycthulhu.businesscarddatabase.modals.DeleteCardDialog
 import com.ohmycthulhu.businesscarddatabase.utils.LoadImage
 import com.ohmycthulhu.businesscarddatabase.utils.RequestManager
 import kotlinx.android.synthetic.main.activity_show_card.*

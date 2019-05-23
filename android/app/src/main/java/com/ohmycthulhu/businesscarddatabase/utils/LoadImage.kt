@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.drawable.Drawable
 import android.os.AsyncTask
 import android.widget.ImageView
-import android.widget.Toast
 import java.io.InputStream
 import java.net.URL
 

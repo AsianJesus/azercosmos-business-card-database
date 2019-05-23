@@ -30,6 +30,16 @@
                 android:layout_height="wrap_content" android:id="@+id/listItemEmail" android:paddingLeft="10dp"
                 android:paddingRight="10dp"/>
         <TextView
+                android:text="Website"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/listItemWebsite" android:paddingLeft="10dp"
+                android:paddingRight="10dp"/>
+        <TextView
+                android:text="Private"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/listItemPrivacy" android:paddingLeft="10dp"
+                android:paddingRight="10dp"/>
+        <TextView
                 android:text="Note"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:id="@+id/listItemNote" android:paddingLeft="10dp"

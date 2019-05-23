@@ -18,9 +18,9 @@ import com.android.volley.Response
 import com.android.volley.request.SimpleMultiPartRequest
 import com.ohmycthulhu.businesscarddatabase.R
 import com.ohmycthulhu.businesscarddatabase.data.BusinessCard
+import com.ohmycthulhu.businesscarddatabase.recognizer.RecognizePatterns
+import com.ohmycthulhu.businesscarddatabase.recognizer.Recognizer
 import com.ohmycthulhu.businesscarddatabase.utils.RequestManager
-import com.ohmycthulhu.businesscarddatabase.utils.recognizer.RecognizePatterns
-import com.ohmycthulhu.businesscarddatabase.utils.recognizer.Recognizer
 import com.yalantis.ucrop.UCrop
 import kotlinx.android.synthetic.main.activity_edit_card.*
 import org.json.JSONObject

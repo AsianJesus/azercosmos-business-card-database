@@ -1,13 +1,16 @@
 package com.ohmycthulhu.businesscarddatabase.utils
 
 import android.app.Activity
-import android.view.View
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.BaseExpandableListAdapter
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
 import com.ohmycthulhu.businesscarddatabase.R
 import com.ohmycthulhu.businesscarddatabase.callbacks.AfterCardDeleteCallback
 import com.ohmycthulhu.businesscarddatabase.callbacks.AfterCardEditCallback
@@ -38,6 +41,8 @@ class BusinessCardsAdapter(private val dataSet: ArrayList<BusinessCard>, private
             convView.findViewById<TextView>(R.id.listItemEmail).text = card.email
             convView.findViewById<TextView>(R.id.listItemNote).text = card.note
             convView.findViewById<TextView>(R.id.listItemPhone).text = card.phone
+            convView.findViewById<TextView>(R.id.listItemWebsite).text = card.website
+            convView.findViewById<TextView>(R.id.listItemPrivacy).text = if(card.private) "Private" else "Public"
             if (!card.isMine) {
                 convView.findViewById<ImageView>(R.id.listItemDelete).visibility = View.GONE
                 convView.findViewById<ImageView>(R.id.listItemEdit).visibility = View.GONE

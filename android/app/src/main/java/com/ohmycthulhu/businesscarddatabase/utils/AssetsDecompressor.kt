@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import java.io.File
 import java.io.FileOutputStream
-import java.io.OutputStream
 
 class AssetsDecompressor {
 

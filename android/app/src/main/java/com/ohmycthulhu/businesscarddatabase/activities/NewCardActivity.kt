@@ -1,37 +1,34 @@
 package com.ohmycthulhu.businesscarddatabase.activities
 
 import android.app.Activity
-import android.app.ProgressDialog
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.media.ExifInterface
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.support.v4.app.ActivityCompat
 import android.support.v4.content.CursorLoader
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.widget.Toast
 import com.android.volley.Request
-import com.android.volley.RequestQueue
 import com.android.volley.Response
+import com.android.volley.request.JsonObjectRequest
+import com.android.volley.request.MultiPartRequest
 import com.android.volley.request.SimpleMultiPartRequest
-import com.android.volley.toolbox.Volley
+import com.android.volley.request.StringRequest
 import com.ohmycthulhu.businesscarddatabase.R
-import com.ohmycthulhu.businesscarddatabase.utils.ImageUtils
+import com.ohmycthulhu.businesscarddatabase.modals.SimilarCardExists
+import com.ohmycthulhu.businesscarddatabase.recognizer.RecognizePatterns
+import com.ohmycthulhu.businesscarddatabase.recognizer.Recognizer
 import com.ohmycthulhu.businesscarddatabase.utils.RequestManager
-import com.ohmycthulhu.businesscarddatabase.utils.recognizer.RecognizePatterns
-import com.ohmycthulhu.businesscarddatabase.utils.recognizer.Recognizer
 import com.yalantis.ucrop.UCrop
 import kotlinx.android.synthetic.main.activity_new_card_photo.*
+import org.json.JSONObject
 import java.io.ByteArrayOutputStream
 import java.io.File
-import java.util.jar.Manifest
 
 class NewCardActivity : AppCompatActivity() {
 
@@ -105,8 +102,19 @@ class NewCardActivity : AppCompatActivity() {
 
         val address = newCardAddress.text.toString()
         val note = newCardNote.text.toString()
-
-        sendCreateRequest(name, company, email, address, phone, website, position, newCardIsPrivate.isChecked, image, note)
+        RequestManager.sendRequest(checkSimilar(name, company, position) { exists ->
+            if (exists) {
+                val dialog = SimilarCardExists()
+                dialog.setCallback {
+                    if (it) {
+                        sendCreateRequest(name, company, email, address, phone, website, position, newCardIsPrivate.isChecked, image, note)
+                    }
+                }
+                dialog.show(supportFragmentManager, "similar_card")
+            } else {
+                sendCreateRequest(name, company, email, address, phone, website, position, newCardIsPrivate.isChecked, image, note)
+            }
+        })
         return true
     }
 
@@ -150,6 +158,16 @@ class NewCardActivity : AppCompatActivity() {
         request.tag = "new_card"
         // requestQueue.add(request)
         RequestManager.sendRequest(request)
+    }
+
+    fun checkSimilar (name: String, companyName: String, position: String, callback: (r: Boolean) -> Unit): StringRequest {
+        val request = StringRequest(Request.Method.POST,
+            "${RequestManager.getServerUrl()}/business-cards-one/exists" +
+                    "?name=$name&company_name=$companyName&position=$position",
+            Response.Listener {
+                callback(it == "true")
+            }, Response.ErrorListener {})
+        return request
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

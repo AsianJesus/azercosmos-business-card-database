@@ -6,15 +6,14 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Environment
 import android.support.v7.app.AppCompatActivity
-import android.widget.Toast
 import com.android.volley.Request
 import com.android.volley.request.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.ohmycthulhu.businesscarddatabase.R
+import com.ohmycthulhu.businesscarddatabase.utils.AssetsDecompressor
 import com.ohmycthulhu.businesscarddatabase.utils.RequestManager
 import kotlinx.android.synthetic.main.activity_login.*
 import org.json.JSONObject
-import com.ohmycthulhu.businesscarddatabase.R
-import com.ohmycthulhu.businesscarddatabase.utils.AssetsDecompressor
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var sharedPreferences: SharedPreferences
