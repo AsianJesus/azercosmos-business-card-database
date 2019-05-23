@@ -496,7 +496,7 @@ export default {
         return {
             businessCardsAll: [],
             sorting: {
-                by: 'id',
+                by: null,
                 asc: false
             },
             filters: {},
@@ -564,10 +564,14 @@ export default {
             return this.businessCardsFiltered.slice(0, this.showCardsCount)
         },
         businessCardsFiltered() {
-            return this.filterCards().sort((a, b) =>
-                (this.sorting.asc ? 1 : -1) * (a[this.sorting.by] ? ((typeof a[this.sorting.by] === 'string') ?
-                a[this.sorting.by].localeCompare(b[this.sorting.by]) : a[this.sorting.by] - b[this.sorting.by])
-                : 0));
+            if (this.sorting.by) {
+                return this.filterCards().sort((a, b) =>
+                    (this.sorting.asc ? 1 : -1) * (a[this.sorting.by] ? ((typeof a[this.sorting.by] === 'string') ?
+                    a[this.sorting.by].localeCompare(b[this.sorting.by]) : a[this.sorting.by] - b[this.sorting.by])
+                    : 0));
+            } else {
+                return this.filterCards()
+            }
         },
         editIcon: () => faEdit,
         trashIcon: () => faTrashAlt,

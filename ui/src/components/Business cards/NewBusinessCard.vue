@@ -521,6 +521,25 @@ export default {
               form.set(`permissions[${userID}][]`, perID)
             })
             form.append('photo', this.form.photo)
+            this.checkUniquety(this.form.name, this.form.company_name, this.form.position, exists => {
+                if (!exists || confirm('Similar card exists. Create another one?')) {
+                    this.sendCreateRequest(form)
+                } else {
+                    this.isAdding = false
+                }
+            })
+            console.log(this.form)
+        },
+        checkUniquety (name, companyName, position, callback) {
+            this.axios.post('/business-cards-one/exists', {
+                name: name,
+                company_name: companyName,
+                position: position
+            }).then(response => {
+                callback(response.data)
+            })
+        },
+        sendCreateRequest (form) {
             this.axios.post('/business-cards', form).then(response => {
                 console.log(response.data)
                 this.isAdding = false
@@ -533,7 +552,6 @@ export default {
                 this.isAdding = false
                 alert('Error!')
             })
-            console.log(this.form)
         },
         recognizeImage(image) {
             this.$Tesseract.recognize(image, {
