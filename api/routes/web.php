@@ -22,7 +22,7 @@ $router->post('/business-cards-one/exists', 'BusinessCardController@doesExists')
 $router->get('/business-cards/{id}', 'BusinessCardController@getById');
 $router->post('/business-cards/', ['middleware' => 'register_add', 'uses' => 'BusinessCardController@add']);
 $router->put('/business-cards/{id}', ['uses'=>'BusinessCardController@update', 'middleware' => [ 'check_permission', 'register_update'] ]);
-$router->post('/business-cards/{id}', ['uses'=>'BusinessCardController@update', 'middleware' => 'check_permission']);
+$router->post('/business-cards/{id}', ['uses'=>'BusinessCardController@update', 'middleware' => [ 'check_permission', 'register_update']]);
 $router->delete('/business-cards/{id}', ['uses'=>'BusinessCardController@delete', 'middleware' => ['check_permission', 'register_delete'] ]);
 $router->delete('/business-cards/{id}/permissions', ['uses'=>'BusinessCardController@deletePermissionOfUser',
                                                     'middleware' => 'check_permission']);

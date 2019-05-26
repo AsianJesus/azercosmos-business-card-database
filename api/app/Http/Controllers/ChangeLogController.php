@@ -91,8 +91,12 @@ class ChangeLogController extends Controller
         BusinessCard::where('id', $id)->update($data);
     }
 
-    public function getChanges() {
-        return ChangeLog::all();
+    public function getChanges(Request $request) {
+        $result = ChangeLog::all();
+        if ($request->input('clear', true)) {
+            ChangeLog::query()->delete();
+        }
+        return $result;
     }
 
     public function launchSynchronization () {
