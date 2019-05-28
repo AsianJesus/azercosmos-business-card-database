@@ -8,11 +8,12 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:layout_marginTop="5dp"
-              android:padding="2dp" android:textSize="20sp" android:text="Name"/>
+              android:padding="2dp" android:textSize="16sp" android:text="Name" android:textColor="@color/textPrimary"/>
     <TextView android:id="@+id/listItemCompany"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:layout_marginTop="5dp"
+              android:layout_marginTop="1dp"
               android:padding="2dp"
-              android:layout_below="@+id/listItemName" tools:text="Company" android:textSize="18sp"/>
+              android:layout_below="@+id/listItemName" tools:text="Company" android:textSize="14sp"
+              android:textColor="@color/textPrimary"/>
 </RelativeLayout>

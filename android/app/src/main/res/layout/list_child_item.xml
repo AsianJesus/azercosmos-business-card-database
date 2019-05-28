@@ -1,49 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="fill_parent"
+                xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
->
-    <LinearLayout
-            android:id="@+id/listItemInfo"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:layout_marginEnd="0dp"
-            android:layout_alignParentStart="true" android:layout_marginStart="0dp"
-    >
-        <TextView
+                android:id="@+id/relativeLayout">
+    <!--<TextView
                 android:text="ID"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:id="@+id/listItemID" android:paddingLeft="10dp"
-                android:paddingRight="10dp" android:visibility="gone"/>
+                android:paddingRight="10dp" android:visibility="gone" android:textSize="13sp"/>
         <TextView
                 android:text="Phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:id="@+id/listItemPhone" android:paddingLeft="10dp"
-                android:paddingRight="10dp"/>
+                android:paddingRight="10dp" android:textSize="13sp"/>
         <TextView android:id="@+id/listItemAddress"
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
-                  android:text="Address" android:paddingLeft="10dp" android:paddingRight="10dp"/>
+                  android:text="Address" android:paddingLeft="10dp" android:paddingRight="10dp"
+                  android:textSize="13sp"/>
         <TextView
                 android:text="Email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" android:id="@+id/listItemEmail" android:paddingLeft="10dp"
-                android:paddingRight="10dp"/>
+                android:paddingRight="10dp" android:textSize="13sp"/>
         <TextView
                 android:text="Website"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:id="@+id/listItemWebsite" android:paddingLeft="10dp"
-                android:paddingRight="10dp"/>
+                android:paddingRight="10dp" android:textSize="13sp" android:layout_alignStart="@+id/listItemInfo"/>
         <TextView
                 android:text="Private"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:id="@+id/listItemPrivacy" android:paddingLeft="10dp"
-                android:paddingRight="10dp"/>
+                android:paddingRight="10dp" android:textSize="13sp"/>
         <TextView
                 android:text="Note"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:id="@+id/listItemNote" android:paddingLeft="10dp"
-                android:paddingRight="10dp"/>
+                android:paddingRight="10dp" android:textSize="13sp"/>
         <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
@@ -67,11 +62,12 @@
                     android:layout_height="20dp" app:srcCompat="@drawable/photo" android:id="@+id/listItemImage"
                     android:layout_weight="1"/>
         </LinearLayout>
-        <!--<LinearLayout
+        -->
+    <!--<LinearLayout   android:id="@+id/listItemToolbar"
                 android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-        >
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+
             <TextView
                     android:text="Image"
                     android:layout_width="wrap_content"
@@ -87,14 +83,153 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" android:id="@+id/listItemDelete" android:layout_weight="1"
                     android:foregroundTint="#00FF5050" android:textColor="@color/design_default_color_primary_dark"/>
+
         </LinearLayout>-->
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:layout_marginTop="5dp">
+
+            <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                <TableRow android:layout_width="match_parent" android:layout_height="match_parent"
+                          android:layout_marginTop="2dp">
+                    <TextView
+                            android:text="ID"
+                            android:layout_width="match_parent" android:textColor="@color/textPrimary"
+                            android:layout_height="wrap_content" android:id="@+id/listItemID" android:paddingLeft="10dp"
+                            android:paddingRight="10dp" android:visibility="gone" android:textSize="13sp"/>
+                </TableRow>
+                <TableRow android:layout_width="match_parent" android:layout_height="match_parent"
+                          android:layout_marginTop="2dp">
+                    <ImageView
+                            android:layout_width="10dp"
+                            android:layout_height="18dp" app:srcCompat="@drawable/phone"
+                            android:id="@+id/imageView2"/>
+                    <TextView
+                            android:text="Phone"
+                            android:layout_width="match_parent" android:textColor="@color/textPrimary"
+                            android:layout_height="wrap_content" android:id="@+id/listItemPhone"
+                            android:paddingLeft="10dp"
+                            android:paddingRight="10dp" android:textSize="13sp"/>
+                </TableRow>
+                <TableRow android:layout_width="match_parent" android:layout_height="match_parent"
+                          android:layout_marginTop="2dp">
+                    <ImageView
+                            android:layout_width="10dp"
+                            android:layout_height="18dp" app:srcCompat="@drawable/address"
+                            android:id="@+id/imageView3"/>
+                    <TextView android:id="@+id/listItemAddress"
+                              android:layout_width="wrap_content" android:textColor="@color/textPrimary"
+                              android:layout_height="wrap_content"
+                              android:text="Address" android:paddingLeft="10dp" android:paddingRight="10dp"
+                              android:textSize="13sp"/>
+                </TableRow>
+                <TableRow android:layout_width="match_parent" android:layout_height="match_parent"
+                          android:layout_marginTop="2dp">
+                    <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="18dp" app:srcCompat="@drawable/mail"
+                            android:id="@+id/imageView4"/>
+                    <TextView
+                            android:text="Email"
+                            android:layout_width="wrap_content" android:textColor="@color/textPrimary"
+                            android:layout_height="wrap_content" android:id="@+id/listItemEmail"
+                            android:paddingLeft="10dp"
+                            android:paddingRight="10dp" android:textSize="13sp"/>
+                </TableRow>
+                <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" android:layout_marginTop="2dp">
+                    <ImageView
+                            android:layout_width="10dp"
+                            android:layout_height="18dp" app:srcCompat="@drawable/web"
+                            android:id="@+id/imageView5"/>
+                    <TextView
+                            android:text="Website"
+                            android:layout_width="match_parent" android:textColor="@color/textPrimary"
+                            android:layout_height="wrap_content" android:id="@+id/listItemWebsite"
+                            android:paddingLeft="10dp"
+                            android:paddingRight="10dp" android:textSize="13sp"/>
+                </TableRow>
+                <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" android:layout_marginTop="2dp">
+                    <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="wrap_content" app:srcCompat="@color/transparent"
+                            android:id="@+id/imageView7"/>
+                    <TextView
+                            android:text="Private" android:textColor="@color/textPrimary"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" android:id="@+id/listItemPrivacy"
+                            android:paddingLeft="10dp"
+                            android:paddingRight="10dp" android:textSize="13sp"/>
+                </TableRow>
+                <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" android:layout_marginTop="2dp">
+                    <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="wrap_content" app:srcCompat="@color/transparent"
+                            android:id="@+id/imageView6"/>
+                    <TextView
+                            android:text="Note"
+                            android:layout_width="match_parent" android:textColor="@color/textPrimary"
+                            android:layout_height="wrap_content" android:id="@+id/listItemNote"
+                            android:paddingLeft="10dp"
+                            android:paddingRight="10dp" android:textSize="13sp"/>
+                </TableRow>
+            </TableLayout>
+            <android.support.constraint.ConstraintLayout
+                    android:id="@+id/listItemToolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                <android.support.design.widget.FloatingActionButton
+                        android:layout_width="27dp"
+                        android:layout_height="27dp"
+                        android:clickable="true" app:srcCompat="@drawable/edit" android:id="@+id/listItemEdit"
+                        app:backgroundTint="@color/ic_launcher_background"
+                        app:maxImageSize="12dp"
+                        android:cropToPadding="false" android:baselineAlignBottom="false"
+                        android:foregroundGravity="center" app:fabSize="auto" app:fabCustomSize="28dp"
+                        app:layout_constraintTop_toBottomOf="@+id/relativeLayout" android:layout_marginEnd="8dp"
+                        app:layout_constraintEnd_toEndOf="parent"/>
+                <android.support.design.widget.FloatingActionButton
+                        android:layout_width="31dp"
+                        android:layout_height="30dp"
+                        android:clickable="true" app:srcCompat="@drawable/photo" android:id="@+id/listItemImage"
+                        app:backgroundTint="@color/ic_launcher_background"
+                        app:maxImageSize="15dp"
+                        android:cropToPadding="false" android:baselineAlignBottom="false"
+                        android:foregroundGravity="center" app:fabSize="auto" app:fabCustomSize="32dp"
+                        app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="8dp"
+                        app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"/>
+                <android.support.design.widget.FloatingActionButton
+                        android:layout_width="27dp"
+                        android:layout_height="27dp"
+                        android:clickable="true" app:srcCompat="@drawable/delete" android:id="@+id/listItemDelete"
+                        app:backgroundTint="@color/ic_launcher_background"
+                        app:maxImageSize="12dp"
+                        android:cropToPadding="false" android:baselineAlignBottom="false"
+                        android:foregroundGravity="center" app:fabSize="auto" app:fabCustomSize="28dp"
+                        android:layout_marginEnd="8dp" app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/listItemEdit"
+                        app:layout_constraintBottom_toTopOf="@+id/listItemImage" android:layout_marginBottom="8dp"/>
+            </android.support.constraint.ConstraintLayout>
+        </FrameLayout>
         <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
                 app:srcCompat="@android:color/background_dark"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="3dp"
                 android:alpha=".1"
         />
     </LinearLayout>
-
 </RelativeLayout>
