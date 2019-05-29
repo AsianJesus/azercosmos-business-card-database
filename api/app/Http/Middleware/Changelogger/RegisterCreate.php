@@ -12,14 +12,15 @@ class RegisterCreate
     public function handle($request, Closure $closure) {
         $result = $closure($request);
 
-        $res = json_decode($result->getContent());
-        $res->note = $request->input('note');
-        unset($res->notes);
+        $res = $result;
+        $res->original->note = $request->input('note');
+        unset($res->original->notes);
         ChangeLog::create([
             'type' => 'add',
-            'data' => json_encode($res)
+            'data' => json_encode($res->original)
         ]);
 
+return $res;
         if ($res->image_path != null) {
             ChangeLog::create([
                 'type' => 'cim', // Create IMage

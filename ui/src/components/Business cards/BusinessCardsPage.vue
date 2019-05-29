@@ -433,7 +433,7 @@
                 <b-btn  variant="primary"
                         class=" g-wide-button"
                         @click="openPasswordPrompt">
-                    App password
+                    Generate password
                 </b-btn>
                 <b-btn @click="exportedExcel"
                        class=" g-wide-button"
