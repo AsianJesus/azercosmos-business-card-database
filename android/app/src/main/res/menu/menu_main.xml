@@ -2,6 +2,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.ohmycthulhu.businesscarddatabase.activities.MainActivity" >
+
+    <item android:id="@+id/action_search"
+          android:title=""
+          android:icon="@android:drawable/ic_menu_search"
+          android:orderInCategory="100"
+          app:showAsAction="always" />
     <item android:id="@+id/action_refresh"
         android:title="Refresh"
         android:orderInCategory="100"

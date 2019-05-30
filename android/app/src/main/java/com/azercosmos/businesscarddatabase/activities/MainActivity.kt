@@ -12,6 +12,8 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.SearchView
+import android.widget.Toast
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.request.JsonArrayRequest
@@ -32,6 +34,9 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import org.json.JSONObject
 import kotlin.math.min
+import com.ferfalk.simplesearchview.SimpleSearchView
+
+
 
 class MainActivity : AppCompatActivity(), BusinessCardController {
 
@@ -76,12 +81,29 @@ class MainActivity : AppCompatActivity(), BusinessCardController {
             }
         }
 
+        val context = this
+        searchView.setOnQueryTextListener(object : SimpleSearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                Toast.makeText(context, "Your text is $query", Toast.LENGTH_SHORT).show()
+                context.loadCards(query)
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                return false
+            }
+
+            override fun onQueryTextCleared(): Boolean {
+                return false
+            }
+        })
+
         loadCards()
     }
 
-    private fun loadCards () {
+    private fun loadCards (searchQuery: String = "") {
         val request = JsonArrayRequest(Request.Method.GET,
-            "${RequestManager.getServerUrl()}/business-cards?filters=%7B%7D",
+            "${RequestManager.getServerUrl()}/business-cards?search=$searchQuery",
             null,
             Response.Listener {
                 val userID = sharedPreferences.getInt("user_id", 1)
@@ -204,6 +226,15 @@ class MainActivity : AppCompatActivity(), BusinessCardController {
         }
     }
 
+    override fun onBackPressed() {
+        if (searchView.isSearchOpen) {
+            searchView.closeSearch()
+            return
+        } else {
+            super.onBackPressed()
+        }
+    }
+
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
         cardsList.setIndicatorBounds(cardsList.right - min(cardsList.width / 10, 100)
@@ -231,6 +262,10 @@ class MainActivity : AppCompatActivity(), BusinessCardController {
             }
             R.id.action_logout -> {
                 logout()
+                return true
+            }
+            R.id.action_search -> {
+                searchView.showSearch()
                 return true
             }
             else -> super.onOptionsItemSelected(item)

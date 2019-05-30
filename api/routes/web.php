@@ -60,3 +60,6 @@ $router->get('/test/synchronize', ['uses' => 'ChangeLogController@launchSynchron
 $router->get('/test/load-image', function () {
     dispatch(new \App\Jobs\LoadImage('images/1543582655.jpeg'));
 });
+$router->get('/test', function () {
+    dispatch(new \App\Jobs\LoadImage('images/1543582655.jpeg'));
+});

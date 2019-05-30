@@ -50,6 +50,12 @@ class BusinessCardController extends Controller
     public function getAll(Request $request)
     {
         $query = $this->business_card::query();
+        if ($request->input('search')) {
+            $pattern = $request->input('search');
+            $query->where(function ($where) use ($pattern) {
+                $where->where('name', 'LIKE', "%$pattern%")->orWhere('company_name', 'LIKE', "%$pattern%");
+            });
+        }
         if ($request->input('filters')) {
             $filters = $request->input('filters');
             if (is_string($filters)) {

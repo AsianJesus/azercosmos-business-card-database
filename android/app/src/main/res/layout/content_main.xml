@@ -9,17 +9,46 @@
     tools:showIn="@layout/activity_main"
     tools:context=".activities.MainActivity">
 
+    <!--<android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp" android:id="@+id/constraintLayout" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" app:srcCompat="@android:drawable/ic_menu_search"
+                android:id="@+id/imageView8" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+        <EditText
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:inputType="textPersonName"
+                android:ems="10"
+                android:id="@+id/editText"
+                app:layout_constraintEnd_toStartOf="@+id/imageView8"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" android:hint="@android:string/search_go"
+                style="@style/Widget.AppCompat.Light.AutoCompleteTextView" android:elevation="0dp"
+                android:background="@android:drawable/screen_background_light_transparent"
+                android:layout_marginStart="8dp"/>
+    </android.support.constraint.ConstraintLayout>-->
     <ExpandableListView
             android:id="@+id/cardsList"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             android:divider="@android:drawable/divider_horizontal_textfield"
             android:stateListAnimator="@anim/top_from_bottom" android:indicatorLeft="0dip"
             android:indicatorRight="0dip"
             android:footerDividersEnabled="false" android:dividerHeight="1dp"
             android:childDivider="#000000" android:headerDividersEnabled="false"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
 </android.support.constraint.ConstraintLayout>
