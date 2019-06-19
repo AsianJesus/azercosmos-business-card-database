@@ -84,7 +84,6 @@ class MainActivity : AppCompatActivity(), BusinessCardController {
         val context = this
         searchView.setOnQueryTextListener(object : SimpleSearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
-                Toast.makeText(context, "Your text is $query", Toast.LENGTH_SHORT).show()
                 context.loadCards(query)
                 return false
             }
@@ -110,7 +109,8 @@ class MainActivity : AppCompatActivity(), BusinessCardController {
                 val cards: ArrayList<BusinessCard> = ArrayList(it.length())
                 for (i in 0 until it.length()) {
                     val obj = it[i] as JSONObject
-                    val note = if(obj.has("note")) obj.getString("note") else ""
+                    val notes = obj.getJSONArray("notes")
+                    val note = if (notes.length() > 0) (notes[0] as JSONObject).getString("note") else ""
                     val imagePath = obj.getString("image_path")
 
                     cards.add(
@@ -128,6 +128,7 @@ class MainActivity : AppCompatActivity(), BusinessCardController {
                 if (it.networkResponse.statusCode == 500) {
                     logout()
                 }
+                RequestManager.handleError(it, this)
                 // Toast.makeText(this, "Error occurred on loading cards: ${it.message}", Toast.LENGTH_LONG).show()
             })
         request.tag = "load_cards"

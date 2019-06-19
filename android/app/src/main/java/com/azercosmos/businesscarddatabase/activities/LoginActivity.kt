@@ -66,8 +66,13 @@ class LoginActivity : AppCompatActivity() {
         }
 
         val isLogged = sharedPreferences.getBoolean("logged", false)
-        if (isLogged) {
-            redirectToMain()
+
+        if (intent.getBooleanExtra("force", false)) {
+            sharedPreferences.edit().putBoolean("logged", false).putString("token", "").apply()
+        } else {
+            if (isLogged) {
+                redirectToMain()
+            }
         }
 
     }
@@ -84,7 +89,7 @@ class LoginActivity : AppCompatActivity() {
         val request = JsonObjectRequest(Request.Method.POST, url, params, {
             callback(it.getInt("id"), it.getString("key"))
         }, {
-            // Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
+            Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
         })
         RequestManager.sendRequest(request)
     }

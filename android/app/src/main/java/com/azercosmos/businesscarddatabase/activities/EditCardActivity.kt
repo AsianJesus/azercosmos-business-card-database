@@ -135,7 +135,7 @@ class EditCardActivity : AppCompatActivity() {
                     (fileToDelete as File).delete()
                 }
                 isSaving = false
-                update(it)
+                update(it, note)
                 finish()
             }, Response.ErrorListener {
                 // Toast.makeText(this, "Error occurred: ${it.message}", Toast.LENGTH_LONG).show()
@@ -143,6 +143,7 @@ class EditCardActivity : AppCompatActivity() {
                 if (fileToDelete != null) {
                     (fileToDelete as File).delete()
                 }
+                RequestManager.handleError(it, this)
             })
         isSaving = true
         request.addStringParam("name", name)
@@ -248,10 +249,10 @@ class EditCardActivity : AppCompatActivity() {
         }
     }
 
-    fun update(result: String) {
+    fun update(result: String, note: String) {
         val userID = sharedPreferences.getInt("user_id", 1)
         val obj = JSONObject(result)
-        val note = if(obj.has("note")) obj.getString("note") else ""
+        // val note = if(obj.has("note")) obj.getString("note") else ""
         val imagePath = obj.getString("image_path")
 
         val card = BusinessCard(

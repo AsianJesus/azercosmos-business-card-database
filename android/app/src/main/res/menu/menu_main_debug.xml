@@ -19,5 +19,9 @@
         android:title="Log out"
         android:orderInCategory="100"
         app:showAsAction="never" />
+    <item android:id="@+id/action_force_logout"
+        android:title="Force logout"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
 
 </menu>

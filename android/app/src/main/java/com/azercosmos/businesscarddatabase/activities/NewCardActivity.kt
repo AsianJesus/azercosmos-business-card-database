@@ -133,6 +133,7 @@ class NewCardActivity : AppCompatActivity() {
             if (fileToDelete != null) {
                 (fileToDelete as File).delete()
             }
+                RequestManager.handleError(it, this)
         })
         request.addStringParam("name", name)
         request.addStringParam("company_name", company)
@@ -166,7 +167,9 @@ class NewCardActivity : AppCompatActivity() {
                     "?name=$name&company_name=$companyName&position=$position",
             Response.Listener {
                 callback(it == "true")
-            }, Response.ErrorListener {})
+            }, Response.ErrorListener {
+                RequestManager.handleError(it, this)
+            })
         return request
     }
 
