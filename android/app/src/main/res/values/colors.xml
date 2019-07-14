@@ -6,4 +6,5 @@
     <color name="colorHeader">#FF5DA3B2</color>
     <color name="transparent">#005DA3B2</color>
     <color name="textPrimary">#222222</color>
+    <color name="overlay">#A5000000</color>
 </resources>

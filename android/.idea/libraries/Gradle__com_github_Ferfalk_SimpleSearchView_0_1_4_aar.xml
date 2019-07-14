@@ -1,11 +1,11 @@
 <component name="libraryTable">
   <library name="Gradle: com.github.Ferfalk:SimpleSearchView:0.1.4@aar">
     <ANNOTATIONS>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/b8363a9ec1dd678faabbe4cd3eeb523e/annotations.zip!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/b30376eb4d16ad103ae264ed659e7c05/annotations.zip!/" />
     </ANNOTATIONS>
     <CLASSES>
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/b8363a9ec1dd678faabbe4cd3eeb523e/res" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/b8363a9ec1dd678faabbe4cd3eeb523e/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/b30376eb4d16ad103ae264ed659e7c05/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/b30376eb4d16ad103ae264ed659e7c05/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

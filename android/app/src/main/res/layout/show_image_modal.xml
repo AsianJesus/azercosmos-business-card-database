@@ -11,7 +11,7 @@
                 android:layout_height="wrap_content" tools:srcCompat="@tools:sample/backgrounds/scenic"
                 android:id="@+id/showImageModalImage" android:background="#00FFFFFF" android:visibility="visible"/>
         <TextView
-                android:text="Save"
+                android:text="Download"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" android:id="@+id/showImageModalSave"
                 android:textAlignment="textEnd"

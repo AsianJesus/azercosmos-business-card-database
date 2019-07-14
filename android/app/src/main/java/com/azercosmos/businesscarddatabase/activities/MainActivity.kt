@@ -12,6 +12,8 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.SearchView
 import android.widget.Toast
 import com.android.volley.Request
@@ -28,6 +30,7 @@ import com.azercosmos.businesscarddatabase.modals.DeleteCardDialog
 import com.azercosmos.businesscarddatabase.modals.ShowImageModal
 import com.azercosmos.businesscarddatabase.utils.AssetsDecompressor
 import com.azercosmos.businesscarddatabase.utils.BusinessCardsAdapter
+import com.azercosmos.businesscarddatabase.utils.HelperClass
 import com.azercosmos.businesscarddatabase.utils.RequestManager
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu
 import kotlinx.android.synthetic.main.activity_main.*
@@ -35,7 +38,9 @@ import kotlinx.android.synthetic.main.content_main.*
 import org.json.JSONObject
 import kotlin.math.min
 import com.ferfalk.simplesearchview.SimpleSearchView
-
+import kotlinx.android.synthetic.main.filter_layout.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class MainActivity : AppCompatActivity(), BusinessCardController {
@@ -47,6 +52,8 @@ class MainActivity : AppCompatActivity(), BusinessCardController {
     private val REQUEST_CONFIG = 2
     private val REQUEST_NEW_CARD = 3
     private val REQUEST_EDIT_CARD = 4
+
+    private val timer: Timer = Timer()
 
     lateinit var sharedPreferences: SharedPreferences
 
@@ -97,12 +104,29 @@ class MainActivity : AppCompatActivity(), BusinessCardController {
             }
         })
 
-        loadCards()
+        filterOverlay.setOnClickListener {
+            filterState = false
+        }
+
+        fbApply.setOnClickListener {
+            saveFilters()
+            loadCards(filters = loadFilters())
+        }
+
+        fbClear.setOnClickListener {
+            clearFilters()
+            loadCards(filters = loadFilters())
+        }
+
+        val filters = loadFilters()
+        applyFilters(filters)
+
+        loadCards(filters = filters)
     }
 
-    private fun loadCards (searchQuery: String = "") {
+    private fun loadCards (searchQuery: String = "", filters: MutableMap<String, String> = mutableMapOf()) {
         val request = JsonArrayRequest(Request.Method.GET,
-            "${RequestManager.getServerUrl()}/business-cards?search=$searchQuery",
+            "${RequestManager.getServerUrl()}/business-cards?search=$searchQuery&${HelperClass.filtersToQuery(filters)}",
             null,
             Response.Listener {
                 val userID = sharedPreferences.getInt("user_id", 1)
@@ -269,7 +293,105 @@ class MainActivity : AppCompatActivity(), BusinessCardController {
                 searchView.showSearch()
                 return true
             }
+            R.id.action_filter -> {
+                filterState = !filterState
+                return true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
+
+    private fun applyFilters(filters: MutableMap<String, String>) {
+        ftName.setText(filters["name"])
+        ftCompany.setText(filters["company_name"])
+        ftPosition.setText(filters["position"])
+        ftAddress.setText(filters["address"])
+        ftEmail.setText(filters["email"])
+        ftPhone.setText(filters["mobile"])
+        ftWebsite.setText(filters["website"])
+    }
+    private fun saveFilters() {
+        sharedPreferences.edit()
+            .putString("filter_main_name", ftName.text.toString())
+            .putString("filter_main_company", ftCompany.text.toString())
+            .putString("filter_main_position", ftPosition.text.toString())
+            .putString("filter_main_address", ftAddress.text.toString())
+            .putString("filter_main_phone", ftPhone.text.toString())
+            .putString("filter_main_email", ftEmail.text.toString())
+            .putString("filter_main_website", ftWebsite.text.toString())
+            .apply()
+    }
+    private fun loadFilters(): MutableMap<String, String> {
+        val result = mutableMapOf<String, String>()
+        sharedPreferences.getString("filter_main_name", "").let {
+            if (it != null && it.isNotEmpty()) {
+                result["name"] = it
+            }
+        }
+        sharedPreferences.getString("filter_main_company", "").let {
+            if (it != null && it.isNotEmpty()) {
+                result["company_name"] = it
+            }
+        }
+        sharedPreferences.getString("filter_main_position", "").let {
+            if (it != null && it.isNotEmpty()) {
+                result["position"] = it
+            }
+        }
+        sharedPreferences.getString("filter_main_address", "").let {
+            if (it != null && it.isNotEmpty()) {
+                result["address"] = it
+            }
+        }
+        sharedPreferences.getString("filter_main_phone", "").let {
+            if (it != null && it.isNotEmpty()) {
+                result["mobile"] = it
+            }
+        }
+        sharedPreferences.getString("filter_main_email", "").let {
+            if (it != null && it.isNotEmpty()) {
+                result["email"] = it
+            }
+        }
+        sharedPreferences.getString("filter_main_website", "").let {
+            if (it != null && it.isNotEmpty()) {
+                result["website"] = it
+            }
+        }
+        return result
+    }
+
+    private fun clearFilters() {
+        applyFilters(mutableMapOf())
+        saveFilters()
+    }
+
+    private var filterState: Boolean
+            get() = filterHolder.visibility == View.VISIBLE
+            set (value) {
+                val animation = AnimationUtils.loadAnimation(this, if (value) R.anim.slide_left else R.anim.slide_right)
+                filterBody.startAnimation(animation)
+                if (value) {
+                    filterHolder.visibility = View.VISIBLE
+                    filterOverlay.visibility = View.GONE
+                } else{
+                    filterHolder.visibility = View.VISIBLE
+                    filterOverlay.startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.abc_fade_out))
+                }
+                timer.schedule(object: TimerTask() {
+                    override fun run() {
+                        runOnUiThread {
+                            if (!value) {
+                                filterHolder.visibility = View.GONE
+                            }
+                            filterOverlay.visibility = filterHolder.visibility
+                            if (value) {
+                                filterOverlay.startAnimation(
+                                    AnimationUtils.loadAnimation(applicationContext, R.anim.abc_fade_in)
+                                )
+                            }
+                        }
+                    }
+                }, animation.duration)
+            }
 }

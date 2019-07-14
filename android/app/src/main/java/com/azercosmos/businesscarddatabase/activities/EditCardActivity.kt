@@ -20,6 +20,7 @@ import com.azercosmos.businesscarddatabase.R
 import com.azercosmos.businesscarddatabase.data.BusinessCard
 import com.azercosmos.businesscarddatabase.recognizer.RecognizePatterns
 import com.azercosmos.businesscarddatabase.recognizer.Recognizer
+import com.azercosmos.businesscarddatabase.utils.HelperClass
 import com.azercosmos.businesscarddatabase.utils.RequestManager
 import com.yalantis.ucrop.UCrop
 import kotlinx.android.synthetic.main.activity_edit_card.*
@@ -91,36 +92,23 @@ class EditCardActivity : AppCompatActivity() {
 
         if (isSaving) {
             // Toast.makeText(this, "Already saving card", Toast.LENGTH_SHORT).show()
-        } else {
-            // Toast.makeText(this, "Editing card", Toast.LENGTH_SHORT).show()
+            return false
         }
 
         val name = editCardName.text.toString()
-        if (name.isEmpty()) {
-            // Toast.makeText(this, "Name is empty", Toast.LENGTH_SHORT).show()
-            return false
-        }
-
         val company = editCardCompany.text.toString()
         val position = editCardPosition.text.toString()
-        if (company.isEmpty()) {
-            Toast.makeText(this, "Company name is empty", Toast.LENGTH_SHORT).show()
-            return false
-        }
-
-        if (position.isEmpty()) {
-            Toast.makeText(this, "Position is empty", Toast.LENGTH_SHORT).show()
-            return false
-        }
         val email = editCardEmail.text.toString()
-
         val phone = editCardPhone.text.toString()
-
-
         val website = editCardWebsite.text.toString()
-
         val address = editCardAddress.text.toString()
         val note = editCardNote.text.toString()
+
+        val error = HelperClass.validate(name, company, position, email, website)
+        if (error != null) {
+            Toast.makeText(this, "$error is invalid", Toast.LENGTH_SHORT).show()
+            return false
+        }
 
         sendEditRequest(name, company, email, address, phone, website, position, editCardIsPrivate.isChecked, image, note)
         return true

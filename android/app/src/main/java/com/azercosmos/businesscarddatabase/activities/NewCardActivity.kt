@@ -23,6 +23,7 @@ import com.azercosmos.businesscarddatabase.R
 import com.azercosmos.businesscarddatabase.modals.SimilarCardExists
 import com.azercosmos.businesscarddatabase.recognizer.RecognizePatterns
 import com.azercosmos.businesscarddatabase.recognizer.Recognizer
+import com.azercosmos.businesscarddatabase.utils.HelperClass
 import com.azercosmos.businesscarddatabase.utils.RequestManager
 import com.yalantis.ucrop.UCrop
 import kotlinx.android.synthetic.main.activity_new_card_photo.*
@@ -76,32 +77,20 @@ class NewCardActivity : AppCompatActivity() {
     private fun createCard (): Boolean {
         // Toast.makeText(this, "Creating card", Toast.LENGTH_SHORT).show()
         val name = newCardName.text.toString()
-        if (name.isEmpty()) {
-            Toast.makeText(this, "Name is empty", Toast.LENGTH_SHORT).show()
-            return false
-        }
         val company = newCardCompany.text.toString()
         val position = newCardPosition.text.toString()
-
-        if (company.isEmpty()) {
-            Toast.makeText(this, "Company name is empty", Toast.LENGTH_SHORT).show()
-            return false
-        }
-
-        if (position.isEmpty()) {
-            Toast.makeText(this, "Position is empty", Toast.LENGTH_SHORT).show()
-            return false
-        }
-
         val email = newCardEmail.text.toString()
-
         val phone = newCardPhone.text.toString()
-
-
         val website = newCardWebsite.text.toString()
-
         val address = newCardAddress.text.toString()
         val note = newCardNote.text.toString()
+
+        val error = HelperClass.validate(name, company, position, email, website)
+        if (error != null) {
+            Toast.makeText(this, "$error is invalid", Toast.LENGTH_SHORT).show()
+            return false
+        }
+
         RequestManager.sendRequest(checkSimilar(name, company, position) { exists ->
             if (exists) {
                 val dialog = SimilarCardExists()
