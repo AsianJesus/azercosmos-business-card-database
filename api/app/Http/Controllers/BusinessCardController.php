@@ -62,7 +62,7 @@ class BusinessCardController extends Controller
                 $filters = (array)json_decode($filters);
             }
             foreach (array_keys($filters) as $key) {
-                $query->where($key, $filters[$key]);
+                $query->where($key, 'like', $filters[$key]);
             }
         }
         $query->with('permissions.permission', 'permissions.user')->orderBy('created_at', 'desc');
