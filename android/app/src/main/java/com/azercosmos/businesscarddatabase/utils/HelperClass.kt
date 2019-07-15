@@ -32,9 +32,9 @@ class HelperClass {
 
         fun filtersToQuery (filters: Map<String, String>): String {
             var result = ""
-            filters.entries.forEach {
-                result += "&filters[${it.key}]=%${it.value}%"
-            }
+            filters.entries.map {
+                result += "filters[${it.key}]=%25${it.value}%25"
+            }.joinToString("&")
             return result
         }
     }

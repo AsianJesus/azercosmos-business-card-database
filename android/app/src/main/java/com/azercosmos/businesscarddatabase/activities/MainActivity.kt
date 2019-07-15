@@ -91,7 +91,11 @@ class MainActivity : AppCompatActivity(), BusinessCardController {
         val context = this
         searchView.setOnQueryTextListener(object : SimpleSearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
-                context.loadCards(query)
+                if (query != "") {
+                    context.loadCards(query)
+                } else {
+                    context.loadCards(filters = loadFilters())
+                }
                 return false
             }
 
@@ -111,6 +115,7 @@ class MainActivity : AppCompatActivity(), BusinessCardController {
         fbApply.setOnClickListener {
             saveFilters()
             loadCards(filters = loadFilters())
+            filterState = false
         }
 
         fbClear.setOnClickListener {
@@ -230,12 +235,12 @@ class MainActivity : AppCompatActivity(), BusinessCardController {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_CONFIG) {
             if (resultCode == Activity.RESULT_OK) {
-                loadCards()
+                loadCards(filters = loadFilters())
             }
         }
         if (requestCode == REQUEST_NEW_CARD) {
             if (resultCode == Activity.RESULT_OK) {
-                loadCards()
+                loadCards(filters = loadFilters())
             }
         }
         if (requestCode == REQUEST_EDIT_CARD) {
@@ -282,7 +287,7 @@ class MainActivity : AppCompatActivity(), BusinessCardController {
                 return true
             }
             R.id.action_refresh -> {
-                loadCards()
+                loadCards(filters = loadFilters())
                 return true
             }
             R.id.action_logout -> {
@@ -393,5 +398,6 @@ class MainActivity : AppCompatActivity(), BusinessCardController {
                         }
                     }
                 }, animation.duration)
+                fab.visibility = if (value) View.GONE else View.VISIBLE
             }
 }
