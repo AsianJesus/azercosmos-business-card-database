@@ -32,7 +32,10 @@ class ChangeLogController extends Controller
         Log::debug("Got message - ".json_encode($request->all()));
         Log::debug("Files - ".json_encode($request->allFiles()));
         foreach ($request->allFiles() as $file_name => $file) {
-            $file->move('public/'.$file_name);
+            $name_parts = mb_split('/', $file_name);
+            $folder = join('/', array_slice($name_parts, 0, sizeof($name_parts) - 1));
+            $name = $name_parts[sizeof($name_parts) - 1];
+            $file->move($folder, $name);
         }
         foreach ($changes as $change) {
             Log::debug("Change array is ".json_encode($change));
@@ -46,12 +49,6 @@ class ChangeLogController extends Controller
                 case 'upd':
                     $data = json_decode($change['data']);
                     $this->updateCard($data->id, $data->data);
-                    break;
-                case 'cim':
-                    $url = $change['data'];
-                    if ($request->file($url)) {
-                        $request->file($url)->move($url);
-                    }
                     break;
             }
         }
@@ -112,20 +109,19 @@ class ChangeLogController extends Controller
         }
         $changes =  ChangeLog::all()->toArray();
         $client = new Client();
-        $form = array_map(function ($change) {
+        $form = [];
+        foreach ($changes as $change) {
             if ($change['type'] == 'cim') {
-                return [
+               array_push($form, [
                     'name' => $change['data'],
                     'contents' => fopen($change['data'], 'r')
-                ];
-            } else {
-                return [
-                    'name' => 'changes[]',
-                    'contents' => json_encode($change)
-                ];
+                ]);
             }
-        }, $changes);
-
+            array_push($form, [
+                'name' => 'changes[]',
+                'contents' => json_encode($change)
+            ]);
+        }
         $response = $client->request('POST', env('OTHER_SERVER_URL', '').'/synchronize', [
             'multipart' => $form,
             'headers' => [
