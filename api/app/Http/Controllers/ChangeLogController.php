@@ -46,6 +46,12 @@ class ChangeLogController extends Controller
                     $data = json_decode($change['data']);
                     $this->updateCard($data->id, $data->data);
                     break;
+                case 'cim':
+                    $url = $change['data'];
+                    if ($request->file($url)) {
+                        $request->file($url)->move($url);
+                    }
+                    break;
             }
         }
         return $changes;

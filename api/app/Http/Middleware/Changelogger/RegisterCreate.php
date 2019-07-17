@@ -20,11 +20,10 @@ class RegisterCreate
             'data' => json_encode($res->original)
         ]);
 
-return $res;
-        if ($res->image_path != null) {
+        if ($res->original->image_path != null) {
             ChangeLog::create([
                 'type' => 'cim', // Create IMage
-                'data' => $res->image_path
+                'data' => $res->original->image_path
             ]);
         }
 
