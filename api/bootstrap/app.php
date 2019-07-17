@@ -72,7 +72,8 @@ $app->routeMiddleware([
      'check_auth' => \App\Http\Middleware\CheckAuthenticationMiddleware::class,
      'register_add' => \App\Http\Middleware\Changelogger\RegisterCreate::class,
      'register_update' => \App\Http\Middleware\Changelogger\RegisterUpdate::class,
-     'register_delete' => \App\Http\Middleware\Changelogger\RegisterDelete::class
+     'register_delete' => \App\Http\Middleware\Changelogger\RegisterDelete::class,
+    'sync' => \App\Http\Middleware\SynchronizationMiddleware::class
  ]);
 
 /*

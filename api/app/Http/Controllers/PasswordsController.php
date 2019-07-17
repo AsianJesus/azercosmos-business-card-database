@@ -27,7 +27,6 @@ class PasswordsController extends Controller
         $this->dispatch(new SynchronizePassword($user_id, $pass));
         unset($password['salt']);
         return $password;
-
     }
 
     public function login (Request $request) {

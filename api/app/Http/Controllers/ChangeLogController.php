@@ -120,12 +120,19 @@ class ChangeLogController extends Controller
         }, $changes);
 
         $response = $client->request('POST', env('OTHER_SERVER_URL', '').'/synchronize', [
-            'multipart' => $form
+            'multipart' => $form,
+            'headers' => [
+                'KEY' => env('SYNCHRONIZATION_KEY', '')
+            ]
         ]);
         if ($response->getStatusCode() == 200) {
             ChangeLog::whereIn('id', array_map(function ($c) { return $c['id']; }, $changes))->delete();
         }
-        $response = $client->request('GET', env('OTHER_SERVER_URL', '').'/synchronize');
+        $response = $client->request('GET', env('OTHER_SERVER_URL', '').'/synchronize', [
+                'headers' => [
+                    'KEY' => env('SYNCHRONIZATION_KEY', '')
+                ]
+            ]);
         if ($response->getStatusCode() == 200) {
             $data = (string)$response->getBody();
             $changes = json_decode($data);

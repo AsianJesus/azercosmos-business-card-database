@@ -459,7 +459,7 @@ import UserSelector from '@/components/Tools/UserSelector.vue'
 import lodash from 'lodash'
 import domToImage from 'dom-to-image'
 import exportFromJSON from 'export-from-json'
-
+import { authURL } from '../../config.js'
 import {
     faEdit,
     faTrashAlt,
@@ -864,7 +864,7 @@ export default {
         },
         openPasswordPrompt () {
           if (!this.appPassword.loaded) {
-              this.axios.get('/user/passwords').then(response => {
+              this.axios.get(`${authURL}/user/passwords`).then(response => {
                   this.appPassword.loaded = true
                   this.appPassword.key = response.data || null
                   this.showPrompt()
@@ -881,7 +881,7 @@ export default {
             }
         },
         savePassword (password) {
-            return this.axios.post('/passwords', {
+            return this.axios.post(`${authURL}/passwords`, {
               password: password
             }).then(response => {
               this.appPassword.key = response.data.password

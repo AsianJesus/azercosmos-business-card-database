@@ -44,21 +44,25 @@ $router->group(['middleware' => 'check_auth'], function () use ($router) {
     $router->put('/user-permissions/{id}', 'PermissionUserController@update');
     $router->delete('/user-permissions/{id}', 'PermissionUserController@delete');
 
-// Synchronization routes
-    $router->get('/synchronize', 'ChangeLogController@getChanges');
-    $router->post('/synchronize', 'ChangeLogController@synchronize');
-    $router->post('/synchronize/passwords', 'PasswordsController@syncSetPassword');
-
 // Password routes
     $router->post('/passwords', 'PasswordsController@setPassword');
     $router->get('/user/passwords', 'PasswordsController@getByUser');
+});
+
+// Synchronization routes
+$router->group([ 'middleware' => 'sync' ], function ($router) {
+    $router->get('/test/synchronize', ['uses' => 'ChangeLogController@launchSynchronization']);
+    $router->get('/synchronize', 'ChangeLogController@getChanges');
+    $router->post('/synchronize', 'ChangeLogController@synchronize');
+    $router->post('/synchronize/passwords', 'PasswordsController@syncSetPassword');
 });
 
 $router->post('/users', 'PasswordsController@login');
 $router->get('/passwords', 'PasswordsController@checkHash');
 
 // Test routes! Needs to be deleted
-$router->get('/test/synchronize', ['uses' => 'ChangeLogController@launchSynchronization']);
+
+
 $router->get('/test/load-image', function () {
     dispatch(new \App\Jobs\LoadImage('images/1543582655.jpeg'));
 });
