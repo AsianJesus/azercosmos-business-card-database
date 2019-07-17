@@ -34,7 +34,7 @@ class ChangeLogController extends Controller
         foreach ($request->allFiles() as $file_name => $file) {
             $name_parts = mb_split('/', $file_name);
             $folder = join('/', array_slice($name_parts, 0, sizeof($name_parts) - 1));
-            $name = $name_parts[sizeof($name_parts) - 1];
+            $name = str_replace('_', '.', $name_parts[sizeof($name_parts) - 1]);
             $file->move($folder, $name);
         }
         foreach ($changes as $change) {
