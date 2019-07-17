@@ -24,6 +24,7 @@ class ChangeLogController extends Controller
 
     public function synchronize(Request $request) {
         $changes = $request->input('changes', []);
+        Log::debug(json_encode($request->all()));
         $changes = array_map(function ($x) { return (array)json_decode($x); }, $changes);
         $changes = array_sort($changes, function ($a, $b) {
             return strcmp($a['created_at'], $b['created_at']);
