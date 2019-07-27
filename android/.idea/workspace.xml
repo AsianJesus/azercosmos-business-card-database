@@ -13,9 +13,6 @@
   <component name="AvailableLibraryUpdateStorage">
     <last-search-timestamp>1557754332679</last-search-timestamp>
   </component>
-  <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/app/src/main/java/com/azercosmos/businesscarddatabase/activities/MainActivity.kt" line="73" />
-  </component>
   <component name="ChangeListManager">
     <list default="true" id="3390d532-2fd9-4aec-8887-b4ce188afccd" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -49,52 +46,72 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/filter_layout.xml">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/azercosmos/businesscarddatabase/modals/ShowImageModal.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="150">
+              <caret line="25" column="60" selection-start-line="25" selection-start-column="60" selection-end-line="25" selection-end-column="60" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="165">
+              <caret line="16" column="92" selection-start-line="16" selection-start-column="92" selection-end-line="16" selection-end-column="92" />
+            </state>
+          </provider>
+          <provider editor-type-id="android-designer2" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/azercosmos/businesscarddatabase/utils/LoadImage.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="121">
+              <caret line="32" column="54" selection-start-line="32" selection-start-column="54" selection-end-line="32" selection-end-column="54" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/azercosmos/businesscarddatabase/activities/MainActivity.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="145">
+              <caret line="188" column="18" selection-start-line="188" selection-start-column="18" selection-end-line="188" selection-end-column="70" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_new_card.xml">
           <provider editor-type-id="text-editor">
-            <state relative-caret-position="1065">
-              <caret line="71" column="38" selection-start-line="71" selection-start-column="38" selection-end-line="71" selection-end-column="38" />
+            <state relative-caret-position="165">
+              <caret line="11" column="56" selection-start-line="11" selection-start-column="56" selection-end-line="11" selection-end-column="56" />
             </state>
           </provider>
           <provider selected="true" editor-type-id="android-designer2" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/azercosmos/businesscarddatabase/activities/MainActivity.kt">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_edit_card.xml">
+          <provider editor-type-id="text-editor">
+            <state relative-caret-position="225">
+              <caret line="15" column="50" selection-start-line="15" selection-start-column="50" selection-end-line="15" selection-end-column="50" />
+            </state>
+          </provider>
+          <provider selected="true" editor-type-id="android-designer2" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/azercosmos/businesscarddatabase/activities/EditCardActivity.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3735">
-              <caret line="289" column="25" selection-start-line="289" selection-start-column="16" selection-end-line="289" selection-end-column="25" />
+            <state relative-caret-position="243">
+              <caret line="69" column="24" selection-start-line="69" selection-start-column="24" selection-end-line="69" selection-end-column="24" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/xml/network_security_config.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="90">
-              <caret line="6" column="61" selection-start-line="6" selection-start-column="61" selection-end-line="6" selection-end-column="61" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/azercosmos/businesscarddatabase/utils/BusinessCardsAdapter.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4380">
-              <caret line="309" column="1" selection-start-line="309" selection-start-column="1" selection-end-line="309" selection-end-column="1" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/azercosmos/businesscarddatabase/utils/HelperClass.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="525">
-              <caret line="35" column="63" selection-start-line="35" selection-start-column="63" selection-end-line="35" selection-end-column="63" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/build.gradle">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="195">
@@ -104,41 +121,22 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/anim/slide_right.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="45">
-              <caret line="3" column="30" selection-start-line="3" selection-start-column="30" selection-end-line="3" selection-end-column="30" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/anim/slide_left.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="45">
-              <caret line="3" column="30" selection-start-line="3" selection-start-column="30" selection-end-line="3" selection-end-column="30" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/menu/menu_main.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="90">
-              <caret line="6" column="26" selection-start-line="6" selection-start-column="25" selection-end-line="6" selection-end-column="26" />
-            </state>
-          </provider>
-          <provider editor-type-id="android-designer2" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/menu/menu_main_debug.xml">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/show_image_modal.xml">
           <provider editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="15" column="40" selection-start-line="15" selection-start-column="34" selection-end-line="15" selection-end-column="40" />
+            <state relative-caret-position="210">
+              <caret line="15" column="51" selection-start-line="15" selection-start-column="51" selection-end-line="15" selection-end-column="51" />
             </state>
           </provider>
           <provider selected="true" editor-type-id="android-designer2" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/azercosmos/businesscarddatabase/utils/BusinessCardsAdapter.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="616">
+              <caret line="117" selection-start-line="117" selection-end-line="117" />
+            </state>
+          </provider>
         </entry>
       </file>
     </leaf>
@@ -149,25 +147,14 @@
         <option value="Kotlin Interface" />
         <option value="Kotlin Enum" />
         <option value="Kotlin File" />
-        <option value="Kotlin Class" />
-        <option value="layoutResourceFile" />
         <option value="resourceFile" />
+        <option value="layoutResourceFile" />
+        <option value="Kotlin Class" />
       </list>
     </option>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>package com.ohmycthulhu</find>
-      <find>com.ohmycthulhu</find>
-      <find>id/null</find>
-      <find>id/nul</find>
-      <find>version</find>
-      <find>Toast</find>
-      <find>upda</find>
-      <find>Request</find>
-      <find>Response.ErrorLis</find>
-      <find>getGroup</find>
-      <find>isChild</find>
       <find>Modal</find>
       <find>supportFr</find>
       <find>searchView</find>
@@ -187,6 +174,17 @@
       <find>loadCards</find>
       <find>loadFilters</find>
       <find>loadCArds</find>
+      <find>checkSimi</find>
+      <find>checkSi</find>
+      <find>ImageView</find>
+      <find>onCreateOp</find>
+      <find>onCreate</find>
+      <find>logout</find>
+      <find>openSett</find>
+      <find>BusinessCa</find>
+      <find>BusinessCard</find>
+      <find>image =</find>
+      <find>url =</find>
     </findStrings>
     <replaceStrings>
       <replace>request.addStringParam</replace>
@@ -224,25 +222,16 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/app/src/main/java/com/ohmycthulhu/businesscarddatabase/utils/Decompresser.kt" />
-        <option value="$PROJECT_DIR$/settings.gradle" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/ohmycthulhu/businesscarddatabase/utils/AssetsDecompresser.kt" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/ohmycthulhu/businesscarddatabase/utils/recognizer/Recognizer.kt" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/ohmycthulhu/businesscarddatabase/utils/ImageUtils.kt" />
-        <option value="$PROJECT_DIR$/tess-two/proguard-rules.pro" />
-        <option value="$PROJECT_DIR$/gradle.properties" />
         <option value="$PROJECT_DIR$/app/proguard-rules.pro" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/ohmycthulhu/businesscarddatabase/utils/recognizer/RecognizePatterns.kt" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/ohmycthulhu/businesscarddatabase/callbacks/AfterCardDeleteCallback.kt" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/ohmycthulhu/businesscarddatabase/callbacks/BusinessCardController.kt" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_settings.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/ohmycthulhu/businesscarddatabase/activities/ShowCardActivity.kt" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/ohmycthulhu/businesscarddatabase/activities/LoginActivity.kt" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/ohmycthulhu/businesscarddatabase/utils/AssetsDecompressor.kt" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/ohmycthulhu/businesscarddatabase/utils/BusinessCard.kt" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/ohmycthulhu/businesscarddatabase/data/BusinessCard.kt" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/ohmycthulhu/businesscarddatabase/activities/MainActivity.kt" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_edit_card.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/ohmycthulhu/businesscarddatabase/activities/EditCardActivity.kt" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/ohmycthulhu/businesscarddatabase/utils/BusinessCardsAdapter.kt" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/ohmycthulhu/businesscarddatabase/modals/SimilarFileExists.kt" />
@@ -251,50 +240,108 @@
         <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_new_card_photo.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/ohmycthulhu/businesscarddatabase/activities/ConfigActivity.kt" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_login.xml" />
         <option value="$PROJECT_DIR$/build.gradle" />
-        <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/list_item.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/colors.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/azercosmos/businesscarddatabase/utils/BusinessCardsAdapter.kt" />
         <option value="$PROJECT_DIR$/app/src/main/res/xml/searchable.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/list_child_item.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/content_main.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/azercosmos/businesscarddatabase/activities/LoginActivity.kt" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/azercosmos/businesscarddatabase/utils/RequestManager.kt" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/show_image_modal.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/azercosmos/businesscarddatabase/activities/NewCardActivity.kt" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/azercosmos/businesscarddatabase/activities/EditCardActivity.kt" />
-        <option value="$PROJECT_DIR$/app/src/main/res/menu/menu_main.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/menu/menu_main_debug.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/anim/slide_left.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/anim/slide_right.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/xml/network_security_config.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/azercosmos/businesscarddatabase/utils/HelperClass.kt" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/azercosmos/businesscarddatabase/activities/MainActivity.kt" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/filter_layout.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_settings.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/azercosmos/businesscarddatabase/activities/ConfigActivity.kt" />
+        <option value="$PROJECT_DIR$/app/src/main/res/xml/network_security_config.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/azercosmos/businesscarddatabase/utils/RequestManager.kt" />
+        <option value="$PROJECT_DIR$/app/src/main/res/menu/menu_main.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/menu/menu_main_debug.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_login.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/azercosmos/businesscarddatabase/activities/LoginActivity.kt" />
+        <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/menu/menu_common_debug.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/menu/menu_common.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/toolbar_layout.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/azercosmos/businesscarddatabase/activities/BaseActivity.kt" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/azercosmos/businesscarddatabase/activities/MainActivity.kt" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/azercosmos/businesscarddatabase/utils/BusinessCardsAdapter.kt" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/azercosmos/businesscarddatabase/activities/NewCardActivity.kt" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_new_card.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_edit_card.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/azercosmos/businesscarddatabase/activities/EditCardActivity.kt" />
         <option value="$PROJECT_DIR$/app/build.gradle" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/show_image_modal.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/azercosmos/businesscarddatabase/utils/LoadImage.kt" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="271" />
-    <option name="y" value="145" />
-    <option name="width" value="960" />
-    <option name="height" value="519" />
+    <option name="y" value="27" />
+    <option name="width" value="940" />
+    <option name="height" value="533" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
       <pane id="Scope" />
-      <pane id="ProjectPane" />
+      <pane id="PackagesPane" />
       <pane id="AndroidView">
         <subPane>
           <expand>
+            <path>
+              <item name="android" type="1abcf292:AndroidViewProjectNode" />
+              <item name="app" type="feadf853:AndroidModuleNode" />
+            </path>
+            <path>
+              <item name="android" type="1abcf292:AndroidViewProjectNode" />
+              <item name="app" type="feadf853:AndroidModuleNode" />
+              <item name="manifests" type="f94875db:AndroidManifestsGroupNode" />
+            </path>
+            <path>
+              <item name="android" type="1abcf292:AndroidViewProjectNode" />
+              <item name="app" type="feadf853:AndroidModuleNode" />
+              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
+            </path>
+            <path>
+              <item name="android" type="1abcf292:AndroidViewProjectNode" />
+              <item name="app" type="feadf853:AndroidModuleNode" />
+              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
+              <item name="businesscarddatabase" type="cbb59c9e:AndroidPsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="android" type="1abcf292:AndroidViewProjectNode" />
+              <item name="app" type="feadf853:AndroidModuleNode" />
+              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
+              <item name="businesscarddatabase" type="cbb59c9e:AndroidPsiDirectoryNode" />
+              <item name="activities" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="android" type="1abcf292:AndroidViewProjectNode" />
+              <item name="app" type="feadf853:AndroidModuleNode" />
+              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
+              <item name="businesscarddatabase" type="cbb59c9e:AndroidPsiDirectoryNode" />
+              <item name="utils" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="android" type="1abcf292:AndroidViewProjectNode" />
+              <item name="app" type="feadf853:AndroidModuleNode" />
+              <item name="res" type="d4f16f75:AndroidResFolderNode" />
+            </path>
+            <path>
+              <item name="android" type="1abcf292:AndroidViewProjectNode" />
+              <item name="app" type="feadf853:AndroidModuleNode" />
+              <item name="res" type="d4f16f75:AndroidResFolderNode" />
+              <item name="layout" type="ddeffd01:AndroidResFolderTypeNode" />
+            </path>
+            <path>
+              <item name="android" type="1abcf292:AndroidViewProjectNode" />
+              <item name="app" type="feadf853:AndroidModuleNode" />
+              <item name="res" type="d4f16f75:AndroidResFolderNode" />
+              <item name="menu" type="ddeffd01:AndroidResFolderTypeNode" />
+            </path>
             <path>
               <item name="android" type="1abcf292:AndroidViewProjectNode" />
               <item name="Gradle Scripts" type="ae0cef3a:AndroidBuildScriptsGroupNode" />
@@ -303,6 +350,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="ProjectPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -330,8 +378,8 @@
       <recent name="com.ohmycthulhu.businesscarddatabase" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/app/src/main/res/anim" />
       <recent name="$PROJECT_DIR$/app/src/main/res/menu" />
+      <recent name="$PROJECT_DIR$/app/src/main/res/anim" />
       <recent name="$PROJECT_DIR$/app/src/main/java/com/ohmycthulhu/businesscarddatabase/utils" />
       <recent name="$PROJECT_DIR$/app/src/main/res/drawable" />
       <recent name="$PROJECT_DIR$/app/src/main/res/layout" />
@@ -480,11 +528,39 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="27" width="1366" height="741" extended-state="6" />
-    <editor active="true" />
+    <frame x="0" y="27" width="1280" height="693" extended-state="6" />
     <layout>
       <window_info id="Captures" order="0" sideWeight="0.21276596" side_tool="true" weight="0.28863636" />
-      <window_info active="true" content_ui="combo" id="Project" order="1" sideWeight="0.78723407" visible="true" weight="0.13863637" />
+      <window_info active="true" content_ui="combo" id="Project" order="1" sideWeight="0.78723407" visible="true" weight="0.20097245" />
+      <window_info id="Structure" order="2" sideWeight="0.50082374" side_tool="true" weight="0.19166666" />
+      <window_info id="Favorites" order="3" side_tool="true" />
+      <window_info id="Build Variants" order="4" side_tool="true" />
+      <window_info id="Image Layers" order="5" />
+      <window_info id="Designer" order="6" />
+      <window_info id="Resources Explorer" order="7" weight="0.32954547" />
+      <window_info id="Capture Tool" order="8" />
+      <window_info anchor="bottom" id="Run" order="0" />
+      <window_info anchor="bottom" id="Logcat" order="1" sideWeight="0.8909091" weight="0.450805" />
+      <window_info anchor="bottom" id="TODO" order="2" weight="0.3294893" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.3294893" />
+      <window_info anchor="bottom" id="Terminal" order="4" weight="0.3280757" />
+      <window_info anchor="bottom" id="Event Log" order="5" sideWeight="0.10909091" side_tool="true" weight="0.9505766" />
+      <window_info anchor="bottom" id="Version Control" order="6" />
+      <window_info anchor="bottom" id="Build" order="7" sideWeight="0.4969697" visible="true" weight="0.23434705" />
+      <window_info anchor="bottom" id="Android Profiler" order="8" weight="0.3294893" />
+      <window_info anchor="bottom" id="Find" order="9" weight="0.3291592" />
+      <window_info anchor="right" id="Capture Analysis" order="0" />
+      <window_info anchor="right" id="Theme Preview" order="1" />
+      <window_info anchor="right" id="Preview" order="2" />
+      <window_info anchor="right" id="Palette&#9;" order="3" />
+      <window_info anchor="right" id="Hierarchy" order="4" weight="0.32954547" />
+      <window_info anchor="right" id="Device File Explorer" order="5" side_tool="true" weight="0.4462121" />
+      <window_info anchor="right" id="Gradle" order="6" weight="0.32954547" />
+      <window_info anchor="right" id="Assistant" order="7" weight="0.32954547" />
+    </layout>
+    <layout-to-restore>
+      <window_info id="Captures" order="0" sideWeight="0.21276596" side_tool="true" weight="0.28863636" />
+      <window_info content_ui="combo" id="Project" order="1" sideWeight="0.78723407" visible="true" weight="0.13776337" />
       <window_info id="Structure" order="2" sideWeight="0.50082374" side_tool="true" weight="0.19166666" />
       <window_info id="Favorites" order="3" side_tool="true" />
       <window_info id="Build Variants" order="4" side_tool="true" />
@@ -499,36 +575,7 @@
       <window_info anchor="bottom" id="Terminal" order="4" weight="0.3280757" />
       <window_info anchor="bottom" id="Event Log" order="5" sideWeight="0.10909091" side_tool="true" weight="0.9505766" />
       <window_info anchor="bottom" id="Version Control" order="6" />
-      <window_info anchor="bottom" id="Build" order="7" sideWeight="0.4969697" visible="true" weight="0.23723228" />
-      <window_info anchor="bottom" id="Android Profiler" order="8" show_stripe_button="false" weight="0.3294893" />
-      <window_info anchor="bottom" id="Find" order="9" weight="0.3294893" />
-      <window_info anchor="right" id="Capture Analysis" order="0" />
-      <window_info anchor="right" id="Theme Preview" order="1" />
-      <window_info anchor="right" id="Preview" order="2" />
-      <window_info anchor="right" id="Palette&#9;" order="3" />
-      <window_info anchor="right" id="Hierarchy" order="4" weight="0.32954547" />
-      <window_info anchor="right" id="Device File Explorer" order="5" side_tool="true" weight="0.4462121" />
-      <window_info anchor="right" id="Gradle" order="6" weight="0.32954547" />
-      <window_info anchor="right" id="Assistant" order="7" weight="0.32954547" />
-    </layout>
-    <layout-to-restore>
-      <window_info id="Captures" order="0" sideWeight="0.21276596" side_tool="true" visible="true" weight="0.28863636" />
-      <window_info active="true" content_ui="combo" id="Project" order="1" sideWeight="0.78723407" visible="true" weight="0.28863636" />
-      <window_info id="Structure" order="2" sideWeight="0.50082374" side_tool="true" weight="0.19166666" />
-      <window_info id="Favorites" order="3" side_tool="true" />
-      <window_info id="Build Variants" order="4" side_tool="true" />
-      <window_info id="Image Layers" order="5" />
-      <window_info id="Designer" order="6" />
-      <window_info id="Resources Explorer" order="7" weight="0.32954547" />
-      <window_info id="Capture Tool" order="8" />
-      <window_info anchor="bottom" id="Run" order="0" />
-      <window_info anchor="bottom" id="Logcat" order="1" sideWeight="0.8909091" weight="0.049423393" />
-      <window_info anchor="bottom" id="TODO" order="2" weight="0.3294893" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.3294893" />
-      <window_info anchor="bottom" id="Terminal" order="4" weight="0.3280757" />
-      <window_info anchor="bottom" id="Event Log" order="5" sideWeight="0.10909091" side_tool="true" weight="0.9505766" />
-      <window_info anchor="bottom" id="Version Control" order="6" />
-      <window_info anchor="bottom" id="Build" order="7" sideWeight="0.4969697" visible="true" weight="0.22570017" />
+      <window_info active="true" anchor="bottom" id="Build" order="7" sideWeight="0.4969697" visible="true" weight="0.23434705" />
       <window_info anchor="bottom" id="Android Profiler" order="8" weight="0.3294893" />
       <window_info anchor="bottom" id="Find" order="9" weight="0.3294893" />
       <window_info anchor="right" id="Capture Analysis" order="0" />
@@ -542,62 +589,14 @@
     </layout-to-restore>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_show_card.xml">
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="17" column="33" selection-start-line="17" selection-start-column="33" selection-end-line="17" selection-end-column="33" />
-        </state>
-      </provider>
-      <provider selected="true" editor-type-id="android-designer2" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_settings.xml">
-      <provider editor-type-id="text-editor" />
-      <provider selected="true" editor-type-id="android-designer2" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ohmycthulhu/businesscarddatabase/data/BusinessCard.kt" />
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ohmycthulhu/businesscarddatabase/activities/ShowCardActivity.kt" />
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ohmycthulhu/businesscarddatabase/utils/AssetsDecompressor.kt" />
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ohmycthulhu/businesscarddatabase/utils/BusinessCardsAdapter.kt" />
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ohmycthulhu/businesscarddatabase/utils/ImageUtils.kt" />
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ohmycthulhu/businesscarddatabase/modals/ShowImageModal.kt" />
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ohmycthulhu/businesscarddatabase/activities/MainActivity.kt" />
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ohmycthulhu/businesscarddatabase/activities/EditCardActivity.kt" />
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ohmycthulhu/businesscarddatabase/activities/NewCardActivity.kt" />
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_edit_card.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="690">
-          <caret line="46" column="42" selection-start-line="46" selection-start-column="42" selection-end-line="46" selection-end-column="42" />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer2" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ohmycthulhu/businesscarddatabase/modals/SimilarCardExists.kt" />
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ohmycthulhu/businesscarddatabase/modals/DeleteCardDialog.kt" />
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ohmycthulhu/businesscarddatabase/utils/RequestManager.kt" />
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ohmycthulhu/businesscarddatabase/activities/ConfigActivity.kt" />
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_new_card_photo.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="31" column="55" selection-start-line="31" selection-start-column="55" selection-end-line="31" selection-end-column="55" />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer2" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_login.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
-          <caret line="36" column="36" selection-start-line="36" selection-start-column="36" selection-end-line="36" selection-end-column="36" />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer2" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/azercosmos/businesscarddatabase/activities/ConfigActivity.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="10" column="6" selection-start-line="10" selection-start-column="6" selection-end-line="10" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable-v24/ic_launcher_foreground.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="165">
@@ -638,43 +637,6 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/azercosmos/businesscarddatabase/activities/SearchActivity.kt" />
     <entry file="file://$PROJECT_DIR$/app/src/main/res/xml/searchable.xml" />
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/azercosmos/businesscarddatabase/utils/RequestManager.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="615">
-          <caret line="48" column="48" selection-start-line="48" selection-start-column="48" selection-end-line="48" selection-end-column="48" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/azercosmos/businesscarddatabase/modals/ShowImageModal.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="16" column="6" selection-start-line="16" selection-start-column="6" selection-end-line="16" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" column="71" selection-start-line="5" selection-start-column="71" selection-end-line="5" selection-end-column="71" />
-        </state>
-      </provider>
-      <provider editor-type-id="android-manifest" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/azercosmos/businesscarddatabase/activities/LoginActivity.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="22" column="34" selection-start-line="22" selection-start-column="34" selection-end-line="22" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/content_main.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
-          <caret line="30" column="28" selection-start-line="30" selection-start-column="28" selection-end-line="30" selection-end-column="28" />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer2" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/tess-two/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="810">
@@ -697,38 +659,8 @@
       </provider>
       <provider selected="true" editor-type-id="android-designer2" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/show_image_modal.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="12" column="17" selection-start-line="12" selection-start-column="17" selection-end-line="12" selection-end-column="17" />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer2" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/azercosmos/businesscarddatabase/activities/NewCardActivity.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="87" column="8" selection-start-line="87" selection-start-column="8" selection-end-line="91" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/azercosmos/businesscarddatabase/activities/EditCardActivity.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="103">
-          <caret line="118" column="73" selection-start-line="118" selection-start-column="73" selection-end-line="118" selection-end-column="73" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/filter.png">
       <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml">
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="1095">
-          <caret line="73" column="40" selection-start-line="73" selection-start-column="40" selection-end-line="73" selection-end-column="40" />
-        </state>
-      </provider>
-      <provider selected="true" editor-type-id="android-designer2" />
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/filter_layout.xml">
       <provider editor-type-id="text-editor">
@@ -737,28 +669,6 @@
         </state>
       </provider>
       <provider selected="true" editor-type-id="android-designer2" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/azercosmos/businesscarddatabase/activities/MainActivity.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3735">
-          <caret line="289" column="25" selection-start-line="289" selection-start-column="16" selection-end-line="289" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/xml/network_security_config.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="6" column="61" selection-start-line="6" selection-start-column="61" selection-end-line="6" selection-end-column="61" />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer2" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/azercosmos/businesscarddatabase/utils/BusinessCardsAdapter.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4380">
-          <caret line="309" column="1" selection-start-line="309" selection-start-column="1" selection-end-line="309" selection-end-column="1" />
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/azercosmos/businesscarddatabase/utils/HelperClass.kt">
       <provider selected="true" editor-type-id="text-editor">
@@ -781,26 +691,202 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/menu/menu_main.xml">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/azercosmos/businesscarddatabase/utils/RequestManager.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="6" column="26" selection-start-line="6" selection-start-column="25" selection-end-line="6" selection-end-column="26" />
+        <state relative-caret-position="180">
+          <caret line="19" column="72" selection-start-line="19" selection-start-column="72" selection-end-line="19" selection-end-column="72" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/xml/network_security_config.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="17" column="39" selection-start-line="17" selection-start-column="39" selection-end-line="17" selection-end-column="39" />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer2" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_settings.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="450">
+          <caret line="30" column="39" selection-start-line="30" selection-start-column="39" selection-end-line="30" selection-end-column="39" />
         </state>
       </provider>
       <provider editor-type-id="android-designer2" />
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/menu/menu_main_debug.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="17" column="33" selection-start-line="17" selection-start-column="33" selection-end-line="17" selection-end-column="33" />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer2" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/menu/menu_main.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="14" column="33" selection-start-line="14" selection-start-column="33" selection-end-line="14" selection-end-column="33" />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer2" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_login.xml">
       <provider editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="15" column="40" selection-start-line="15" selection-start-column="34" selection-end-line="15" selection-end-column="40" />
+        <state relative-caret-position="135">
+          <caret line="25" column="77" selection-start-line="25" selection-start-column="77" selection-end-line="25" selection-end-column="77" />
         </state>
       </provider>
       <provider selected="true" editor-type-id="android-designer2" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/azercosmos/businesscarddatabase/activities/ConfigActivity.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="345">
+          <caret line="30" column="20" selection-start-line="30" selection-start-column="20" selection-end-line="30" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/azercosmos/businesscarddatabase/activities/ShowCardActivity.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="21" column="6" selection-start-line="21" selection-start-column="6" selection-end-line="21" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/menu/menu_common_debug.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="7" column="35" selection-start-line="7" selection-start-column="35" selection-end-line="7" selection-end-column="35" />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer2" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/menu/menu_common.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" selection-start-line="5" selection-end-line="5" />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer2" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/azercosmos/businesscarddatabase/activities/LoginActivity.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="70" column="73" selection-start-line="70" selection-start-column="73" selection-end-line="70" selection-end-column="73" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="20" column="17" selection-start-line="20" selection-start-column="17" selection-end-line="20" selection-end-column="17" />
+        </state>
+      </provider>
+      <provider editor-type-id="android-manifest" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/toolbar_layout.xml">
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="10" selection-start-line="10" selection-end-line="10" />
+        </state>
+      </provider>
+      <provider selected="true" editor-type-id="android-designer2" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/content_main.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-116">
+          <caret line="30" column="28" selection-start-line="30" selection-start-column="28" selection-end-line="30" selection-end-column="28" />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer2" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/azercosmos/businesscarddatabase/activities/BaseActivity.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-195">
+          <caret line="23" column="5" selection-start-line="23" selection-start-column="5" selection-end-line="23" selection-end-column="5" />
+          <folding>
+            <element signature="e#56#342#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_new_card.xml">
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="11" column="56" selection-start-line="11" selection-start-column="56" selection-end-line="11" selection-end-column="56" />
+        </state>
+      </provider>
+      <provider selected="true" editor-type-id="android-designer2" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/azercosmos/businesscarddatabase/utils/BusinessCardsAdapter.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="616">
+          <caret line="117" selection-start-line="117" selection-end-line="117" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/azercosmos/businesscarddatabase/activities/MainActivity.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="145">
+          <caret line="188" column="18" selection-start-line="188" selection-start-column="18" selection-end-line="188" selection-end-column="70" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/azercosmos/businesscarddatabase/activities/NewCardActivity.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="295">
+          <caret line="199" column="5" selection-start-line="199" selection-start-column="5" selection-end-line="199" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/azercosmos/businesscarddatabase/modals/ShowImageModal.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="25" column="60" selection-start-line="25" selection-start-column="60" selection-end-line="25" selection-end-column="60" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/azercosmos/businesscarddatabase/activities/EditCardActivity.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="243">
+          <caret line="69" column="24" selection-start-line="69" selection-start-column="24" selection-end-line="69" selection-end-column="24" />
+        </state>
+      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="195">
           <caret line="13" column="26" selection-start-line="13" selection-start-column="26" selection-end-line="13" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_edit_card.xml">
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="15" column="50" selection-start-line="15" selection-start-column="50" selection-end-line="15" selection-end-column="50" />
+        </state>
+      </provider>
+      <provider selected="true" editor-type-id="android-designer2" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/show_image_modal.xml">
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="15" column="51" selection-start-line="15" selection-start-column="51" selection-end-line="15" selection-end-column="51" />
+        </state>
+      </provider>
+      <provider selected="true" editor-type-id="android-designer2" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="16" column="92" selection-start-line="16" selection-start-column="92" selection-end-line="16" selection-end-column="92" />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer2" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/azercosmos/businesscarddatabase/utils/LoadImage.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="121">
+          <caret line="32" column="54" selection-start-line="32" selection-start-column="54" selection-end-line="32" selection-end-column="54" />
         </state>
       </provider>
     </entry>

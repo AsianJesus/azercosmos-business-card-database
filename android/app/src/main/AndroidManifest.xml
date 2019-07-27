@@ -30,10 +30,14 @@
         </activity>
         <activity android:name=".activities.MainActivity"
                   android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activities.NewCardActivity" />
-        <activity android:name=".activities.ConfigActivity" />
-        <activity android:name=".activities.ShowCardActivity" />
-        <activity android:name=".activities.EditCardActivity" />
+        <activity android:name=".activities.NewCardActivity"
+                  android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".activities.ConfigActivity"
+                  android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".activities.ShowCardActivity"
+                  android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".activities.EditCardActivity"
+                  android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name="com.yalantis.ucrop.UCropActivity"
                   android:theme="@style/AppTheme.NoActionBar"
         />

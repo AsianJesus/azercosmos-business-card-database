@@ -34,6 +34,7 @@ import com.azercosmos.businesscarddatabase.utils.HelperClass
 import com.azercosmos.businesscarddatabase.utils.RequestManager
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.toolbar_layout.*
 import kotlinx.android.synthetic.main.content_main.*
 import org.json.JSONObject
 import kotlin.math.min
@@ -43,17 +44,18 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class MainActivity : AppCompatActivity(), BusinessCardController {
+class MainActivity : BaseActivity(), BusinessCardController {
 
     /*
         Codes for activity results
      */
-    private val REQUEST_PERMISSIONS = 1
-    private val REQUEST_CONFIG = 2
     private val REQUEST_NEW_CARD = 3
     private val REQUEST_EDIT_CARD = 4
 
     private val timer: Timer = Timer()
+
+    override val menuRes: Int = if (BuildConfig.DEBUG) R.menu.menu_main_debug else R.menu.menu_main
+
 
     lateinit var sharedPreferences: SharedPreferences
 
@@ -64,17 +66,10 @@ class MainActivity : AppCompatActivity(), BusinessCardController {
     var afterCardEditCallback: AfterCardEditCallback? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         super.onCreate(savedInstanceState)
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         setContentView(R.layout.activity_main)
-        setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayShowCustomEnabled(true)
-        supportActionBar?.title = ""
-
-        val menu = SlidingMenu(this)
-        menu.mode = SlidingMenu.RIGHT
-        menu.setMenu(R.layout.activity_login)
-
+        setupToolbar()
         setResult(LoginActivity.ACTION.ACTION_FINISH.getCode())
 
         val assetsPath = "${Environment.getExternalStorageDirectory()}/${getString(R.string.assets_path)}"
@@ -165,13 +160,6 @@ class MainActivity : AppCompatActivity(), BusinessCardController {
         RequestManager.sendRequest(request)
     }
 
-    private fun openSettings () {
-        // Toast.makeText(this, "Opening settings", Toast.LENGTH_SHORT).show()
-        Intent(this, ConfigActivity::class.java).also {
-            startActivityForResult(it, REQUEST_CONFIG)
-        }
-    }
-
     override fun deleteCard(id: String, afterCardDeleteCallback: AfterCardDeleteCallback) {
         val dialog = DeleteCardDialog()
         dialog.setCallback {
@@ -212,6 +200,7 @@ class MainActivity : AppCompatActivity(), BusinessCardController {
             // Toast.makeText(this, "We deleted card #$id!", Toast.LENGTH_SHORT).show()
             callback()
         }, {
+            RequestManager.handleError(it, this)
             // Toast.makeText(this, "Couldn't delete the card", Toast.LENGTH_SHORT).show()
             Log.e("delete error", it.message)
         })
@@ -222,13 +211,24 @@ class MainActivity : AppCompatActivity(), BusinessCardController {
     }
 
     private fun showCards (cards: ArrayList<BusinessCard>) {
-        val adapter = BusinessCardsAdapter(cards, this, this)
+        val adapter = BusinessCardsAdapter(cards, this, this, cardsList)
         cardsList.setAdapter(adapter)
     }
 
-    private fun logout () {
-        setResult(LoginActivity.ACTION.ACTION_LOGOUT.getCode())
-        finish()
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        super.onOptionsItemSelected(item)
+        when (item.itemId) {
+            R.id.action_filter -> {
+                filterState = !filterState
+            }
+            R.id.action_search -> {
+                searchView.showSearch()
+            }
+            R.id.action_refresh -> {
+                loadCards(filters = loadFilters())
+            }
+        }
+        return true
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -269,41 +269,6 @@ class MainActivity : AppCompatActivity(), BusinessCardController {
         super.onWindowFocusChanged(hasFocus)
         cardsList.setIndicatorBounds(cardsList.right - min(cardsList.width / 10, 100)
             , cardsList.width)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(if (BuildConfig.DEBUG) R.menu.menu_main_debug else R.menu.menu_main, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        return when(item.itemId) {
-            R.id.action_settings -> {
-                openSettings()
-                return true
-            }
-            R.id.action_refresh -> {
-                loadCards(filters = loadFilters())
-                return true
-            }
-            R.id.action_logout -> {
-                logout()
-                return true
-            }
-            R.id.action_search -> {
-                searchView.showSearch()
-                return true
-            }
-            R.id.action_filter -> {
-                filterState = !filterState
-                return true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
     }
 
     private fun applyFilters(filters: MutableMap<String, String>) {

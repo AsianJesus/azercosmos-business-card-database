@@ -21,6 +21,7 @@ import com.azercosmos.businesscarddatabase.data.BusinessCard
 import com.azercosmos.businesscarddatabase.recognizer.RecognizePatterns
 import com.azercosmos.businesscarddatabase.recognizer.Recognizer
 import com.azercosmos.businesscarddatabase.utils.HelperClass
+import com.azercosmos.businesscarddatabase.utils.LoadImage
 import com.azercosmos.businesscarddatabase.utils.RequestManager
 import com.yalantis.ucrop.UCrop
 import kotlinx.android.synthetic.main.activity_edit_card.*
@@ -28,7 +29,7 @@ import org.json.JSONObject
 import java.io.ByteArrayOutputStream
 import java.io.File
 
-class EditCardActivity : AppCompatActivity() {
+class EditCardActivity : BaseActivity() {
 
     private var image: Bitmap? = null
     lateinit var card: BusinessCard
@@ -43,6 +44,7 @@ class EditCardActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_card)
+        setupToolbar()
 
         sharedPreferences = getSharedPreferences("com.azercosmos.businesscarddatabase", Context.MODE_PRIVATE)
 
@@ -61,6 +63,13 @@ class EditCardActivity : AppCompatActivity() {
             editCardWebsite.setText(card.website)
             editCardEmail.setText(card.email)
             editCardNote.setText(card.note)
+            if (card.imagePath != null) {
+                val url = "${RequestManager.getServerUrl()}/${card.imagePath}"
+                LoadImage(
+                    editCardImage,
+                    this
+                ).execute(url)
+            }
             editCardIsPrivate.isChecked = card.private
 
             editCardSaveButton.setOnClickListener {
@@ -110,6 +119,7 @@ class EditCardActivity : AppCompatActivity() {
             return false
         }
 
+        editCardSaveButton.isEnabled = false
         sendEditRequest(name, company, email, address, phone, website, position, editCardIsPrivate.isChecked, image, note)
         return true
     }
@@ -124,6 +134,7 @@ class EditCardActivity : AppCompatActivity() {
                 }
                 isSaving = false
                 update(it, note)
+                editCardSaveButton.isEnabled = true
                 finish()
             }, Response.ErrorListener {
                 // Toast.makeText(this, "Error occurred: ${it.message}", Toast.LENGTH_LONG).show()
@@ -132,6 +143,7 @@ class EditCardActivity : AppCompatActivity() {
                     (fileToDelete as File).delete()
                 }
                 RequestManager.handleError(it, this)
+                editCardSaveButton.isEnabled = true
             })
         isSaving = true
         request.addStringParam("name", name)
@@ -196,8 +208,9 @@ class EditCardActivity : AppCompatActivity() {
             } else {
                 // Toast.makeText(this, "Crop is successful!", Toast.LENGTH_SHORT).show()
                 if (data != null) {
-                    val uri = UCrop.getOutput(data as Intent)
+                    val uri = UCrop.getOutput(data)
                     image = MediaStore.Images.Media.getBitmap(contentResolver, uri)
+                    editCardImage.setImageBitmap(image)
                     if (image != null) {
                         if (image != null && editCardRecognition.isChecked) {
                             fillFields(recognizer.recognize(image as Bitmap))

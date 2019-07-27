@@ -20,5 +20,7 @@
         <domain includeSubdomains="true">10.42.0.1</domain>
         <domain includeSubdomains="true">192.168.137.207</domain>
         <domain includeSubdomains="true">bcd.labproxy.com</domain>
+        <domain includeSubdomains="true">blog.azercosmos.dev</domain>
+        <domain includeSubdomains="true">bcd.azercosmos.dev</domain>
     </domain-config>
 </network-security-config>

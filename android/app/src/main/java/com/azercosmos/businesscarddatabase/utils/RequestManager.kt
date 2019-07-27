@@ -17,7 +17,9 @@ class RequestManager {
         private var sharedPreferences: SharedPreferences? = null
 
         private val DEFAULT_ADDRESS = "http://192.168.1.8"
-        private val API_ADDRESS = "https://bcd.labproxy.com/azercosmos-business-card-database/api/public"
+        private val DEFAULT_LOGIN_ADDRESS = "https://blog.azercosmos.dev/azercosmos-auth/public"
+        private val LOGIN_ADDRESS = "https://blog.azercosmos.dev/azercosmos-auth/public"
+        private val API_ADDRESS = "https://blog.azercosmos.dev/azercosmos-business-card-database/api/public"
 
         fun setSharedPreferences (sharedPreferences: SharedPreferences) {
             this.sharedPreferences = sharedPreferences
@@ -43,6 +45,10 @@ class RequestManager {
         fun getServerUrl(): String {
             return if(BuildConfig.DEBUG) sharedPreferences?.getString("api_address", DEFAULT_ADDRESS) ?: DEFAULT_ADDRESS
                     else API_ADDRESS
+        }
+        fun getLoginUrl(): String {
+            return if(BuildConfig.DEBUG) sharedPreferences?.getString("login_address", DEFAULT_LOGIN_ADDRESS) ?: DEFAULT_LOGIN_ADDRESS
+                    else LOGIN_ADDRESS
         }
 
         fun handleError (error: VolleyError, activity: Activity) {

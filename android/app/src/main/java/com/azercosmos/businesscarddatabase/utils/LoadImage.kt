@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.drawable.Drawable
 import android.os.AsyncTask
 import android.widget.ImageView
+import com.azercosmos.businesscarddatabase.R
 import java.io.InputStream
 import java.net.URL
 
@@ -25,6 +26,11 @@ class LoadImage() : AsyncTask<String, Void, Drawable>() {
         } catch (e: Exception) {
             return null
         }
+    }
+
+    override fun onPreExecute() {
+        super.onPreExecute()
+        imageView.setImageResource(R.drawable.loading )
     }
 
     override fun onPostExecute(result: Drawable?) {

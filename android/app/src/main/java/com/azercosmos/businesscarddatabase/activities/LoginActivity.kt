@@ -78,7 +78,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun tryLogin (username: String, password: String,  callback: (id: Int, token: String) -> Unit) {
-        val url = "${RequestManager.getServerUrl()}/users"
+        val url = "${RequestManager.getLoginUrl()}/login"
         val params = JSONObject()
         try {
             params.put("login", username)
@@ -89,7 +89,9 @@ class LoginActivity : AppCompatActivity() {
         val request = JsonObjectRequest(Request.Method.POST, url, params, {
             callback(it.getInt("id"), it.getString("key"))
         }, {
-            Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Username or password is wrong", Toast.LENGTH_LONG).show()
+            RequestManager.handleError(it, this)
+            it.printStackTrace()
         })
         RequestManager.sendRequest(request)
     }

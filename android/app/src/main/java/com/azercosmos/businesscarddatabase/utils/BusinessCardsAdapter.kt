@@ -9,10 +9,7 @@ import android.support.design.widget.FloatingActionButton
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.BaseExpandableListAdapter
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import com.azercosmos.businesscarddatabase.R
 import com.azercosmos.businesscarddatabase.callbacks.AfterCardDeleteCallback
 import com.azercosmos.businesscarddatabase.callbacks.AfterCardEditCallback
@@ -20,10 +17,16 @@ import com.azercosmos.businesscarddatabase.callbacks.BusinessCardController
 import com.azercosmos.businesscarddatabase.data.BusinessCard
 
 
-class BusinessCardsAdapter(private val dataSet: ArrayList<BusinessCard>, private var context: Activity, private val controller: BusinessCardController) :
+class BusinessCardsAdapter(
+    private val dataSet: ArrayList<BusinessCard>,
+    private var context: Activity,
+    private val controller: BusinessCardController,
+    private val listView: ExpandableListView
+) :
     BaseExpandableListAdapter(), AfterCardDeleteCallback,
     AfterCardEditCallback {
 
+    var lastExpandedCardId: String? = null
     override fun getChildView(
         groupPosition: Int,
         childPosition: Int,
@@ -34,6 +37,7 @@ class BusinessCardsAdapter(private val dataSet: ArrayList<BusinessCard>, private
         var convView = convertView
         val inflater = context.layoutInflater
         val card = getChild(groupPosition, childPosition) as BusinessCard
+
         if (convView == null) {
             convView = inflater.inflate(R.layout.list_child_item, null)
         }
@@ -72,9 +76,10 @@ class BusinessCardsAdapter(private val dataSet: ArrayList<BusinessCard>, private
         return convView as View
     }
 
-    override fun getGroupView(groupPosition: Int, isExpanded: Boolean, convertView: View?, parent: ViewGroup?): View {
+    override fun getGroupView(groupPosition: Int, _isExpanded: Boolean, convertView: View?, parent: ViewGroup?): View {
         var conv: View? = convertView
         val card = getGroup(groupPosition) as BusinessCard
+        val isExpanded = lastExpandedCardId == card.id
         if (conv == null) {
             val layoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
             conv = layoutInflater.inflate(R.layout.list_item, null)
@@ -104,7 +109,23 @@ class BusinessCardsAdapter(private val dataSet: ArrayList<BusinessCard>, private
             }
         }
         notifyDataSetChanged()
+    }
 
+    override fun onGroupCollapsed(groupPosition: Int) {
+        super.onGroupCollapsed(groupPosition)
+        lastExpandedCardId = null
+    }
+
+    override fun onGroupExpanded(groupPosition: Int) {
+        super.onGroupExpanded(groupPosition)
+        if (lastExpandedCardId != null) {
+            for (i in 0 until groupCount) {
+                if (i != groupPosition && (getGroup(i) as BusinessCard).id == lastExpandedCardId) {
+                    listView.collapseGroup(i)
+                }
+            }
+        }
+        lastExpandedCardId = (getGroup(groupPosition) as BusinessCard).id
     }
 
     override fun afterEdit(card: BusinessCard) {

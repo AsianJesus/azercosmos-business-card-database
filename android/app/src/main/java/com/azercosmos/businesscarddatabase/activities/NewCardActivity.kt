@@ -10,13 +10,10 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.support.v4.content.CursorLoader
-import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.widget.Toast
 import com.android.volley.Request
 import com.android.volley.Response
-import com.android.volley.request.JsonObjectRequest
-import com.android.volley.request.MultiPartRequest
 import com.android.volley.request.SimpleMultiPartRequest
 import com.android.volley.request.StringRequest
 import com.azercosmos.businesscarddatabase.R
@@ -26,12 +23,11 @@ import com.azercosmos.businesscarddatabase.recognizer.Recognizer
 import com.azercosmos.businesscarddatabase.utils.HelperClass
 import com.azercosmos.businesscarddatabase.utils.RequestManager
 import com.yalantis.ucrop.UCrop
-import kotlinx.android.synthetic.main.activity_new_card_photo.*
-import org.json.JSONObject
+import kotlinx.android.synthetic.main.activity_new_card.*
 import java.io.ByteArrayOutputStream
 import java.io.File
 
-class NewCardActivity : AppCompatActivity() {
+class NewCardActivity : BaseActivity() {
 
     val REQUEST_IMAGE_CAPTURE = 1
     val REQUEST_PICK_IMAGE = 2
@@ -46,7 +42,8 @@ class NewCardActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_new_card_photo)
+        setContentView(R.layout.activity_new_card)
+        setupToolbar()
         setResult(Activity.RESULT_CANCELED)
 
         sharedPreferences = getSharedPreferences("com.azercosmos.businesscarddatabase", Context.MODE_PRIVATE)
@@ -91,7 +88,9 @@ class NewCardActivity : AppCompatActivity() {
             return false
         }
 
+        saveButton.isEnabled = false
         RequestManager.sendRequest(checkSimilar(name, company, position) { exists ->
+            saveButton.isEnabled = true
             if (exists) {
                 val dialog = SimilarCardExists()
                 dialog.setCallback {
@@ -157,6 +156,7 @@ class NewCardActivity : AppCompatActivity() {
             Response.Listener {
                 callback(it == "true")
             }, Response.ErrorListener {
+                callback(false)
                 RequestManager.handleError(it, this)
             })
         return request
@@ -188,6 +188,7 @@ class NewCardActivity : AppCompatActivity() {
                 if (data != null) {
                     val uri = UCrop.getOutput(data as Intent)
                     image = MediaStore.Images.Media.getBitmap(contentResolver, uri)
+                    newCardImage.setImageBitmap(image)
                     if (image != null) {
                         if (image != null && newCardRecognition.isChecked) {
                             fillFields(recognizer.recognize(image as Bitmap))

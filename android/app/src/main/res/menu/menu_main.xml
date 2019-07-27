@@ -9,10 +9,10 @@
           android:orderInCategory="100"
           app:showAsAction="always" />
     <item android:id="@+id/action_filter"
-          android:title=""
+          android:title="Filter"
           android:icon="@drawable/filter"
           android:orderInCategory="100"
-          app:showAsAction="always" />
+          app:showAsAction="never" />
     <item android:id="@+id/action_refresh"
         android:title="Refresh"
         android:orderInCategory="100"
