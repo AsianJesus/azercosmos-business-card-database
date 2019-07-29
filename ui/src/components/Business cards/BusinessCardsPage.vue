@@ -430,11 +430,11 @@
             </b-btn>
             <div style="display: block;border-radius:0 !important;float: right;margin-top: 10px; text-align:right;">
 
-                <b-btn  variant="primary"
+                <!--<b-btn  variant="primary"
                         class=" g-wide-button"
                         @click="openPasswordPrompt">
                     Generate password
-                </b-btn>
+                </b-btn>-->
                 <b-btn @click="exportedExcel"
                        class=" g-wide-button"
                        variant="success"
