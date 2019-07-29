@@ -9,8 +9,6 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.support.v4.content.CursorLoader
-import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.widget.Toast
 import com.android.volley.Request
@@ -18,19 +16,21 @@ import com.android.volley.Response
 import com.android.volley.request.SimpleMultiPartRequest
 import com.azercosmos.businesscarddatabase.R
 import com.azercosmos.businesscarddatabase.data.BusinessCard
-import com.azercosmos.businesscarddatabase.recognizer.RecognizePatterns
 import com.azercosmos.businesscarddatabase.recognizer.Recognizer
 import com.azercosmos.businesscarddatabase.utils.HelperClass
 import com.azercosmos.businesscarddatabase.utils.LoadImage
+import com.azercosmos.businesscarddatabase.recognizer.RecognizeTask
 import com.azercosmos.businesscarddatabase.utils.RequestManager
 import com.yalantis.ucrop.UCrop
-import kotlinx.android.synthetic.main.activity_edit_card.*
+import kotlinx.android.synthetic.main.activity_new_card.*
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
 import java.io.File
+import java.lang.ref.WeakReference
 
-class EditCardActivity : BaseActivity() {
+class EditCardActivity : CardActivityBase() {
 
+    private var recognitionTask: RecognizeTask? = null
     private var image: Bitmap? = null
     lateinit var card: BusinessCard
     lateinit var sharedPreferences: SharedPreferences
@@ -43,7 +43,7 @@ class EditCardActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_edit_card)
+        setContentView(R.layout.activity_new_card)
         setupToolbar()
 
         sharedPreferences = getSharedPreferences("com.azercosmos.businesscarddatabase", Context.MODE_PRIVATE)
@@ -55,29 +55,29 @@ class EditCardActivity : BaseActivity() {
 
         if (card != null) {
             this.card = card
-            editCardName.setText(card.name)
-            editCardCompany.setText(card.company)
-            editCardPosition.setText(card.position)
-            editCardAddress.setText(card.address)
-            editCardPhone.setText(card.phone)
-            editCardWebsite.setText(card.website)
-            editCardEmail.setText(card.email)
-            editCardNote.setText(card.note)
+            cardName.setText(card.name)
+            cardCompany.setText(card.company)
+            cardPosition.setText(card.position)
+            cardAddress.setText(card.address)
+            cardPhone.setText(card.phone)
+            cardWebsite.setText(card.website)
+            cardEmail.setText(card.email)
+            cardNote.setText(card.note)
             if (card.imagePath != null) {
                 val url = "${RequestManager.getServerUrl()}/${card.imagePath}"
                 LoadImage(
-                    editCardImage,
+                    cardImage,
                     this
                 ).execute(url)
             }
-            editCardIsPrivate.isChecked = card.private
+            cardIsPrivate.isChecked = card.private
 
-            editCardSaveButton.setOnClickListener {
+            saveButton.setOnClickListener {
                 saveChanges()
             }
         }
 
-        editCardChoosePhotoFab.setOnClickListener {
+        choosePhotoFab.setOnClickListener {
             Intent().also {
                 it.type = "image/*"
                 it.action = Intent.ACTION_GET_CONTENT
@@ -85,7 +85,7 @@ class EditCardActivity : BaseActivity() {
             }
         }
 
-        editCardMakePhotoFab.setOnClickListener {
+        makePhotoFab.setOnClickListener {
             val values = ContentValues()
             values.put(MediaStore.Images.Media.TITLE, "New Picture")
             imageUri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
@@ -100,18 +100,17 @@ class EditCardActivity : BaseActivity() {
     private fun saveChanges (): Boolean {
 
         if (isSaving) {
-            // Toast.makeText(this, "Already saving card", Toast.LENGTH_SHORT).show()
             return false
         }
 
-        val name = editCardName.text.toString()
-        val company = editCardCompany.text.toString()
-        val position = editCardPosition.text.toString()
-        val email = editCardEmail.text.toString()
-        val phone = editCardPhone.text.toString()
-        val website = editCardWebsite.text.toString()
-        val address = editCardAddress.text.toString()
-        val note = editCardNote.text.toString()
+        val name = cardName.text.toString()
+        val company = cardCompany.text.toString()
+        val position = cardPosition.text.toString()
+        val email = cardEmail.text.toString()
+        val phone = cardPhone.text.toString()
+        val website = cardWebsite.text.toString()
+        val address = cardAddress.text.toString()
+        val note = cardNote.text.toString()
 
         val error = HelperClass.validate(name, company, position, email, website)
         if (error != null) {
@@ -119,8 +118,8 @@ class EditCardActivity : BaseActivity() {
             return false
         }
 
-        editCardSaveButton.isEnabled = false
-        sendEditRequest(name, company, email, address, phone, website, position, editCardIsPrivate.isChecked, image, note)
+        saveButton.isEnabled = false
+        sendEditRequest(name, company, email, address, phone, website, position, cardIsPrivate.isChecked, image, note)
         return true
     }
 
@@ -134,7 +133,7 @@ class EditCardActivity : BaseActivity() {
                 }
                 isSaving = false
                 update(it, note)
-                editCardSaveButton.isEnabled = true
+                saveButton.isEnabled = true
                 finish()
             }, Response.ErrorListener {
                 // Toast.makeText(this, "Error occurred: ${it.message}", Toast.LENGTH_LONG).show()
@@ -143,7 +142,7 @@ class EditCardActivity : BaseActivity() {
                     (fileToDelete as File).delete()
                 }
                 RequestManager.handleError(it, this)
-                editCardSaveButton.isEnabled = true
+                saveButton.isEnabled = true
             })
         isSaving = true
         request.addStringParam("name", name)
@@ -167,20 +166,9 @@ class EditCardActivity : BaseActivity() {
             } catch (e: Exception) {
                 // Toast.makeText(this, "Error while opened file: ${e.message}", Toast.LENGTH_SHORT).show()
             }
-            request.addFile("photo", getPath(Uri.parse(path)))
+            request.addFile("photo", HelperClass.getPath(this, Uri.parse(path)))
         }
         RequestManager.sendRequest(request)
-    }
-
-    private fun getPath(uri: Uri): String {
-        val proj = arrayOf(MediaStore.Images.Media.DATA)
-        val loader = CursorLoader(applicationContext, uri, proj, null, null, null)
-        val cursor = loader.loadInBackground()
-        val columnIndex = cursor?.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
-        cursor?.moveToFirst()
-        val result = cursor?.getString(columnIndex as Int)
-        cursor?.close()
-        return result as String
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -204,49 +192,20 @@ class EditCardActivity : BaseActivity() {
         if (requestCode == UCrop.REQUEST_CROP) {
             if (resultCode == UCrop.RESULT_ERROR) {
                 // Toast.makeText(this, "Error on crop", Toast.LENGTH_SHORT).show()
-                Log.e("crop_error", UCrop.getError(data as Intent)?.message)
+                Log.e("crop_error", UCrop.getError(data!!)?.message)
             } else {
                 // Toast.makeText(this, "Crop is successful!", Toast.LENGTH_SHORT).show()
                 if (data != null) {
                     val uri = UCrop.getOutput(data)
                     image = MediaStore.Images.Media.getBitmap(contentResolver, uri)
-                    editCardImage.setImageBitmap(image)
+                    cardImage.setImageBitmap(image)
                     if (image != null) {
-                        if (image != null && editCardRecognition.isChecked) {
-                            fillFields(recognizer.recognize(image as Bitmap))
+                        if (image != null && cardRecognition.isChecked) {
+                            startRecognizing(image!!)
                         }
                     }
                 }
             }
-        }
-        /*if (requestCode == REQUEST_IMAGE_CAPTURE) {
-            // Toast.makeText(this, "You took photo!", Toast.LENGTH_SHORT).show()
-            image = MediaStore.Images.Media.getBitmap(contentResolver, imageUri)
-            if (image != null && editCardRecognition.isChecked) {
-                image = ImageUtils.limitImageSize(image as Bitmap, 2000, 2000)
-                fillFields(recognizer.recognize(image as Bitmap))
-            }
-        }
-        if (requestCode == REQUEST_PICK_IMAGE && data != null) {
-            // Toast.makeText(this, "You picked image", Toast.LENGTH_SHORT).show()
-            val pickUri = data.data
-            image = if(pickUri != null) MediaStore.Images.Media.getBitmap(contentResolver, pickUri) else null
-            if (image != null && editCardRecognition.isChecked) {
-                image = ImageUtils.limitImageSize(image as Bitmap, 2000, 2000)
-                fillFields(recognizer.recognize(image as Bitmap))
-            }
-        }*/
-
-    }
-    private fun fillFields (fields: Map<RecognizePatterns, String>) {
-        if (fields.containsKey(RecognizePatterns.NAME)) {
-            editCardName.setText(fields[RecognizePatterns.NAME])
-        }
-        if (fields.containsKey(RecognizePatterns.PHONE)) {
-            editCardPhone.setText(fields[RecognizePatterns.PHONE])
-        }
-        if (fields.containsKey(RecognizePatterns.EMAIL)) {
-            editCardEmail.setText(fields[RecognizePatterns.EMAIL])
         }
     }
 
@@ -267,5 +226,12 @@ class EditCardActivity : BaseActivity() {
             it.putExtra("new_card", card)
             setResult(Activity.RESULT_OK, it)
         }
+    }
+
+
+    private fun startRecognizing(image: Bitmap) {
+        recognitionTask =
+            RecognizeTask(WeakReference(this), WeakReference(this))
+        recognitionTask!!.execute(image)
     }
 }

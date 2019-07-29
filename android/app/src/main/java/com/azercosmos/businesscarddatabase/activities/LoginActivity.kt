@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.os.Environment
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.Toast
@@ -97,7 +96,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun redirectToMain() {
-        Intent(this, MainActivity::class.java).also {
+        Intent(this, MainActivityBase::class.java).also {
             startActivityForResult(it, REQUEST_MAIN_ACTIVITY)
         }
     }

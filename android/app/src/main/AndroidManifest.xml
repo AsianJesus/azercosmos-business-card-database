@@ -3,6 +3,7 @@
     package="com.azercosmos.businesscarddatabase" >
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <application
@@ -28,9 +29,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.MainActivity"
+        <activity android:name=".activities.MainActivityBase"
                   android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activities.NewCardActivity"
+        <activity android:name=".activities.NewCardActivityBase"
                   android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".activities.ConfigActivity"
                   android:theme="@style/AppTheme.NoActionBar" />
