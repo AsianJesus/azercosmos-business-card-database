@@ -615,7 +615,15 @@
                 console.log(this.form)
             },
             recognizeImage(image) {
-                this.$Tesseract.recognize(image, {
+                let form = new FormData()
+                form.append("card", image)
+                this.axios.post('/business-cards/recognize', form).then(response => {
+                    let data = response.data
+                    this.autoFillFields(data)
+                }).catch(err => {
+                    console.log(err)
+                })
+                /*this.$Tesseract.recognize(image, {
                     lang: this.selectedLang
                 }).progress(p => {
                     this.recognizing.progress = p
@@ -624,13 +632,20 @@
                     this.autoFillFields()
                 }).catch(err => {
                     console.log(err)
-                })
+                })*/
             },
-            autoFillFields() {
-                this.form.name = recognize(this.recognizing.recognizedText, 'name', this.selectedLang)
-                this.form.mobile = recognize(this.recognizing.recognizedText, 'phone', this.selectedLang)
-                this.form.email = recognize(this.recognizing.recognizedText, 'email', this.selectedLang)
-                this.form.website = recognize(this.recognizing.recognizedText, 'website', this.selectedLang)
+            autoFillFields(fields) {
+                if (fields) {
+                    this.form.name = fields.name
+                    this.form.mail = (fields.email || [])[0]
+                    this.form.mobile = fields.mobile || fields.phone
+                    this.form.address = fields.address
+                } else {
+                    this.form.name = recognize(this.recognizing.recognizedText, 'name', this.selectedLang)
+                    this.form.mobile = recognize(this.recognizing.recognizedText, 'phone', this.selectedLang)
+                    this.form.email = recognize(this.recognizing.recognizedText, 'email', this.selectedLang)
+                    this.form.website = recognize(this.recognizing.recognizedText, 'website', this.selectedLang)
+                }
             }
         }
     }
