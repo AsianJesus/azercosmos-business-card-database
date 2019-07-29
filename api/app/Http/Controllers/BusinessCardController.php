@@ -161,4 +161,30 @@ class BusinessCardController extends Controller
         );
     }
 
+    function recognizeCard (Request $request) {
+        $card = $request->file('card');
+        if ($card == null) {
+            return response('No card is present', 403);
+        }
+        // Move file, so script can recognize content by extension
+        $filename = $card->getFilename().".".$card->extension();
+        $card->move('../tmp', $card->getFilename().".".$card->extension());
+
+        // Get absolute path of file
+        $path = exec("pwd")."/../tmp/$filename";
+
+        // Get recognizer path and recognize
+        $recognizer = env('RECOGNIZER');
+        $result = [];
+        exec("$recognizer --path=$path", $result);
+
+        // Delete file after recognizing
+        unlink($path);
+        $is_error = sizeof($result) != 1;
+        if ($is_error) {
+            return null;
+        } else {
+            return (array)json_decode($result[0]);
+        }
+    }
 }

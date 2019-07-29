@@ -69,3 +69,5 @@ $router->get('/test/load-image', function () {
 $router->get('/test', function () {
     dispatch(new \App\Jobs\LoadImage('images/1543582655.jpeg'));
 });
+
+$router->post('/test/recognize', 'BusinessCardController@recognizeCard');
