@@ -20,6 +20,7 @@ $router->group(['middleware' => 'check_auth'], function () use ($router) {
     $router->get('/business-cards-one/{id}', ['middleware' => 'business_cards_filter', 'uses' => 'BusinessCardController@getOne']);
     $router->post('/business-cards-one/exists', 'BusinessCardController@doesExists');
     $router->get('/business-cards/{id}', 'BusinessCardController@getById');
+    $router->post('/business-cards/recognize', 'BusinessCardController@recognizeCard');
     $router->post('/business-cards/', ['middleware' => 'register_add', 'uses' => 'BusinessCardController@add']);
     $router->put('/business-cards/{id}', ['uses' => 'BusinessCardController@update', 'middleware' => ['check_permission', 'register_update']]);
     $router->post('/business-cards/{id}', ['uses' => 'BusinessCardController@update', 'middleware' => ['check_permission', 'register_update']]);
@@ -70,4 +71,4 @@ $router->get('/test', function () {
     dispatch(new \App\Jobs\LoadImage('images/1543582655.jpeg'));
 });
 
-$router->post('/test/recognize', 'BusinessCardController@recognizeCard');
+// $router->post('/test/recognize', 'BusinessCardController@recognizeCard');
