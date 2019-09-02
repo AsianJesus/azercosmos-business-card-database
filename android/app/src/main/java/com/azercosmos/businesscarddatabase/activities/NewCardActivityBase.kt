@@ -36,6 +36,7 @@ class NewCardActivityBase : CardActivityBase() {
     var cameraImageUri: Uri? = null
     lateinit var sharedPreferences: SharedPreferences
     private var recognitionTask: RecognizeTask? = null
+    private var isCreating: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,6 +70,10 @@ class NewCardActivityBase : CardActivityBase() {
     }
 
     private fun createCard (): Boolean {
+        if (isCreating) {
+            Toast.makeText(this, "Card is already being created", Toast.LENGTH_SHORT).show()
+            return false
+        }
         // Toast.makeText(this, "Creating card", Toast.LENGTH_SHORT).show()
         val name = cardName.text.toString()
         val company = cardCompany.text.toString()
@@ -85,6 +90,7 @@ class NewCardActivityBase : CardActivityBase() {
             return false
         }
 
+        isCreating = true
         saveButton.isEnabled = false
         RequestManager.sendRequest(checkSimilar(name, company, position) { exists ->
             saveButton.isEnabled = true
@@ -93,6 +99,8 @@ class NewCardActivityBase : CardActivityBase() {
                 dialog.setCallback {
                     if (it) {
                         sendCreateRequest(name, company, email, address, phone, website, position, cardIsPrivate.isChecked, image, note)
+                    } else {
+                        isCreating = false
                     }
                 }
                 dialog.show(supportFragmentManager, "similar_card")
@@ -111,6 +119,7 @@ class NewCardActivityBase : CardActivityBase() {
             if (fileToDelete != null) {
                 (fileToDelete as File).delete()
             }
+            isCreating = false
             setResult(Activity.RESULT_OK)
             finish()
         }, Response.ErrorListener {
@@ -118,7 +127,8 @@ class NewCardActivityBase : CardActivityBase() {
             if (fileToDelete != null) {
                 (fileToDelete as File).delete()
             }
-                RequestManager.handleError(it, this)
+            isCreating = false
+            RequestManager.handleError(it, this)
         })
         request.addStringParam("name", name)
         request.addStringParam("company_name", company)

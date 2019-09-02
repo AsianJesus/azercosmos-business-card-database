@@ -45,6 +45,7 @@ class MainActivityBase : ActivityBase(), BusinessCardController {
      */
     private val REQUEST_NEW_CARD = 3
     private val REQUEST_EDIT_CARD = 4
+    private val REQUEST_PERMISSIONS = 1215
 
     private val timer: Timer = Timer()
 
@@ -76,6 +77,8 @@ class MainActivityBase : ActivityBase(), BusinessCardController {
                 startActivityForResult(it, REQUEST_NEW_CARD)
             }
         }
+
+        AssetsDecompressor.requestPermissions(this, REQUEST_PERMISSIONS)
 
         val context = this
         searchView.setOnQueryTextListener(object : SimpleSearchView.OnQueryTextListener {

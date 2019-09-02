@@ -16,7 +16,7 @@ class RequestManager {
         private var requestQueue: RequestQueue? = null
         private var sharedPreferences: SharedPreferences? = null
 
-        private val DEFAULT_ADDRESS = "http://192.168.1.8"
+        private val DEFAULT_ADDRESS = "https://blog.azercosmos.dev/azercosmos-business-card-database/api/public"
         private val DEFAULT_LOGIN_ADDRESS = "https://blog.azercosmos.dev/azercosmos-auth/public"
         private val LOGIN_ADDRESS = "https://blog.azercosmos.dev/azercosmos-auth/public"
         private val API_ADDRESS = "https://blog.azercosmos.dev/azercosmos-business-card-database/api/public"

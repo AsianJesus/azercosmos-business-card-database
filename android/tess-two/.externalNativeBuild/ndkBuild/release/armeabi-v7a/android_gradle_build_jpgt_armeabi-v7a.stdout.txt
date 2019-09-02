@@ -1,51 +1,5 @@
-Android NDK: WARNING:/home/junior/Projects/azercosmos-business-card-database/android/tess-two/jni/com_googlecode_tesseract_android/Android.mk:tess: non-system libraries in linker flags: -latomic    
+Android NDK: WARNING:/home/junior/Projects/Azercosmos/azercosmos-business-card-database/android/tess-two/jni/com_googlecode_tesseract_android/Android.mk:tess: non-system libraries in linker flags: -latomic    
 Android NDK:     This is likely to result in incorrect builds. Try using LOCAL_STATIC_LIBRARIES    
 Android NDK:     or LOCAL_SHARED_LIBRARIES instead to list the library dependencies of the    
 Android NDK:     current module    
-[armeabi-v7a] Compile thumb  : jpgt <= jaricom.c
-[armeabi-v7a] Compile thumb  : jpgt <= jcapimin.c
-[armeabi-v7a] Compile thumb  : jpgt <= jcapistd.c
-[armeabi-v7a] Compile thumb  : jpgt <= jcarith.c
-[armeabi-v7a] Compile thumb  : jpgt <= jccoefct.c
-[armeabi-v7a] Compile thumb  : jpgt <= jccolor.c
-[armeabi-v7a] Compile thumb  : jpgt <= jcdctmgr.c
-[armeabi-v7a] Compile thumb  : jpgt <= jchuff.c
-[armeabi-v7a] Compile thumb  : jpgt <= jcinit.c
-[armeabi-v7a] Compile thumb  : jpgt <= jcmainct.c
-[armeabi-v7a] Compile thumb  : jpgt <= jcmarker.c
-[armeabi-v7a] Compile thumb  : jpgt <= jcmaster.c
-[armeabi-v7a] Compile thumb  : jpgt <= jcomapi.c
-[armeabi-v7a] Compile thumb  : jpgt <= jcparam.c
-[armeabi-v7a] Compile thumb  : jpgt <= jcprepct.c
-[armeabi-v7a] Compile thumb  : jpgt <= jcsample.c
-[armeabi-v7a] Compile thumb  : jpgt <= jctrans.c
-[armeabi-v7a] Compile thumb  : jpgt <= jdapimin.c
-[armeabi-v7a] Compile thumb  : jpgt <= jdapistd.c
-[armeabi-v7a] Compile thumb  : jpgt <= jdarith.c
-[armeabi-v7a] Compile thumb  : jpgt <= jdatadst.c
-[armeabi-v7a] Compile thumb  : jpgt <= jdatasrc.c
-[armeabi-v7a] Compile thumb  : jpgt <= jdcoefct.c
-[armeabi-v7a] Compile thumb  : jpgt <= jdcolor.c
-[armeabi-v7a] Compile thumb  : jpgt <= jddctmgr.c
-[armeabi-v7a] Compile thumb  : jpgt <= jdhuff.c
-[armeabi-v7a] Compile thumb  : jpgt <= jdinput.c
-[armeabi-v7a] Compile thumb  : jpgt <= jdmainct.c
-[armeabi-v7a] Compile thumb  : jpgt <= jdmarker.c
-[armeabi-v7a] Compile thumb  : jpgt <= jdmaster.c
-[armeabi-v7a] Compile thumb  : jpgt <= jdmerge.c
-[armeabi-v7a] Compile thumb  : jpgt <= jdpostct.c
-[armeabi-v7a] Compile thumb  : jpgt <= jdsample.c
-[armeabi-v7a] Compile thumb  : jpgt <= jdtrans.c
-[armeabi-v7a] Compile thumb  : jpgt <= jerror.c
-[armeabi-v7a] Compile thumb  : jpgt <= jfdctflt.c
-[armeabi-v7a] Compile thumb  : jpgt <= jfdctfst.c
-[armeabi-v7a] Compile thumb  : jpgt <= jfdctint.c
-[armeabi-v7a] Compile thumb  : jpgt <= jidctflt.c
-[armeabi-v7a] Compile thumb  : jpgt <= jidctfst.c
-[armeabi-v7a] Compile thumb  : jpgt <= jidctint.c
-[armeabi-v7a] Compile thumb  : jpgt <= jquant1.c
-[armeabi-v7a] Compile thumb  : jpgt <= jquant2.c
-[armeabi-v7a] Compile thumb  : jpgt <= jutils.c
-[armeabi-v7a] Compile thumb  : jpgt <= jmemmgr.c
-[armeabi-v7a] Compile thumb  : jpgt <= jmemname.c
-[armeabi-v7a] SharedLibrary  : libjpgt.so
+make: `/home/junior/Projects/Azercosmos/azercosmos-business-card-database/android/tess-two/build/intermediates/ndkBuild/release/obj/local/armeabi-v7a/libjpgt.so' is up to date.

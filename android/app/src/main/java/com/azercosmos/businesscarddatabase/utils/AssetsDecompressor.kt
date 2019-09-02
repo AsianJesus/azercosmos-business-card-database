@@ -1,6 +1,8 @@
 package com.azercosmos.businesscarddatabase.utils
 
 import android.Manifest
+import android.content.Context
+import android.content.pm.PackageManager
 import android.content.res.AssetManager
 import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AppCompatActivity
@@ -15,11 +17,21 @@ class AssetsDecompressor {
             return arrayOf()
         }
 
+        private val permissions: Array<String> = arrayOf(
+            // Manifest.permission.CAMERA,
+            Manifest.permission.INTERNET,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.READ_EXTERNAL_STORAGE
+        )
+
         fun requestPermissions(activity: AppCompatActivity, requestCode: Int) {
-            ActivityCompat.requestPermissions(activity,
-                arrayOf(
-                    Manifest.permission.CAMERA, Manifest.permission.INTERNET,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE), requestCode)
+            for (permission in permissions) {
+                if (activity.checkCallingOrSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(activity, permissions, requestCode)
+                    Log.d("permission", "$permission is not granted")
+                    break
+                }
+            }
         }
 
         fun unpack (assetManager: AssetManager, path: String, assetPath: String = "", force: Boolean = false) {

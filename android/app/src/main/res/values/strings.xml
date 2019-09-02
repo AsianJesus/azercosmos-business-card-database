@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">BCD</string>
+    <string name="app_name">Business Cards</string>
     <string name="action_settings">Settings</string>
     <string name="assets_path">BCD/assets/</string>
     <!--<string name="default_username">tarlan.mammadzada</string>
