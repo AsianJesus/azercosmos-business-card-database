@@ -1,5 +1,5 @@
 <?php
-return 1;
+
 if (isset($_SESSION['id'])) {
     return $_SESSION['id'];
 }
