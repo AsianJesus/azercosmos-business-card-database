@@ -182,7 +182,7 @@ class BusinessCardController extends Controller
         unlink($path);
         $is_error = sizeof($result) != 1;
         if ($is_error) {
-            return null;
+            return $result;
         } else {
             return (array)json_decode($result[0]);
         }

@@ -1,6 +1,5 @@
 const getUrl = window.location;
-// let baseUrl = getUrl.protocol + '//' + getUrl.hostname
-let baseUrl = 'http://localhost'
-// export const serverURL = baseUrl + '/azercosmos-business-card-database/api/public/'
-export const serverURL = baseUrl + '/'
-export const authURL = 'http://localhost:90/'
+let baseUrl = getUrl.protocol + '//' + getUrl.hostname
+// let baseUrl = 'http://localhost'
+export const serverURL = baseUrl + '/systems/azercosmos-business-card-database/api/public/'
+//export const serverURL = baseUrl + '/'

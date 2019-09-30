@@ -38,10 +38,10 @@ module.exports = {
 
   build: {
     // Template for index.html
-    index: path.resolve(__dirname, '../../../dist/bcd/index.html'),
+    index: path.resolve(__dirname, '../../../../dist/bcd/index.html'),
 
     // Paths
-    assetsRoot: path.resolve(__dirname, '../../../dist/bcd'),
+    assetsRoot: path.resolve(__dirname, '../../../../dist/bcd'),
     assetsSubDirectory: 'static',
     assetsPublicPath: '/dist/bcd/',
 
